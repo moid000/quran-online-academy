@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { BookOpen, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { BookOpen, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AdminLogin() {
@@ -43,100 +43,66 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        
-        {/* Header Branding */}
-        <div className="text-center mb-8 space-y-3">
-          <div className="w-16 h-16 rounded-2xl bg-[#1e293b] border border-amber-500/30 flex items-center justify-center mx-auto shadow-xl shadow-amber-500/10">
-            <BookOpen className="w-8 h-8 text-[#f59e0b]" />
+        <div className="bg-[#1c2536] rounded-[2rem] p-10 shadow-2xl">
+
+          {/* Icon */}
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto shadow-lg shadow-orange-900/40">
+            <BookOpen className="w-9 h-9 text-white" strokeWidth={2} />
           </div>
-          <h1 className="text-3xl font-extrabold font-serif text-white tracking-tight">
+
+          {/* Heading */}
+          <h1 className="text-3xl font-extrabold text-white text-center mt-6">
             Admin Login
           </h1>
-          <p className="text-slate-400 text-xs font-medium">
+          <p className="text-slate-400 text-sm text-center mt-2">
             Enter your credentials to access the admin panel
           </p>
-        </div>
 
-        {/* Login Card */}
-        <div className="bg-[#1e293b] rounded-3xl p-8 shadow-2xl border border-slate-700/60 relative overflow-hidden">
-          
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-400 text-xs font-semibold flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+            <div className="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-400 text-sm font-medium flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Username or Email
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <User className="w-4 h-4" />
-                </div>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin"
-                  required
-                  className="w-full pl-10 pr-4 py-3 bg-[#0f172a] border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-4 mt-8">
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Email or Username"
+              required
+              className="w-full px-5 py-4 bg-slate-100 border-none rounded-xl text-slate-900 placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+            />
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Lock className="w-4 h-4" />
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="w-full pl-10 pr-4 py-3 bg-[#0f172a] border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="w-full px-5 py-4 bg-slate-100 border-none rounded-xl text-slate-900 placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+            />
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+              className="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-base rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
-                  <span>Verifying...</span>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Logging in...</span>
                 </>
               ) : (
-                <>
-                  <span>Sign In to Admin Panel</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
+                <span>Login</span>
               )}
             </button>
           </form>
 
-          {/* Demo Login Credentials Hint */}
-          <div className="mt-6 pt-5 border-t border-slate-700/60 text-center">
-            <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#f59e0b]" />
-              <span>Demo Login: <strong>admin</strong> / <strong>admin123</strong></span>
-            </p>
-          </div>
-
         </div>
-
       </div>
     </div>
   );
