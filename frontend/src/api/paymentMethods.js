@@ -45,7 +45,8 @@ export const getPaymentMethods = async () => {
   try {
     const res = await fetch(`${API_URL}/payment-methods`);
     if (!res.ok) throw new Error('Failed to fetch payment methods');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     return getStoredMethods();
   }
