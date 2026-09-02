@@ -279,7 +279,7 @@ export default function CourseDetail() {
                   </AnimatedButton>
 
                   <AnimatedButton
-                    to={`/register?course=${course.id}`}
+                    to={`/register?course=${course._id || course.id}`}
                     variant="secondary"
                     icon={ArrowRight}
                     className="w-full text-center"
