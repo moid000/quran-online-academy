@@ -9,6 +9,7 @@ export default {
       colors: {
         'brand-green': '#345B46',
         'brand-green-dark': '#2a4a38',
+        'brand-green-light': '#4a7a60',
         gold: {
           DEFAULT: '#f59e0b',
           light: '#fbbf24',
@@ -19,7 +20,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         arabic: ['Amiri', 'Scheherazade New', 'serif'],
-        serif: ['Inter', 'serif'],
+        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       },
     },
   },

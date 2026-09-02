@@ -180,8 +180,7 @@ export default function About() {
                   <div className="relative">
                     <div className="w-40 h-40 rounded-3xl overflow-hidden border-4 border-brand-green/30">
                       <img
-                        src="/images/founder-real.jpg"
-                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/founder.png'; }}
+                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69724c3a263d1c5b72e0717d/20b5b4d3e_picam.jpg"
                         alt="Ustaz Abdul Muhaymin - Founder of Quran Online Academia"
                         loading="lazy"
                         className="w-full h-full object-cover"
