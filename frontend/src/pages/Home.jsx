@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Phone, MessageCircle, CheckCircle2, Star, ChevronDown, ChevronUp,
+  Phone, Mail, MessageCircle, CheckCircle2, Star, ChevronDown, ChevronUp,
   Award, Users, Globe, ShieldCheck, BookOpen, ArrowRight, ChevronLeft, ChevronRight,
   GraduationCap, Target, Sparkles, Quote
 } from 'lucide-react';
@@ -574,6 +574,16 @@ export default function Home() {
               <AnimatedButton to="/register" variant="primary" size="large">
                 Get Free Trial Class
               </AnimatedButton>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+              <a href="tel:+923177479286" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white shadow-md border border-gray-100 text-slate-700 font-medium hover:shadow-lg transition-all">
+                <Phone className="w-4 h-4 text-brand-green" />
+                +92 317 7479 286
+              </a>
+              <a href="mailto:quranonlineacademia@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white shadow-md border border-gray-100 text-slate-700 font-medium hover:shadow-lg transition-all">
+                <Mail className="w-4 h-4 text-brand-green" />
+                quranonlineacademia@gmail.com
+              </a>
             </motion.div>
           </div>
         </div>

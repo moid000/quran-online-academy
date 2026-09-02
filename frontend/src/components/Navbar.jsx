@@ -18,7 +18,7 @@ export default function Navbar() {
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -29,30 +29,30 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.header
+      <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'backdrop-blur-xl bg-white/95 border-b border-gray-200 shadow-md' : 'bg-white/80 backdrop-blur-md'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? 'backdrop-blur-xl bg-white/95 border-b border-gray-200 shadow-lg' : 'bg-white/80 backdrop-blur-sm'
         }`}
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-14 relative">
+          <div className="flex items-center justify-between h-16 lg:justify-between">
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-1.5 rounded-lg text-slate-700 hover:bg-gray-100 transition-colors order-1"
+              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-gray-100 transition-colors order-1"
               aria-label="Toggle Menu"
             >
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center gap-2 lg:order-1 order-2 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0"
+              className="flex items-center gap-3 lg:order-1 order-2 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0"
               onClick={() => window.scrollTo(0, 0)}
             >
               <img
@@ -62,7 +62,7 @@ export default function Navbar() {
                   e.currentTarget.src = '/images/logo.png';
                 }}
                 alt="QURAN ONLINE ACADEMIA"
-                className="h-10 w-auto"
+                className="h-20 w-auto brightness-110 contrast-110"
               />
             </Link>
 
@@ -75,7 +75,7 @@ export default function Navbar() {
                   end={link.path === '/'}
                   onClick={() => window.scrollTo(0, 0)}
                   className={({ isActive: active }) =>
-                    `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                       active ? 'bg-brand-green text-white' : 'text-slate-700 hover:text-brand-green hover:bg-gray-100'
                     }`
                   }
@@ -86,24 +86,24 @@ export default function Navbar() {
             </div>
 
             {/* WhatsApp Button */}
-            <div className="hidden lg:flex items-center gap-3 lg:order-3">
+            <div className="hidden lg:flex items-center gap-4 lg:order-3">
               <motion.a
                 href="https://wa.me/923177479286"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-green text-white font-medium text-sm shadow-md shadow-[#345B46]/30 hover:bg-[#2a4a38] transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green text-white font-medium text-sm shadow-lg shadow-[#345B46]/30 hover:bg-[#2a4a38] transition-all"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>WhatsApp</span>
               </motion.a>
             </div>
 
-            <div className="lg:hidden order-3 w-8" />
+            <div className="lg:hidden order-3 w-10" />
           </div>
         </div>
-      </motion.header>
+      </motion.nav>
 
       {/* Mobile Dropdown Menu */}
       <AnimatePresence>
@@ -112,11 +112,11 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-14 z-40 lg:hidden"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-x-0 top-16 z-40 lg:hidden"
           >
             <div className="bg-slate-900 border-b border-slate-700 shadow-xl">
-              <div className="container mx-auto px-4 py-3 space-y-1">
+              <div className="container mx-auto px-4 py-4 space-y-2">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
@@ -127,7 +127,7 @@ export default function Navbar() {
                       window.scrollTo(0, 0);
                     }}
                     className={({ isActive: active }) =>
-                      `block px-3 py-2.5 rounded-lg text-sm font-medium text-white transition-all ${
+                      `block px-4 py-3 rounded-xl text-sm font-medium text-white transition-all ${
                         active ? 'bg-brand-green' : 'hover:bg-white/10'
                       }`
                     }
@@ -135,12 +135,12 @@ export default function Navbar() {
                     {link.name}
                   </NavLink>
                 ))}
-                <div className="pt-2 space-y-1">
+                <div className="pt-4 space-y-2">
                   <a
                     href="https://wa.me/923177479286"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-brand-green text-white font-medium text-sm hover:bg-[#2a4a38]"
+                    className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-green text-white font-medium text-sm hover:bg-[#2a4a38]"
                   >
                     <MessageCircle className="w-4 h-4" />
                     Contact on WhatsApp
