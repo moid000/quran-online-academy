@@ -220,27 +220,27 @@ export default function Home() {
             {/* Photo */}
             <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative">
               <div className="relative aspect-[4/5] max-w-md mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#345B46]/20 to-emerald-500/20 rounded-3xl transform rotate-3" />
-                <div className="absolute inset-0 backdrop-blur-xl bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-xl">
+                <div className="absolute -inset-1 bg-gradient-to-br from-[#345B46]/15 to-emerald-500/15 rounded-3xl" />
+                <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl">
                   <img
                     src="/images/founder-real.jpg"
                     onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/founder.png'; }}
                     alt="Ustaz Abdul Muhaymin - Founder and Lead Instructor at Quran Online Academia"
                     loading="lazy"
-                    className="w-full h-full object-cover opacity-90"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/10 to-transparent" />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 }}
+                    className="absolute bottom-0 left-0 right-0 p-6 text-left"
+                  >
+                    <h3 className="text-2xl font-bold text-white leading-snug">Ustaz Abdul Muhaymin</h3>
+                    <p className="text-amber-400 font-medium">Founder & Lead Instructor</p>
+                  </motion.div>
                 </div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl px-8 py-4 text-center"
-                >
-                  <h3 className="text-2xl font-bold text-slate-900">Ustaz Abdul Muhaymin</h3>
-                  <p className="text-brand-green font-medium">Founder & Lead Instructor</p>
-                </motion.div>
               </div>
             </motion.div>
 
@@ -263,8 +263,8 @@ export default function Home() {
                   return (
                     <GlassCard key={idx} delay={idx * 0.1} className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center shrink-0">
-                          <Icon className="w-5 h-5 text-brand-green" />
+                        <div className="w-10 h-10 rounded-xl bg-brand-green flex items-center justify-center shrink-0">
+                          <Icon className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <div className="text-lg font-bold text-slate-900">{stat.label}</div>

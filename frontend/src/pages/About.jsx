@@ -195,7 +195,7 @@ export default function About() {
                 {/* Founder info */}
                 <div className="flex-1 text-center md:text-left">
                   <h2 className="text-3xl font-bold text-slate-900 mb-2">Ustaz Abdul Muhaymin</h2>
-                  <p className="text-brand-green mb-4 font-medium">Founder & Lead Instructor</p>
+                  <p className="text-amber-600 mb-4 font-medium">Founder & Lead Instructor</p>
                   <p className="text-slate-700 mb-6">
                     "My mission is not just to teach the recitation of the Holy Quran, but to help students understand its profound meaning and wisdom. Every student who connects with the Quran fills my heart with immense joy and gratitude."
                   </p>
