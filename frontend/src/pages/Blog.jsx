@@ -1,110 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Search, Sparkles } from 'lucide-react';
-import BlogCard from '../components/BlogCard';
 import { getBlogPosts } from '../api/blogPosts';
+import BlogCard from '../components/BlogCard';
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getBlogPosts().then(data => {
-      setPosts(data.filter(p => p.published !== false));
-      setLoading(false);
-    });
+    getBlogPosts()
+      .then((data) => {
+        setPosts(data.filter((p) => p.published !== false));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching blog posts:', err);
+        setLoading(false);
+      });
   }, []);
 
-  const categories = ['All', 'Quran Learning', 'Spiritual Growth', 'Islamic Knowledge', 'Academy News'];
-
-  const filteredPosts = posts.filter(post => {
-    if (selectedCategory === 'All') return true;
-    if (selectedCategory === 'Quran Learning') return post.category === 'Tajweed' || post.category === 'Quran Learning' || post.category === 'Education';
-    if (selectedCategory === 'Spiritual Growth') return post.category === 'Spiritual' || post.category === 'Spiritual Growth';
-    if (selectedCategory === 'Islamic Knowledge') return post.category === 'Islamic Knowledge' || post.category === 'Tajweed';
-    if (selectedCategory === 'Academy News') return post.category === 'Academy News' || post.category === 'Education';
-    return post.category === selectedCategory;
-  });
-
   return (
-    <div className="pt-24 pb-20 space-y-16 bg-slate-50 min-h-screen">
-      
-      {/* HEADER BANNER */}
-      <section className="bg-hero-gradient text-white py-16 relative overflow-hidden text-center">
-        <div className="absolute inset-0 bg-islamic-pattern opacity-30 pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-4">
-          <span className="font-arabic text-3xl sm:text-4xl text-gold font-bold block drop-shadow-md">
-            مَدَوَّنَتُنَا الإِسْلَامِيَّةُ
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-serif text-white tracking-tight">
-            Our Blog
-          </h1>
-          <p className="text-slate-300 text-base max-w-2xl mx-auto font-light leading-relaxed">
-            Inspirational Islamic articles, Tajweed tips, and practical guides for Quranic study and spiritual enrichment.
-          </p>
-
-          {/* CATEGORY FILTER */}
-          <div className="pt-6 flex flex-wrap items-center justify-center gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${
-                  selectedCategory === cat
-                    ? 'bg-gold text-emerald-950 shadow-md scale-105'
-                    : 'bg-emerald-900/60 text-slate-200 hover:bg-emerald-800'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
+    <div className="pt-0 min-h-screen bg-white">
+      {/* HERO SECTION */}
+      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
+        <div className="container mx-auto px-4 relative z-10 text-center mt-20">
+          <div className="text-amber-400 font-arabic text-2xl mb-4">اقْرَأْ بِاسْمِ رَبِّكَ</div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Our Blog</h1>
         </div>
       </section>
+      {/* BLOG GRID */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+            <div className="text-brand-green font-arabic text-2xl">﷽</div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
+              Latest from Our Blog
+            </h2>
+            <p className="text-lg text-slate-600">
+              Insights and articles on Quran learning and Islamic education
+            </p>
+            <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full" />
+          </div>
 
-      {/* BLOG POSTS GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {loading ? (
-          <div className="text-center py-20 text-slate-500 font-medium">Loading blog articles...</div>
-        ) : filteredPosts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl p-8 border border-slate-200">
-            <h3 className="text-xl font-bold font-serif text-slate-900 mb-2">No Articles Found</h3>
-            <p className="text-slate-600 text-sm">There are no articles in the "{selectedCategory}" category yet.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post) => (
-              <BlogCard key={post.id} post={post} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* WHATSAPP CHANNEL CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-emerald-950 text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl border border-gold/40">
-          <div className="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-wider bg-emerald-900/80 px-4 py-1.5 rounded-full border border-gold/30">
-            <Sparkles className="w-4 h-4" /> Daily Reminders & Updates
-          </div>
-          <h2 className="text-3xl font-bold font-serif text-white">
-            Stay Updated with Our Latest Posts
-          </h2>
-          <p className="text-slate-300 text-base max-w-xl mx-auto font-light">
-            Receive daily Quranic verses, Tajweed tips, and academy updates directly on WhatsApp.
-          </p>
-          <a
-            href="https://wa.me/923177479286"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#395240] hover:bg-[#2d4233] text-white font-bold text-sm rounded-full shadow-lg transition-colors"
-          >
-            <MessageCircle className="w-5 h-5 text-emerald-300" />
-            <span>Join WhatsApp Community</span>
-          </a>
+          {/* Grid */}
+          {loading ? (
+            <div className="text-center py-16 text-slate-500 font-medium">
+              Loading articles...
+            </div>
+          ) : posts.length === 0 ? (
+            <div className="text-center py-16 text-slate-500">
+              No blog posts found.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.map((post) => (
+                <BlogCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
-
     </div>
   );
 }

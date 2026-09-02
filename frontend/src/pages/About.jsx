@@ -1,140 +1,340 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Award, Users, Globe, ShieldCheck, CheckCircle2, MessageCircle, Mail } from 'lucide-react';
+import { 
+  BookOpen, Target, Eye, Users, ShieldCheck, Globe, Sparkles, 
+  GraduationCap, CheckCircle2, MessageCircle, ArrowRight
+} from 'lucide-react';
 
 export default function About() {
+  const stats = [
+    { value: '5+', label: 'Years Experience' },
+    { value: '600+', label: 'Active Students' },
+    { value: '3000+', label: 'Students Taught' },
+    { value: 'Certified', label: 'Quran Educator' },
+  ];
+
+  const features = [
+    {
+      title: '1-on-1 Live Interactive Classes',
+      description: 'Dedicated individual attention in every session, ensuring proper correction of Tajweed and articulation points.',
+      icon: Users,
+    },
+    {
+      title: 'Certified Male & Female Scholars',
+      description: 'Qualified tutors trained in Tajweed, Qirat, and pedagogy, offering comfortable learning for sisters and kids.',
+      icon: ShieldCheck,
+    },
+    {
+      title: '24/7 Global Scheduling',
+      description: 'Flexible class timings tailored to your local timezone in the USA, UK, Canada, Australia, and Middle East.',
+      icon: Globe,
+    },
+    {
+      title: 'Structured Curriculum',
+      description: 'Step-by-step progress tracking from basic Qaida to complete Quran memorization and Tajweed mastery.',
+      icon: BookOpen,
+    },
+    {
+      title: 'Free 3-Day Trial',
+      description: 'Experience our high-quality teaching and interactive virtual platform with no advance financial commitment.',
+      icon: Sparkles,
+    },
+    {
+      title: 'Multilingual Support',
+      description: 'Instructors fluent in English, Urdu, and Arabic for clear communication with children and adults.',
+      icon: GraduationCap,
+    },
+  ];
+
   return (
-    <div className="pt-24 pb-20 space-y-16 bg-slate-50">
+    <div className="pt-20 space-y-0 bg-white min-h-screen">
       
-      {/* Header Banner */}
-      <section className="bg-hero-gradient text-white py-16 relative overflow-hidden text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-4">
-          <span className="font-arabic text-3xl text-gold font-bold block">
-            مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-serif text-white">
-            About QURAN ONLINE ACADEMIA
+      {/* 1. HERO SECTION */}
+      <section className="bg-slate-900 text-white py-20 lg:py-28 relative overflow-hidden text-center">
+        <img
+          src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
+          alt="Quran Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-amber-400 font-arabic text-2xl md:text-3xl mb-3">
+            بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            About Our Academy
           </h1>
-          <p className="text-slate-300 text-base max-w-2xl mx-auto font-light">
-            Dedicated to providing authentic, spiritual, and high-quality online Quranic education to students worldwide from Bahawalpur, Pakistan.
+          <p className="text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Dedicated to spreading the light of Quran across the world since 2019
           </p>
         </div>
       </section>
 
-      {/* Founder Story Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-100">
-          <div className="space-y-6">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-4 py-1.5 rounded-full">
-              Leadership & Passion
-            </span>
-            <h2 className="text-3xl font-bold font-serif text-slate-900">
-              Founded by Ustaz Abdul Muhaymin
-            </h2>
-            <p className="text-slate-600 leading-relaxed font-light">
-              QURAN ONLINE ACADEMIA was established with a singular mission: to make authentic Quranic education accessible to every Muslim household worldwide, regardless of geographical barriers.
-            </p>
-            <p className="text-slate-600 leading-relaxed font-light">
-              Based in Bahawalpur, Pakistan, Ustaz Abdul Muhaymin has accumulated over 5 years of experience in teaching Noorani Qaida, Nazra, Tajweed, and Hifz. Under his guidance, over 3,000 students have learned to recite the Quran with precision and beauty.
-            </p>
+      {/* 2. MEET OUR FOUNDER SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
+            ﷽
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
+            Meet Our Founder
+          </h2>
+          <p className="text-lg text-slate-600 text-center mt-2">
+            Dedicated leadership in authentic Quranic education
+          </p>
+          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
-              <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-                <span className="text-2xl font-bold text-emerald-900 font-serif block">5+ Years</span>
-                <span className="text-xs text-slate-600">Teaching Experience</span>
-              </div>
-              <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-                <span className="text-2xl font-bold text-emerald-900 font-serif block">600+</span>
-                <span className="text-xs text-slate-600">Active Students</span>
-              </div>
-              <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-                <span className="text-2xl font-bold text-emerald-900 font-serif block">3000+</span>
-                <span className="text-xs text-slate-600">Graduates</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Photo on left in rounded frame */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative rounded-3xl overflow-hidden border-4 border-amber-400/30 shadow-2xl bg-slate-900 max-w-md w-full">
+                <img
+                  src="/images/founder.png"
+                  alt="Ustaz Abdul Muhaymin"
+                  className="w-full h-auto object-cover"
+                />
+                <div className="bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-6 text-center">
+                  <h3 className="text-2xl font-bold text-white font-serif">Ustaz Abdul Muhaymin</h3>
+                  <p className="text-amber-400 text-sm font-medium mt-1">Founder & Lead Instructor • Bahawalpur, Pakistan</p>
+                </div>
               </div>
             </div>
+
+            {/* Text card on right with Arabic verse & stats grid */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 sm:p-8 space-y-6">
+                
+                {/* Arabic Verse Card */}
+                <div className="bg-amber-50/60 border-l-4 border-amber-500 p-5 rounded-r-xl space-y-2">
+                  <p className="text-brand-green font-arabic text-2xl leading-loose text-right dir=&quot;rtl&quot;">
+                    وَعَلَّمَكَ مَا لَمْ تَكُنْ تَعْلَمُ
+                  </p>
+                  <p className="text-slate-700 italic text-sm">
+                    "And He taught you that which you knew not."
+                  </p>
+                  <span className="text-xs text-amber-700 font-semibold block uppercase tracking-wider">
+                    — Surah An-Nisa (4:113)
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    Welcome to Quran Online Academy
+                  </h3>
+                  <p className="text-slate-700 leading-relaxed">
+                    Founded by <strong>Ustaz Abdul Muhaymin</strong> in Bahawalpur, Pakistan, Quran Online Academy is dedicated to delivering high-caliber Quranic and Islamic instruction to Muslims around the world. With over 5+ years of dedicated teaching experience in Noorani Qaida, Nazra Quran, Tajweed rules, and Hifz memorization, Ustaz Abdul Muhaymin has fostered an academy built on authenticity, patience, and spiritual excellence.
+                  </p>
+                  <p className="text-slate-700 leading-relaxed">
+                    Our mission is to make authentic Quran learning accessible to every household, ensuring students of all ages learn with correct pronunciation (Makharij) and a deep love for the Book of Allah.
+                  </p>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+                  {stats.map((stat, idx) => (
+                    <div key={idx} className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100">
+                      <span className="text-2xl font-bold text-brand-green block">{stat.value}</span>
+                      <span className="text-xs text-slate-600 mt-1 block">{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="https://wa.me/923177479286"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-4 shadow-md transition-all duration-300"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    <span>Connect on WhatsApp</span>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
           </div>
 
-          <div className="bg-emerald-950 text-white rounded-3xl p-8 shadow-2xl border border-gold/30 text-center space-y-6">
-            <div className="w-24 h-28 mx-auto rounded-2xl bg-emerald-900 border-2 border-gold flex items-center justify-center shadow-lg">
-              <BookOpen className="w-12 h-12 text-gold" />
+        </div>
+      </section>
+
+      {/* 3. MISSION / VISION SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
+            ﷽
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
+            Our Mission & Vision
+          </h2>
+          <p className="text-lg text-slate-600 text-center mt-2">
+            Guiding principles behind Quran Online Academy
+          </p>
+          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            
+            {/* Card 1: Mission */}
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-8 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
+                  <Target className="w-7 h-7" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Our Mission</h3>
+                <p className="text-slate-700 leading-relaxed">
+                  To provide accessible, authentic, and high-quality 1-on-1 online Quranic education to children, adults, and families globally. We strive to nurture proper Tajweed recitation, spiritual understanding, and strong Islamic moral values in every student.
+                </p>
+              </div>
+              <ul className="mt-6 space-y-2 pt-6 border-t border-gray-100 text-sm text-slate-700">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Individualized 1-on-1 virtual classrooms</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Preserving authentic Tajweed and Makharij</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Flexible schedules tailored to every timezone</span>
+                </li>
+              </ul>
             </div>
-            <h3 className="text-2xl font-bold font-serif text-gold">Ustaz Abdul Muhaymin</h3>
-            <p className="text-xs uppercase tracking-widest text-emerald-300">Founder & Principal Scholar</p>
-            <p className="text-slate-300 text-sm italic">
-              "We treat each student with individualized care and spiritual devotion, ensuring they learn the Book of Allah with proper Tajweed and genuine understanding."
-            </p>
+
+            {/* Card 2: Vision */}
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-8 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
+                  <Eye className="w-7 h-7" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900">Our Vision</h3>
+                <p className="text-slate-700 leading-relaxed">
+                  To become a leading global online Quranic academy trusted by Muslim families worldwide, creating a vibrant generation connected deeply to the Holy Quran and applying its wisdom, mercy, and guidance in their daily lives.
+                </p>
+              </div>
+              <ul className="mt-6 space-y-2 pt-6 border-t border-gray-100 text-sm text-slate-700">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Empowering global Muslim communities</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Cultivating love and reverence for Allah's Word</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
+                  <span>Highest standards of tutor qualification & care</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 4. WHY CHOOSE US SECTION */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
+            ﷽
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
+            Why Choose Us
+          </h2>
+          <p className="text-lg text-slate-600 text-center mt-2">
+            What sets Quran Online Academy apart as your trusted learning partner
+          </p>
+          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feat, idx) => {
+              const IconComp = feat.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col items-start space-y-4"
+                >
+                  <div className="w-12 h-12 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0">
+                    <IconComp className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900">{feat.title}</h3>
+                  <p className="text-slate-700 leading-relaxed text-sm">{feat.description}</p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. STATS SECTION */}
+      <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
+          alt="Quran Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">5+</span>
+              <span className="text-slate-300 font-medium text-sm md:text-base">Years Experience</span>
+            </div>
+            <div>
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">600+</span>
+              <span className="text-slate-300 font-medium text-sm md:text-base">Active Students</span>
+            </div>
+            <div>
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">3000+</span>
+              <span className="text-slate-300 font-medium text-sm md:text-base">Students Taught</span>
+            </div>
+            <div>
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">100%</span>
+              <span className="text-slate-300 font-medium text-sm md:text-base">Satisfaction Rate</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA SECTION */}
+      <section className="py-20 bg-slate-950 text-white relative overflow-hidden text-center">
+        <img
+          src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
+          alt="Quran Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+        />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
+          <div className="text-amber-400 font-arabic text-2xl mb-2">
+            ﷽
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            Ready to Start Your Quran Journey?
+          </h2>
+          <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            Book your free 3-day trial class today and experience our interactive 1-on-1 teaching from certified Quran scholars.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link
+              to="/register"
+              className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-4 inline-flex items-center justify-center gap-2 shadow-lg transition-all"
+            >
+              <span>Start Free Trial Class</span>
+              <ArrowRight className="w-5 h-5" />
+            </Link>
             <a
               href="https://wa.me/923177479286"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#395240] hover:bg-[#2d4233] text-white font-bold text-sm rounded-xl transition-colors w-full"
+              className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-bold px-8 py-4 inline-flex items-center justify-center gap-2 transition-all border border-brand-green/30"
             >
-              <MessageCircle className="w-4 h-4" /> Contact Ustaz via WhatsApp
+              <MessageCircle className="w-5 h-5" />
+              <span>Contact via WhatsApp</span>
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values / Why Choose Us */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <h2 className="text-3xl font-bold font-serif text-slate-900">Why Choose Our Academy?</h2>
-          <p className="text-slate-600">Discover what makes QURAN ONLINE ACADEMIA a trusted choice globally.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-100 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
-              <Users className="w-6 h-6 text-emerald-800" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 font-serif">1-on-1 Live Sessions</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Every student gets 100% individual attention. No crowded classrooms or rushed lessons.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-100 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6 text-emerald-800" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 font-serif">Certified Male & Female Scholars</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Qualified tutors trained in Tajweed and pedagogy, offering comfortable instruction for sisters and children.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-slate-100 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-gold/20 text-gold flex items-center justify-center">
-              <Globe className="w-6 h-6 text-amber-700" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 font-serif">24/7 Global Scheduling</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Flexible timing tailored to USA, UK, Canada, Australia, and Middle East time zones.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-emerald-950 text-white rounded-3xl p-10 text-center space-y-6 shadow-2xl border border-gold/30">
-          <h2 className="text-3xl font-bold font-serif text-white">Ready to Start Your Quran Journey?</h2>
-          <p className="text-slate-300 text-base max-w-xl mx-auto">
-            Book your free 3-day trial class today and experience our interactive 1-on-1 teaching.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <Link
-              to="/register"
-              className="px-8 py-3.5 bg-gold hover:bg-gold-light text-emerald-950 font-bold text-sm rounded-full shadow-lg"
-            >
-              Start Free Trial Class
-            </Link>
-            <Link
-              to="/courses"
-              className="px-8 py-3.5 bg-emerald-900 hover:bg-emerald-800 text-gold font-bold text-sm rounded-full border border-gold/30"
-            >
-              View Available Courses
-            </Link>
           </div>
         </div>
       </section>

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Clock, BookOpen, CheckCircle, UserCheck, ArrowRight, MessageCircle, ShieldCheck, ChevronRight } from 'lucide-react';
+import { 
+  Clock, BookOpen, CheckCircle2, UserCheck, ArrowLeft, ArrowRight, 
+  MessageCircle, Calendar, Check
+} from 'lucide-react';
 import { getCourseById, getCourses } from '../api/courses';
 import CourseCard from '../components/CourseCard';
 
@@ -26,216 +29,273 @@ export default function CourseDetail() {
         }
       })
       .catch((err) => {
-        setError(err.message || 'Failed to load course detail');
+        setError(err.message || 'Failed to load course details');
       })
       .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-32 pb-20 flex items-center justify-center text-slate-500 font-medium">
-        Loading course details...
+      <div className="pt-20 min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center text-slate-500 font-medium text-lg">Loading course details...</div>
       </div>
     );
   }
 
   if (error || !course) {
     return (
-      <div className="min-h-screen pt-32 pb-20 text-center space-y-4 px-4">
-        <h2 className="text-2xl font-bold font-serif text-slate-900">Course Not Found</h2>
-        <p className="text-slate-600">{error || "We couldn't find the requested course."}</p>
-        <Link to="/courses" className="inline-flex items-center gap-2 text-emerald-800 font-bold hover:underline">
-          <ArrowRight className="w-4 h-4 rotate-180" /> Back to Courses
-        </Link>
+      <div className="pt-20 min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-md mx-auto px-4">
+          <h2 className="text-2xl font-bold text-slate-900">Course Not Found</h2>
+          <p className="text-slate-600">{error || "We couldn't find the requested course."}</p>
+          <Link
+            to="/courses"
+            className="inline-flex items-center gap-2 text-brand-green font-bold hover:underline"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Courses
+          </Link>
+        </div>
       </div>
     );
   }
 
   const { title, arabicTitle, description, level, duration, classesPerWeek, classDuration, image, curriculum = [], instructor } = course;
-  const whatsappMsg = encodeURIComponent(`Assalamu Alaikum, I would like to enroll in the ${title} course at QURAN ONLINE ACADEMIA.`);
+
+  const whatsappMsg = encodeURIComponent(`Assalamu Alaikum, I would like to enroll in the ${title} course at Quran Online Academy.`);
   const whatsappUrl = `https://wa.me/923177479286?text=${whatsappMsg}`;
 
+  const featuresList = [
+    '1-on-1 Dedicated Virtual Classroom',
+    'Male & Female Tutors Available',
+    '3-Day Free Trial Class',
+    'Flexible Schedule (24/7)',
+    'Completion Certificate',
+    'Regular Progress Reports'
+  ];
+
   return (
-    <div className="pt-24 pb-20 space-y-16 bg-slate-50 min-h-screen">
+    <div className="pt-20 min-h-screen bg-white">
       
-      {/* Breadcrumb & Header */}
-      <section className="bg-hero-gradient text-white py-12 relative overflow-hidden">
+      {/* COURSE HEADER */}
+      <section className="bg-slate-900 text-white py-16 relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
+          alt="Quran Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-4">
           
-          <div className="flex items-center gap-2 text-xs text-gold/80 font-medium">
-            <Link to="/" className="hover:underline">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
-            <Link to="/courses" className="hover:underline">Courses</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">{title}</span>
+          <Link
+            to="/courses"
+            className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-medium text-sm transition-colors mb-2"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Courses
+          </Link>
+
+          {arabicTitle && (
+            <div className="text-amber-400 font-arabic text-2xl md:text-3xl">
+              {arabicTitle}
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="bg-brand-green text-white text-xs font-bold px-3 py-1 rounded-full">
+              {level} Level
+            </span>
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <span className="inline-block bg-emerald-800 text-gold text-xs font-semibold px-3 py-1 rounded-full border border-gold/30">
-                {level} Level
-              </span>
-              <h1 className="text-3xl sm:text-5xl font-extrabold font-serif text-white">
-                {title}
-              </h1>
-              {arabicTitle && (
-                <span className="font-arabic text-2xl text-gold font-bold block pt-1">
-                  {arabicTitle}
-                </span>
-              )}
-            </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            {title}
+          </h1>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#395240] hover:bg-[#2d4233] text-white font-bold text-sm rounded-xl shadow-lg transition-colors"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-300" />
-                <span>Enroll via WhatsApp</span>
-              </a>
-              <Link
-                to={`/register?course=${course.id}`}
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-gold hover:bg-gold-light text-emerald-950 font-bold text-sm rounded-xl shadow-lg transition-colors"
-              >
-                <span>Register Student</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
+          <p className="text-lg text-slate-300 max-w-3xl leading-relaxed">
+            {description}
+          </p>
 
         </div>
       </section>
 
-      {/* Main Course Content */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
-          {/* Left / Main Column */}
-          <div className="lg:col-span-2 space-y-10">
+      {/* TWO COLUMNS CONTENT */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             
-            {/* Overview Image & Info */}
-            <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100">
-              <div className="relative h-80 bg-slate-900">
+            {/* LEFT COLUMN: COURSE DETAILS & CONTENT */}
+            <div className="lg:col-span-2 space-y-10">
+              
+              {/* Image banner */}
+              <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-200">
                 <img
-                  src={image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&q=80&w=800'}
+                  src={image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80'}
                   alt={title}
-                  className="w-full h-full object-cover opacity-90"
+                  className="w-full h-80 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
               </div>
 
-              <div className="p-8 space-y-6">
-                <h2 className="text-2xl font-bold font-serif text-slate-900">Course Overview</h2>
-                <p className="text-slate-600 leading-relaxed text-base font-light">
+              {/* Course Overview */}
+              <div className="space-y-4">
+                <div className="text-brand-green font-arabic text-xl">
+                  ﷽
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900">Course Overview</h2>
+                <p className="text-slate-700 leading-relaxed text-base">
                   {description}
                 </p>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100">
-                  <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-                    <Clock className="w-5 h-5 text-emerald-800 mx-auto mb-1" />
-                    <span className="text-xs text-slate-500 block">Duration</span>
-                    <span className="text-sm font-bold text-slate-900 font-serif">{duration}</span>
-                  </div>
-
-                  <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
-                    <BookOpen className="w-5 h-5 text-emerald-800 mx-auto mb-1" />
-                    <span className="text-xs text-slate-500 block">Frequency</span>
-                    <span className="text-sm font-bold text-slate-900 font-serif">{classesPerWeek || '3 Classes / Wk'}</span>
-                  </div>
-
-                  <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center col-span-2 sm:col-span-1">
-                    <UserCheck className="w-5 h-5 text-gold mx-auto mb-1" />
-                    <span className="text-xs text-slate-500 block">Lead Scholar</span>
-                    <span className="text-sm font-bold text-slate-900 font-serif">{instructor || 'Ustaz Abdul Muhaymin'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Curriculum Breakdown */}
-            <div className="bg-white rounded-3xl p-8 shadow-lg border border-slate-100 space-y-6">
-              <h2 className="text-2xl font-bold font-serif text-slate-900">What You Will Learn</h2>
-              
-              <div className="space-y-3">
-                {curriculum.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <CheckCircle className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
-                    <span className="text-sm text-slate-800 font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: Enrollment Card */}
-          <div className="space-y-6">
-            <div className="bg-emerald-950 text-white rounded-3xl p-8 shadow-xl border border-gold/30 space-y-6 sticky top-28">
-              <h3 className="text-xl font-bold font-serif text-white border-b border-emerald-800 pb-4">
-                Enrollment Details
-              </h3>
-
-              <div className="space-y-4 text-sm text-slate-300">
-                <div className="flex items-center justify-between border-b border-emerald-900 pb-2">
-                  <span>Class Format:</span>
-                  <span className="font-semibold text-gold">1-on-1 Private Live</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-emerald-900 pb-2">
-                  <span>Target Audience:</span>
-                  <span className="font-semibold text-gold">Kids & Adults</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-emerald-900 pb-2">
-                  <span>Tutors Available:</span>
-                  <span className="font-semibold text-gold">Male & Female Scholars</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-emerald-900 pb-2">
-                  <span>Free Trial:</span>
-                  <span className="font-semibold text-gold">3 Days Free</span>
-                </div>
-              </div>
-
-              <div className="pt-2 space-y-3">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#395240] hover:bg-[#2d4233] text-white font-bold text-sm rounded-xl shadow-md transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4 text-emerald-300" />
-                  <span>Contact on WhatsApp</span>
-                </a>
-
-                <Link
-                  to={`/register?course=${course.id}`}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-gold hover:bg-gold-light text-emerald-950 font-bold text-sm rounded-xl shadow-md transition-colors"
-                >
-                  <span>Register Online</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-              <div className="text-center pt-2">
-                <p className="text-xs text-slate-400">
-                  Questions? Call/WhatsApp Ustaz Abdul Muhaymin at <br />
-                  <strong className="text-gold">+92 317 7479 286</strong>
+                <p className="text-slate-700 leading-relaxed text-base">
+                  Our 1-on-1 private virtual classes ensure you or your child receive undivided attention from qualified Quran scholars. Lessons are paced according to your learning speed, combining traditional tajweed methodology with modern online teaching tools.
                 </p>
               </div>
-            </div>
-          </div>
 
+              {/* Curriculum / What You'll Learn */}
+              {curriculum.length > 0 && (
+                <div className="space-y-4 pt-6 border-t border-gray-100">
+                  <div className="text-brand-green font-arabic text-xl">
+                    ﷽
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900">What You Will Learn</h2>
+                  <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                    {curriculum.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3"
+                      >
+                        <CheckCircle2 className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                        <span className="text-slate-700 font-medium text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Course Requirements & Details Grid */}
+              <div className="space-y-4 pt-6 border-t border-gray-100">
+                <div className="text-brand-green font-arabic text-xl">
+                  ﷽
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900">Course Details & Requirements</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                    <Clock className="w-6 h-6 text-brand-green mx-auto mb-2" />
+                    <span className="text-xs text-slate-500 block">Duration</span>
+                    <span className="text-sm font-bold text-slate-900">{duration || 'Flexible'}</span>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                    <BookOpen className="w-6 h-6 text-brand-green mx-auto mb-2" />
+                    <span className="text-xs text-slate-500 block">Frequency</span>
+                    <span className="text-sm font-bold text-slate-900">{classesPerWeek || '3 Classes/Wk'}</span>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                    <Calendar className="w-6 h-6 text-brand-green mx-auto mb-2" />
+                    <span className="text-xs text-slate-500 block">Class Length</span>
+                    <span className="text-sm font-bold text-slate-900">{classDuration || '30 mins'}</span>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                    <UserCheck className="w-6 h-6 text-brand-green mx-auto mb-2" />
+                    <span className="text-xs text-slate-500 block">Instructor</span>
+                    <span className="text-sm font-bold text-slate-900">{instructor || 'Ustaz Abdul Muhaymin'}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* RIGHT COLUMN: ENROLLMENT CARD */}
+            <div className="lg:col-span-1">
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-28 space-y-6">
+                
+                <div className="space-y-2 border-b border-gray-100 pb-4">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-brand-green bg-brand-green/10 px-3 py-1 rounded-full">
+                    Enrollment Plan
+                  </span>
+                  <div className="text-3xl font-bold text-slate-900 pt-2">
+                    Flexible Plans
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Starting from $20 / month • Cancel or adjust schedule anytime
+                  </p>
+                </div>
+
+                {/* Features List */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                    Package Includes:
+                  </h4>
+                  {featuresList.map((feat, idx) => (
+                    <div key={idx} className="flex items-center gap-2.5 text-sm text-slate-700">
+                      <Check className="w-4 h-4 text-brand-green shrink-0" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Enroll Buttons */}
+                <div className="pt-4 space-y-3">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-4 w-full inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    <span>Enroll via WhatsApp</span>
+                  </a>
+
+                  <Link
+                    to={`/register?course=${course.id}`}
+                    className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-bold px-8 py-4 w-full inline-flex items-center justify-center gap-2 transition-all text-center"
+                  >
+                    <span>Register Student</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+
+                <p className="text-center text-xs text-slate-500 italic">
+                  No advance payment or credit card required for 3-day trial.
+                </p>
+
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
       {/* RELATED COURSES */}
       {relatedCourses.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
-          <h2 className="text-2xl font-bold font-serif text-slate-900 mb-8">Related Courses</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedCourses.map((rel) => (
-              <CourseCard key={rel.id} course={rel} />
-            ))}
+        <section className="py-16 bg-gray-50 border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <div className="text-brand-green font-arabic text-2xl mb-2">
+                ﷽
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
+                Related Courses
+              </h2>
+              <p className="text-lg text-slate-600 mt-2">
+                Explore other specialized programs offered by our academy
+              </p>
+              <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedCourses.map((relCourse) => (
+                <CourseCard key={relCourse.id || relCourse.slug} course={relCourse} />
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                to="/courses"
+                className="inline-flex items-center gap-2 text-brand-green hover:text-[#2a4a38] font-bold text-base transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" /> Back to All Courses
+              </Link>
+            </div>
+
           </div>
         </section>
       )}
