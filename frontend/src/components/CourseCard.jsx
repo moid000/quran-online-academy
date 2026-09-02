@@ -4,7 +4,7 @@ import { Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function CourseCard({ course, index = 0 }) {
-  const { id, slug, title, description, level, duration, image, image_url, features } = course;
+  const { id, slug, title, description, level, duration, image_url, image, features } = course;
   const imageUrl = image_url || image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=600&q=80';
 
   return (
@@ -26,7 +26,7 @@ export default function CourseCard({ course, index = 0 }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 rounded-full text-xs font-medium bg-brand-green text-white">
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-brand-green/90 text-white backdrop-blur-sm border border-brand-green">
               {level}
             </span>
           </div>
