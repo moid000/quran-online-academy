@@ -102,7 +102,8 @@ export const getFeePackages = async () => {
   try {
     const res = await fetch(`${API_URL}/fee-packages`);
     if (!res.ok) throw new Error('Failed to fetch fee packages');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     return getStoredPackages();
   }
