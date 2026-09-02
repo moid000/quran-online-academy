@@ -71,7 +71,7 @@ export default function BlogPost() {
           <div className="max-w-4xl mx-auto">
             <div className="relative aspect-video rounded-3xl overflow-hidden mb-8">
               <img
-                src={post.image}
+                src={post.image_url || post.image}
                 alt={post.title}
                 loading="lazy"
                 className="w-full h-full object-cover"
@@ -96,11 +96,11 @@ export default function BlogPost() {
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  {new Date(post.date || post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  {post.readTime} read
+                  {post.readTime || '5 min'} read
                 </span>
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
@@ -147,13 +147,13 @@ export default function BlogPost() {
                     <Link key={rel.id} to={`/blogs/${rel.id}`} onClick={() => window.scrollTo(0, 0)}>
                       <GlassCard className="p-4 hover:scale-105 transition-transform">
                         <img
-                          src={rel.image}
+                          src={rel.image_url || rel.image}
                           alt={rel.title}
                           loading="lazy"
                           className="w-full h-32 object-cover rounded-xl mb-3"
                         />
                         <h4 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{rel.title}</h4>
-                        <p className="text-slate-600 text-xs">{rel.readTime}</p>
+                        <p className="text-slate-600 text-xs">{rel.readTime || "5 min"}</p>
                       </GlassCard>
                     </Link>
                   ))}
