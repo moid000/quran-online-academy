@@ -1,44 +1,58 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import GlassCard from './GlassCard';
 
-export default function BlogCard({ post }) {
-  const { slug, id, title, excerpt, category, date, image } = post;
-  const postPath = `/blogs/${slug || id}`;
+export default function BlogCard({ post, index = 0 }) {
+  const { id, title, excerpt, category, date, image, readTime } = post;
 
   return (
-    <Link to={postPath} className="group block">
-      <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
-        {/* Image */}
-        <div className="relative aspect-video overflow-hidden">
-          <img
-            src={image || `https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80`}
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            loading="lazy"
-          />
-          <span className="absolute top-3 left-3 bg-brand-green text-white text-xs font-medium px-3 py-1 rounded-full">
-            {category || 'Article'}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="p-5 flex-1 flex flex-col">
-          <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
-            <Calendar className="w-3.5 h-3.5 text-brand-green" />
-            <span>{date}</span>
-          </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-brand-green transition-colors line-clamp-2">
-            {title}
-          </h3>
-          <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4 flex-1">
-            {excerpt}
-          </p>
-          <span className="text-sm text-brand-green hover:underline">
-            Read More
+    <GlassCard delay={index * 0.1} gradient={true} className="group flex flex-col">
+      {/* Image */}
+      <div className="relative h-48 overflow-hidden rounded-t-3xl">
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
+        <div className="absolute top-4 left-4">
+          <span className="px-3 py-1 rounded-full text-xs font-medium bg-brand-green text-white">
+            {category}
           </span>
         </div>
       </div>
-    </Link>
+
+      {/* Content */}
+      <div className="p-6 flex-1 flex flex-col">
+        <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-green transition-colors line-clamp-2">
+          {title}
+        </h3>
+        <p className="text-slate-600 text-sm mb-4 flex-1 line-clamp-3">{excerpt}</p>
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100 text-sm">
+          <div className="flex items-center gap-4 text-slate-600">
+            <span className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              {readTime}
+            </span>
+          </div>
+          <Link to={`/blogs/${id}`} onClick={() => window.scrollTo(0, 0)}>
+            <motion.span
+              whileHover={{ x: 5 }}
+              className="flex items-center gap-1 text-brand-green cursor-pointer font-medium"
+            >
+              Read <ArrowRight className="w-4 h-4" />
+            </motion.span>
+          </Link>
+        </div>
+      </div>
+    </GlassCard>
   );
 }
