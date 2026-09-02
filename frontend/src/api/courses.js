@@ -114,7 +114,8 @@ export const getCourses = async () => {
   try {
     const res = await fetch(`${API_URL}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     return getStoredCourses();
   }
@@ -124,7 +125,8 @@ export const getCourseById = async (id) => {
   try {
     const res = await fetch(`${API_URL}/courses/${id}`);
     if (!res.ok) throw new Error('Failed to fetch course detail');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const courses = getStoredCourses();
     const course = courses.find(c => c.id === id || c.slug === id);
@@ -144,7 +146,8 @@ export const createCourse = async (data, token) => {
       body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error('Failed to create course');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const courses = getStoredCourses();
     const newCourse = { ...data, id: 'c_' + Date.now(), is_active: data.is_active ?? true };
@@ -165,7 +168,8 @@ export const updateCourse = async (id, data, token) => {
       body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error('Failed to update course');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const courses = getStoredCourses();
     const idx = courses.findIndex(c => c.id === id);
