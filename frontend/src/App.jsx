@@ -10,7 +10,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import About from './pages/About';
 import Courses from './pages/Courses';
-import CourseDetail from './pages/CourseDetail';
 import Pricing from './pages/Pricing';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
@@ -56,7 +55,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/:id" element={<CourseDetail />} />
+          <Route path="/courses/:id" element={<Navigate to="/courses" replace />} />
           
           {/* Fees / Pricing */}
           <Route path="/fees" element={<Pricing />} />

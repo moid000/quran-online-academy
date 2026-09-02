@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { CheckCircle2, MessageCircle } from 'lucide-react';
 import { getCourses } from '../api/courses';
 import CourseCard from '../components/CourseCard';
-import SectionHeader from '../components/SectionHeader';
+import AnimatedButton from '../components/AnimatedButton';
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
-  const [selectedLevel, setSelectedLevel] = useState('All');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,143 +17,89 @@ export default function Courses() {
     });
   }, []);
 
-  const levels = ['All', 'Beginner', 'Intermediate', 'All Levels'];
-
-  const filteredCourses = selectedLevel === 'All'
-    ? courses
-    : courses.filter(c => c.level === selectedLevel);
-
   return (
-    <div className="pt-0 min-h-screen bg-white">
-      
-      {/* HERO SECTION */}
-      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+    <div className="pt-20">
+
+      {/* 1. HERO SECTION */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585036156171-384164a8c675?w=1920&q=80')] bg-cover bg-center opacity-10" />
         </div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-brand-green font-arabic text-3xl md:text-4xl mb-4 text-center mt-20"
-          >
-            عَلِّمُوا الْقُرْآنَ
-          </motion.p>
-          <p className="text-slate-300 text-sm md:text-base font-medium mb-4">Teach the Quran</p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Our Courses</h1>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-amber-400 font-arabic text-2xl mb-4"
+            >
+              عَلِّمُوا الْقُرْآنَ
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-6xl font-bold text-white mb-6"
+            >
+              Our Courses
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-slate-300 text-lg"
+            >
+              Comprehensive Islamic education tailored for every learner
+            </motion.p>
+          </div>
         </div>
       </section>
 
-      {/* COURSES SECTION */}
-      <section className="relative overflow-hidden py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Section Header */}
-          <SectionHeader
-            title="Our Courses"
-            subtitle="Comprehensive Islamic education tailored for every learner"
-          />
-
-          {/* Level Filter Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-            {levels.map((lvl) => {
-              const isActive = selectedLevel === lvl;
-              return (
-                <button
-                  key={lvl}
-                  onClick={() => setSelectedLevel(lvl)}
-                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
-                    isActive
-                      ? 'bg-brand-green text-white shadow-md'
-                      : 'bg-white text-slate-700 hover:bg-gray-100 border border-gray-200'
-                  }`}
-                >
-                  {lvl}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Course Grid */}
+      {/* 2. COURSES GRID */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
           {loading ? (
-            <div className="text-center py-20 text-slate-500 font-medium text-lg">
-              Loading courses...
-            </div>
-          ) : filteredCourses.length === 0 ? (
-            <div className="text-center py-20 text-slate-500 font-medium">
-              No courses found for this level.
+            <div className="flex justify-center py-12">
+              <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full" />
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {filteredCourses.map((course, idx) => (
-                <motion.div
-                  key={course.id || course.slug || idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                >
-                  <CourseCard course={course} />
-                </motion.div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {courses.map((course, idx) => (
+                <CourseCard key={course.id || course._id || idx} course={course} index={idx} />
               ))}
             </div>
           )}
+        </div>
+      </section>
 
-          {/* CTA / Guidance Card */}
-          <div className="mt-20 bg-slate-900 text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
-              alt="Quran Background"
-              className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
-            />
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-              <div className="space-y-3 max-w-2xl">
-                <div className="text-amber-400 font-arabic text-2xl">
-                  ﷽
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  Not Sure Which Course to Choose?
-                </h2>
-                <p className="text-slate-300 text-base leading-relaxed">
-                  Our academic team is here to assess your current reading level and recommend the perfect course for you or your child.
-                </p>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="flex flex-col sm:flex-row items-center gap-4 shrink-0"
-              >
-                <a
-                  href="https://wa.me/923177479286"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-4 inline-flex items-center gap-2 shadow-lg transition-all"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span>Free Consultation</span>
-                </a>
-                <Link
-                  to="/register"
-                  className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-bold px-8 py-4 inline-flex items-center gap-2 transition-all border border-brand-green/30"
-                >
-                  <span>Register Now</span>
-                  <ArrowRight className="w-5 h-5" />
+      {/* 3. CTA SECTION */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-8 md:p-12 shadow-lg"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                Not Sure Which Course to Choose?
+              </h2>
+              <p className="text-slate-600 mb-8">
+                Contact us for a free consultation. We'll assess your level and recommend the perfect course for you.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <AnimatedButton href="https://wa.me/923177479286" variant="primary" size="large" icon={MessageCircle}>
+                  Get Free Consultation
+                </AnimatedButton>
+                <Link to="/fees" onClick={() => window.scrollTo(0, 0)}>
+                  <AnimatedButton variant="outline" size="large">
+                    View Fee Structure
+                  </AnimatedButton>
                 </Link>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
-
         </div>
       </section>
 
