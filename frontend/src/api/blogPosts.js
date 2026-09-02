@@ -81,7 +81,8 @@ export const getBlogPosts = async () => {
   try {
     const res = await fetch(`${API_URL}/blog-posts`);
     if (!res.ok) throw new Error('Failed to fetch blog posts');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     return getStoredPosts();
   }
@@ -91,7 +92,8 @@ export const getBlogPostById = async (id) => {
   try {
     const res = await fetch(`${API_URL}/blog-posts/${id}`);
     if (!res.ok) throw new Error('Failed to fetch blog post');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const posts = getStoredPosts();
     return posts.find(p => p.id === parseInt(id) || p.id === id);
@@ -109,7 +111,8 @@ export const createBlogPost = async (data, token) => {
       body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error('Failed to create blog post');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const posts = getStoredPosts();
     const newPost = { ...data, id: Date.now() };
@@ -130,7 +133,8 @@ export const updateBlogPost = async (id, data, token) => {
       body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error('Failed to update blog post');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const posts = getStoredPosts();
     const idx = posts.findIndex(p => p.id === id);
