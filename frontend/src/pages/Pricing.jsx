@@ -1,281 +1,284 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Star, ArrowRight, MessageCircle, Building2, Wallet, Globe2 } from 'lucide-react';
-import { getFeePackages } from '../api/feePackages';
-import { getPaymentMethods } from '../api/paymentMethods';
 import { motion } from 'framer-motion';
+import { Star, Check, CreditCard, MessageCircle } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import GlassCard from '../components/GlassCard';
 import AnimatedButton from '../components/AnimatedButton';
 
+const feePackages = [
+  {
+    name: '3 Days / Weekly',
+    prices: { USD: 20, EUR: 15, GBP: 15 },
+    features: ['12 Classes Monthly', '30 Minutes Per Class', 'One-on-One Sessions', 'Flexible Scheduling', 'Progress Reports'],
+    popular: false,
+    color: 'from-blue-500 to-blue-600',
+  },
+  {
+    name: '4 Days / Weekly',
+    prices: { USD: 30, EUR: 25, GBP: 20 },
+    features: ['16 Classes Monthly', '30 Minutes Per Class', 'One-on-One Sessions', 'Flexible Scheduling', 'Progress Reports', 'Priority Support'],
+    popular: false,
+    color: 'from-amber-500 to-amber-600',
+  },
+  {
+    name: '5 Days / Weekly',
+    prices: { USD: 40, EUR: 30, GBP: 25 },
+    features: ['20 Classes Monthly', '30 Minutes Per Class', 'One-on-One Sessions', 'Flexible Scheduling', 'Progress Reports', 'Priority Support', 'Extra Revision Classes'],
+    popular: false,
+    color: 'from-emerald-500 to-emerald-600',
+  },
+  {
+    name: 'Weekend Only',
+    prices: { USD: 30, EUR: 25, GBP: 20 },
+    features: ['8 Classes Monthly', '30 Minutes Per Class', 'One-on-One Sessions', 'Saturday & Sunday', 'Progress Reports', 'Perfect for Busy Schedules'],
+    popular: false,
+    color: 'from-purple-500 to-purple-600',
+  },
+];
+
+const currencySymbols = { USD: '$', EUR: '€', GBP: '£' };
+
+const paymentMethods = [
+  { name: 'Bank Alfalah', icon: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69724c3a263d1c5b72e0717d/22d1642a6_bk_logo-removebg-preview.png' },
+  { name: 'JazzCash', icon: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69724c3a263d1c5b72e0717d/b21c58dbf_jazzcashlogo.png' },
+  { name: 'Western Union', icon: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69724c3a263d1c5b72e0717d/b860bca70_WUlogo.png' },
+];
+
+const faqs = [
+  { q: 'Is there a trial class available?', a: 'Yes! We offer a free trial class so you can experience our teaching methodology before enrolling.' },
+  { q: 'Can I change my package later?', a: 'Absolutely! You can upgrade or change your package at any time. The new fees will apply from the next billing cycle.' },
+  { q: 'Are the classes one-on-one?', a: 'Yes, all our classes are one-on-one to ensure personalized attention and faster progress.' },
+  { q: 'What if I miss a class?', a: 'Missed classes can be rescheduled with prior notice. We understand that life can be unpredictable.' },
+  { q: 'Is there a registration fee?', a: 'No registration fee! You only pay for the monthly package you choose.' },
+];
+
 export default function Pricing() {
-  const [packages, setPackages] = useState([]);
-  const [paymentMethods, setPaymentMethods] = useState([]);
   const [currency, setCurrency] = useState('USD');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([getFeePackages(), getPaymentMethods()]).then(([pkgs, methods]) => {
-      setPackages(pkgs);
-      setPaymentMethods(methods);
-      setLoading(false);
-    }).catch(err => {
-      console.error('Error loading pricing data:', err);
-      setLoading(false);
-    });
-  }, []);
-
-  const currencySymbols = {
-    USD: '$',
-    EUR: '€',
-    GBP: '£',
-    PKR: 'Rs '
-  };
-
-  const getPackagePrice = (pkg) => {
-    if (currency === 'EUR') return pkg.priceEur || Math.round(pkg.priceUsd * 0.9);
-    if (currency === 'GBP') return pkg.priceGbp || Math.round(pkg.priceUsd * 0.78);
-    if (currency === 'PKR') return pkg.pricePkr || Math.round(pkg.priceUsd * 280);
-    return pkg.priceUsd;
-  };
-
-  const paymentIcons = {
-    'Bank Transfer': Building2,
-    'Mobile Wallet': Wallet,
-    'International Remittance': Globe2
-  };
 
   return (
-    <div className="pt-20 min-h-screen bg-white">
-      
-      {/* HERO / SECTION HEADER */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white text-center px-4 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+    <div className="pt-20">
+
+      {/* 1. HERO SECTION */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900" />
         </div>
-
-        <div className="max-w-4xl mx-auto space-y-4 relative z-10">
-          <SectionHeader
-            title="Fee Packages"
-            subtitle="Affordable pricing for every learning journey"
-          />
-
-          {/* Currency Toggle */}
-          <div className="pt-8 flex items-center justify-center gap-2">
-            <span className="text-sm font-medium text-slate-600 mr-2">Select Currency:</span>
-            {['USD', 'EUR', 'GBP', 'PKR'].map((curr) => (
-              <button
-                key={curr}
-                onClick={() => setCurrency(curr)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                  currency === curr
-                    ? 'bg-brand-green text-white shadow'
-                    : 'bg-white border border-gray-200 text-slate-700 hover:border-brand-green'
-                }`}
-              >
-                {curr} ({currencySymbols[curr]})
-              </button>
-            ))}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-amber-400 font-arabic text-2xl mb-4"
+            >
+              مَا لَكُمْ لَا تُنفِقُونَ
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-6xl font-bold text-white mb-6"
+            >
+              Fee Structure
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-slate-300 text-lg"
+            >
+              Affordable packages designed to make Quran education accessible to all
+            </motion.p>
           </div>
-        </div>
-
-        {/* PACKAGE GRID */}
-        <div className="mt-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {loading ? (
-            <div className="py-12 text-slate-500 font-medium">Loading fee packages...</div>
-          ) : (
-            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-              {packages.map((pkg, idx) => {
-                const price = getPackagePrice(pkg);
-                const symbol = currencySymbols[currency];
-                const isPopular = pkg.popular || pkg.is_popular;
-
-                return (
-                  <motion.div
-                    key={pkg.id || idx}
-                    initial={isPopular ? { opacity: 0, y: 50, scale: 1.05 } : { opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    className={`bg-white/95 backdrop-blur-xl rounded-2xl p-8 transition-shadow relative flex flex-col justify-between ${
-                      isPopular
-                        ? 'border-2 border-amber-500 ring-2 ring-brand-green shadow-lg hover:shadow-xl'
-                        : 'border border-gray-200 shadow-sm hover:shadow-md'
-                    }`}
-                  >
-                    {isPopular && (
-                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap shadow-sm flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-white" /> Most Popular
-                      </div>
-                    )}
-
-                    <div>
-                      {/* Package Name */}
-                      <h3 className="text-xl font-bold text-slate-900 text-center">{pkg.name}</h3>
-                      <p className="text-xs text-slate-500 text-center mt-1 font-medium">
-                        {pkg.classesPerWeek || pkg.classes_per_week || '3 Days / Week'}
-                      </p>
-
-                      {/* Price */}
-                      <div className="mt-6 text-center">
-                        <span className="text-4xl font-bold text-slate-900">{symbol}{price}</span>
-                        <span className="text-slate-500 text-sm font-normal">/month</span>
-                      </div>
-                      <p className="text-xs text-slate-500 text-center mt-1">
-                        {pkg.classDuration || pkg.duration_per_class || '30 Mins / Class'}
-                      </p>
-
-                      {/* Features List */}
-                      <div className="mt-8 space-y-3 border-t border-gray-100 pt-6">
-                        {(pkg.features || []).map((feature, featureIdx) => (
-                          <div key={featureIdx} className="flex items-start gap-3 text-sm text-slate-700">
-                            <motion.span
-                              initial={{ opacity: 0, scale: 0 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.3, delay: featureIdx * 0.05 }}
-                              className="inline-flex shrink-0 mt-0.5"
-                            >
-                              <Check className="w-5 h-5 text-brand-green" />
-                            </motion.span>
-                            <span className="leading-tight text-left">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Enroll Button */}
-                    <div className="mt-8 pt-4 flex justify-center w-full">
-                      <AnimatedButton
-                        to={`/register?package=${pkg.id}`}
-                        variant="primary"
-                        className="w-full flex items-center justify-center gap-2"
-                      >
-                        <span>Enroll Now</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </AnimatedButton>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
         </div>
       </section>
 
-      {/* PAYMENT METHODS SECTION */}
-      <section className="py-24 bg-white px-4 sm:px-6 lg:px-8 border-t border-gray-100 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
-        </div>
+      {/* 2. FEE PACKAGES SECTION */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
 
-        <div className="max-w-5xl mx-auto space-y-12 relative z-10">
-          <SectionHeader
-            title="Accepted Payment Methods"
-            subtitle="Multiple secure payment channels available for local and international students"
-          />
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {paymentMethods.map((pm, idx) => {
-              const IconComp = paymentIcons[pm.type] || Building2;
-              return (
-                <GlassCard
-                  key={pm.id || idx}
-                  delay={idx * 0.1}
-                  className="p-6 text-center flex flex-col justify-between backdrop-blur-xl bg-white/95"
+          {/* Currency Toggle */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex justify-center mb-12"
+          >
+            <div className="inline-flex gap-3">
+              {[
+                { value: 'USD', label: 'FEE USD' },
+                { value: 'EUR', label: 'FEE EUR' },
+                { value: 'GBP', label: 'FEE GBP' },
+              ].map((curr) => (
+                <button
+                  key={curr.value}
+                  onClick={() => setCurrency(curr.value)}
+                  className={`px-4 sm:px-8 py-3 rounded-lg font-semibold transition-all whitespace-nowrap ${
+                    currency === curr.value
+                      ? 'bg-brand-green text-white shadow-lg'
+                      : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
+                  }`}
                 >
-                  <div>
-                    <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4 text-white">
-                      <IconComp className="w-7 h-7" />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-1">{pm.name}</h3>
-                    <span className="inline-block text-xs font-medium text-brand-green bg-brand-green/10 px-3 py-1 rounded-full mb-4">
-                      {pm.type}
-                    </span>
+                  {curr.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
 
-                    <div className="space-y-2 text-sm text-slate-700 text-left bg-gray-50/80 p-4 rounded-xl border border-gray-100 mb-4">
-                      {pm.accountName && (
-                        <p><strong className="text-slate-900">Account Title:</strong> {pm.accountName}</p>
-                      )}
-                      {pm.accountNumber && (
-                        <p><strong className="text-slate-900">Account / No:</strong> {pm.accountNumber}</p>
-                      )}
-                      {pm.bankName && (
-                        <p><strong className="text-slate-900">Bank / Service:</strong> {pm.bankName}</p>
-                      )}
-                      {pm.iban && (
-                        <p className="break-all"><strong className="text-slate-900">IBAN:</strong> {pm.iban}</p>
-                      )}
-                      {pm.swiftCode && (
-                        <p><strong className="text-slate-900">SWIFT Code:</strong> {pm.swiftCode}</p>
-                      )}
+          {/* Package Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {feePackages.map((pkg, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={`relative ${pkg.popular ? 'lg:-mt-4 lg:mb-4' : ''}`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <span className="px-4 py-1 rounded-full bg-brand-green text-white text-xs font-semibold flex items-center gap-1">
+                      <Star className="w-3 h-3 fill-current" /> Most Popular
+                    </span>
+                  </div>
+                )}
+
+                <div
+                  className={`h-full backdrop-blur-xl bg-white border rounded-3xl overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl ${
+                    pkg.popular ? 'border-brand-green shadow-lg shadow-[#345B46]/20' : 'border-gray-200'
+                  }`}
+                >
+                  {/* Header */}
+                  <div className={`bg-gradient-to-r ${pkg.color} p-6 text-center`}>
+                    <h3 className="text-xl font-bold text-white mb-2">{pkg.name}</h3>
+                    <div className="flex items-baseline justify-center gap-1">
+                      <span className="text-4xl font-bold text-white">
+                        {currencySymbols[currency]}{pkg.prices[currency]}
+                      </span>
+                      <span className="text-white/80">/month</span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-500 italic leading-relaxed">
-                    {pm.instructions || 'Upload receipt screenshot during online student registration.'}
-                  </p>
-                </GlassCard>
-              );
-            })}
+                  {/* Features */}
+                  <div className="p-6">
+                    <ul className="space-y-3 mb-6">
+                      {pkg.features.map((feature, fidx) => (
+                        <li key={fidx} className="flex items-center gap-3 text-slate-700 text-sm">
+                          <Check className="w-5 h-5 text-brand-green flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link
+                      to={`/register?package=${encodeURIComponent(pkg.name)}&price=${pkg.prices[currency]}`}
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full py-3 rounded-xl font-semibold transition-all ${
+                          pkg.popular
+                            ? 'bg-brand-green text-white shadow-lg shadow-[#345B46]/30'
+                            : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
+                        }`}
+                      >
+                        Enroll Now
+                      </motion.button>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT CTA SECTION */}
-      <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-10"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1600&q=80')` }}
-          />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-        </div>
+      {/* 3. PAYMENT METHODS SECTION */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <SectionHeader title="Payment Methods" subtitle="Secure and convenient payment options" />
 
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold"
-          >
-            Have Questions About Our Pricing?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed"
-          >
-            Contact us on WhatsApp for custom schedules, family discounts, or any fee-related inquiries.
-          </motion.p>
+          <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            {paymentMethods.map((pm, idx) => (
+              <GlassCard key={idx} delay={idx * 0.1} className="p-6 text-center">
+                <div className="mb-4 flex items-center justify-center h-20">
+                  <img
+                    src={pm.icon}
+                    alt={`${pm.name} payment method`}
+                    loading="lazy"
+                    className="max-h-20 max-w-full object-contain"
+                  />
+                </div>
+                <h3 className="text-slate-900 font-bold text-lg">{pm.name}</h3>
+              </GlassCard>
+            ))}
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4 pt-2"
+            className="mt-12 text-center"
           >
-            <AnimatedButton
-              href="https://wa.me/923177479286"
-              variant="primary"
-              icon={MessageCircle}
-            >
-              WhatsApp Now
-            </AnimatedButton>
-            <AnimatedButton
-              to="/register"
-              variant="secondary"
-            >
-              Register for Free Trial
-            </AnimatedButton>
+            <p className="text-slate-600 mb-6">Payment details will be provided after registration</p>
+            <Link to="/register" onClick={() => window.scrollTo(0, 0)}>
+              <AnimatedButton variant="primary" size="large" icon={CreditCard}>
+                Register & Get Payment Info
+              </AnimatedButton>
+            </Link>
           </motion.div>
+        </div>
+      </section>
+
+      {/* 4. FAQ SECTION */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <SectionHeader title="Frequently Asked Questions" subtitle="" />
+
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, idx) => (
+              <GlassCard key={idx} delay={idx * 0.1} hover={false} className="p-6">
+                <h4 className="text-slate-900 font-semibold mb-2">{faq.q}</h4>
+                <p className="text-slate-600 text-sm">{faq.a}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. CTA SECTION */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-slate-900 mb-6"
+            >
+              Have Questions About Fees?
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-slate-600 mb-8"
+            >
+              Contact us for any queries regarding payment or package selection
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <AnimatedButton href="https://wa.me/923177479286" variant="primary" size="large" icon={MessageCircle}>
+                WhatsApp: +92 317 7479 286
+              </AnimatedButton>
+            </motion.div>
+          </div>
         </div>
       </section>
 
