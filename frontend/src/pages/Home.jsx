@@ -263,7 +263,7 @@ export default function Home() {
             {founderStats.map((stat, idx) => {
               const Icon = stat.icon;
               return (
-                <div key={idx} className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                <div key={idx} className="backdrop-blur-xl bg-white border border-gray-200 rounded-xl p-4 text-center">
                   <div className="w-12 h-12 rounded-full bg-brand-green/20 flex items-center justify-center mx-auto mb-3">
                     <Icon className="w-6 h-6 text-brand-green" />
                   </div>
@@ -308,6 +308,8 @@ export default function Home() {
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585036156171-384164a8c675?w=1920&q=80')] bg-cover bg-center opacity-5" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-[#345B46]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -357,7 +359,7 @@ export default function Home() {
             ].map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div key={idx} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div key={idx} className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500">
                   <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4">
                     <Icon className="w-7 h-7 text-white" />
                   </div>
@@ -382,6 +384,10 @@ export default function Home() {
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
+        <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#345B46]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -399,7 +405,7 @@ export default function Home() {
             {impactNumbers.map((stat, idx) => (
               <div
                 key={idx}
-                className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 text-center"
+                className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 text-center"
               >
                 <div className="text-3xl md:text-4xl font-bold text-amber-400 mb-2">{stat.number}</div>
                 <div className="text-white/80 text-sm">{stat.label}</div>
@@ -425,7 +431,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((t, idx) => (
-              <div key={idx} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div key={idx} className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500">
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
@@ -485,6 +491,10 @@ export default function Home() {
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
+        <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#345B46]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10 text-center">
           <div className="text-white font-arabic text-3xl md:text-4xl mb-6">

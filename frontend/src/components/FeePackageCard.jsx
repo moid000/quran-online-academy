@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Check, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function FeePackageCard({ pkg }) {
   const { id, name, price_usd, price_eur, price_gbp, days_per_week, classes_per_month, duration_per_class, is_popular, features = [] } = pkg;
 
   return (
-    <div className={`relative bg-white border rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col ${
+    <div className={`relative bg-white border rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-500 flex flex-col ${
       is_popular ? 'border-2 border-amber-500 shadow-lg' : 'border-gray-200'
     }`}>
       {is_popular && (
@@ -41,7 +41,7 @@ export default function FeePackageCard({ pkg }) {
 
       <Link
         to={`/register?package=${id}`}
-        className={`w-full text-center py-3 rounded-xl font-semibold transition-colors ${
+        className={`w-full text-center py-3 rounded-xl font-semibold transition-all ${
           is_popular
             ? 'bg-amber-500 hover:bg-amber-600 text-white'
             : 'bg-brand-green hover:bg-[#2a4a38] text-white'

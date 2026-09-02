@@ -103,7 +103,7 @@ export default function About() {
 
             {/* Text card on right with Arabic verse & stats grid */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 sm:p-8 space-y-6">
+              <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6">
                 
                 {/* Arabic Verse Card */}
                 <div className="bg-amber-50/60 border-l-4 border-amber-500 p-5 rounded-r-xl space-y-2">
@@ -178,7 +178,7 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-8">
             
             {/* Card 1: Mission */}
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-8 flex flex-col justify-between">
+            <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
                   <Target className="w-7 h-7" />
@@ -205,7 +205,7 @@ export default function About() {
             </div>
 
             {/* Card 2: Vision */}
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-8 flex flex-col justify-between">
+            <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
                   <Eye className="w-7 h-7" />
@@ -257,7 +257,7 @@ export default function About() {
               return (
                 <div
                   key={idx}
-                  className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col items-start space-y-4"
+                  className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col items-start space-y-4"
                 >
                   <div className="w-12 h-12 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0">
                     <IconComp className="w-6 h-6" />

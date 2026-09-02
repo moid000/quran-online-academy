@@ -80,7 +80,7 @@ export default function Contact() {
               href="https://wa.me/923177479286"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow group block"
+              className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 text-center hover:shadow-md transition-shadow group block"
             >
               <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4 text-white group-hover:bg-[#2a4a38] transition-colors">
                 <MessageCircle className="w-7 h-7" />
@@ -93,7 +93,7 @@ export default function Contact() {
             {/* Email Card */}
             <a
               href="mailto:quranonlineacademia@gmail.com"
-              className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow group block"
+              className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 text-center hover:shadow-md transition-shadow group block"
             >
               <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4 text-white group-hover:bg-[#2a4a38] transition-colors">
                 <Mail className="w-7 h-7" />
@@ -104,7 +104,7 @@ export default function Contact() {
             </a>
 
             {/* Location Card */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 text-center hover:shadow-md transition-shadow">
               <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4 text-white">
                 <MapPin className="w-7 h-7" />
               </div>

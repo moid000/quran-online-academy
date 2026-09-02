@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Public Pages
@@ -40,6 +41,7 @@ function LayoutWrapper({ children }) {
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }

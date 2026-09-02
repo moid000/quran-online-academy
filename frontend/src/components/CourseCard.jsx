@@ -14,7 +14,7 @@ export default function CourseCard({ course }) {
 
   return (
     <Link to={coursePath} className="group block">
-      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+      <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
         {/* Image */}
         <div className="relative aspect-video overflow-hidden">
           <img
@@ -35,7 +35,7 @@ export default function CourseCard({ course }) {
 
         {/* Content */}
         <div className="p-5 flex-1 flex flex-col">
-          <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-green transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-brand-green transition-colors line-clamp-2">
             {title}
           </h3>
           <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4 flex-1">
@@ -45,8 +45,8 @@ export default function CourseCard({ course }) {
             <span className="flex items-center gap-1.5 text-sm text-slate-600">
               <Clock className="w-4 h-4 text-brand-green" /> {duration}
             </span>
-            <span className="flex items-center gap-1 text-sm font-medium text-brand-green group-hover:gap-2 transition-all">
-              Learn More <ArrowRight className="w-4 h-4" />
+            <span className="text-sm text-brand-green hover:underline">
+              Learn More
             </span>
           </div>
         </div>

@@ -8,7 +8,7 @@ export default function BlogCard({ post }) {
 
   return (
     <Link to={postPath} className="group block">
-      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+      <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
         {/* Image */}
         <div className="relative aspect-video overflow-hidden">
           <img
@@ -34,8 +34,8 @@ export default function BlogCard({ post }) {
           <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4 flex-1">
             {excerpt}
           </p>
-          <span className="flex items-center gap-1 text-sm font-medium text-brand-green group-hover:gap-2 transition-all">
-            Read More <ArrowRight className="w-4 h-4" />
+          <span className="text-sm text-brand-green hover:underline">
+            Read More
           </span>
         </div>
       </div>

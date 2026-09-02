@@ -55,7 +55,7 @@ export default function Navbar() {
               href="https://wa.me/923177479286"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-brand-green hover:bg-[#2a4a38] text-white px-4 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green text-white font-medium text-sm shadow-lg shadow-[#345B46]/30 hover:bg-[#2a4a38] transition-all"
             >
               <MessageCircle className="w-4 h-4" />
               <span>WhatsApp</span>
@@ -100,7 +100,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="w-full bg-brand-green hover:bg-[#2a4a38] text-white px-4 py-2.5 rounded-full font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green text-white font-medium text-sm shadow-lg shadow-[#345B46]/30 hover:bg-[#2a4a38] transition-all"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>WhatsApp (+92 317 7479 286)</span>
