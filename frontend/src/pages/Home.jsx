@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Phone, Mail, MessageCircle, CheckCircle2, Star, ChevronDown, ChevronUp,
   Award, Users, Globe, ShieldCheck, BookOpen, ArrowRight, ChevronLeft, ChevronRight,
-  GraduationCap, Target, Sparkles, Quote
+  GraduationCap, Target, Sparkles, Quote, Clock
 } from 'lucide-react';
 import CourseCard from '../components/CourseCard';
 import GlassCard from '../components/GlassCard';
@@ -57,12 +57,12 @@ const journeySteps = [
 ];
 
 const impactNumbers = [
-  { value: 5, suffix: '+', label: 'Years Experience' },
-  { value: 600, suffix: '+', label: 'Active Students' },
-  { value: 3000, suffix: '+', label: 'Students Taught Worldwide' },
-  { value: 15, suffix: '+', label: 'Expert Teachers' },
-  { value: 7, suffix: '', label: 'Specialized Courses' },
-  { value: 98, suffix: '%', label: 'Student Satisfaction' },
+  { icon: Clock, value: 5, suffix: '+', label: 'Years Experience' },
+  { icon: Users, value: 600, suffix: '+', label: 'Active Students' },
+  { icon: Globe, value: 3000, suffix: '+', label: 'Students Taught Worldwide' },
+  { icon: Star, value: 15, suffix: '+', label: 'Expert Teachers' },
+  { icon: BookOpen, value: 7, suffix: '', label: 'Specialized Courses' },
+  { icon: Award, value: 98, suffix: '%', label: 'Student Satisfaction' },
 ];
 
 const testimonials = [
@@ -445,6 +445,9 @@ export default function Home() {
                 className="text-center"
               >
                 <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-4">
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
                   <p className="text-3xl md:text-4xl font-bold text-white mb-1">
                     <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                   </p>
