@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Star, ArrowRight, MessageCircle, Building2, Wallet, Globe2, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Check, Star, ArrowRight, MessageCircle, Building2, Wallet, Globe2 } from 'lucide-react';
 import { getFeePackages } from '../api/feePackages';
 import { getPaymentMethods } from '../api/paymentMethods';
+import { motion } from 'framer-motion';
+import SectionHeader from '../components/SectionHeader';
+import GlassCard from '../components/GlassCard';
+import AnimatedButton from '../components/AnimatedButton';
 
 export default function Pricing() {
   const [packages, setPackages] = useState([]);
@@ -45,16 +49,17 @@ export default function Pricing() {
     <div className="pt-20 min-h-screen bg-white">
       
       {/* HERO / SECTION HEADER */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white text-center px-4">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <div className="text-brand-green font-arabic text-2xl">﷽</div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
-            Fee Packages
-          </h1>
-          <p className="text-lg text-slate-600">
-            Affordable pricing for every learning journey
-          </p>
-          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full" />
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white text-center px-4 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-4 relative z-10">
+          <SectionHeader
+            title="Fee Packages"
+            subtitle="Affordable pricing for every learning journey"
+          />
 
           {/* Currency Toggle */}
           <div className="pt-8 flex items-center justify-center gap-2">
@@ -76,22 +81,27 @@ export default function Pricing() {
         </div>
 
         {/* PACKAGE GRID */}
-        <div className="mt-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mt-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {loading ? (
             <div className="py-12 text-slate-500 font-medium">Loading fee packages...</div>
           ) : (
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-              {packages.map((pkg) => {
+              {packages.map((pkg, idx) => {
                 const price = getPackagePrice(pkg);
                 const symbol = currencySymbols[currency];
                 const isPopular = pkg.popular || pkg.is_popular;
 
                 return (
-                  <div
-                    key={pkg.id}
-                    className={`bg-white rounded-2xl p-8 transition-shadow relative flex flex-col justify-between ${
+                  <motion.div
+                    key={pkg.id || idx}
+                    initial={isPopular ? { opacity: 0, y: 50, scale: 1.05 } : { opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className={`bg-white/95 backdrop-blur-xl rounded-2xl p-8 transition-shadow relative flex flex-col justify-between ${
                       isPopular
-                        ? 'border-2 border-amber-500 shadow-lg hover:shadow-xl'
+                        ? 'border-2 border-amber-500 ring-2 ring-brand-green shadow-lg hover:shadow-xl'
                         : 'border border-gray-200 shadow-sm hover:shadow-md'
                     }`}
                   >
@@ -119,9 +129,17 @@ export default function Pricing() {
 
                       {/* Features List */}
                       <div className="mt-8 space-y-3 border-t border-gray-100 pt-6">
-                        {(pkg.features || []).map((feature, idx) => (
-                          <div key={idx} className="flex items-start gap-3 text-sm text-slate-700">
-                            <Check className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                        {(pkg.features || []).map((feature, featureIdx) => (
+                          <div key={featureIdx} className="flex items-start gap-3 text-sm text-slate-700">
+                            <motion.span
+                              initial={{ opacity: 0, scale: 0 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.3, delay: featureIdx * 0.05 }}
+                              className="inline-flex shrink-0 mt-0.5"
+                            >
+                              <Check className="w-5 h-5 text-brand-green" />
+                            </motion.span>
                             <span className="leading-tight text-left">{feature}</span>
                           </div>
                         ))}
@@ -129,16 +147,17 @@ export default function Pricing() {
                     </div>
 
                     {/* Enroll Button */}
-                    <div className="mt-8 pt-4">
-                      <Link
+                    <div className="mt-8 pt-4 flex justify-center w-full">
+                      <AnimatedButton
                         to={`/register?package=${pkg.id}`}
-                        className="w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        variant="primary"
+                        className="w-full flex items-center justify-center gap-2"
                       >
                         <span>Enroll Now</span>
                         <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      </AnimatedButton>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -147,26 +166,26 @@ export default function Pricing() {
       </section>
 
       {/* PAYMENT METHODS SECTION */}
-      <section className="py-24 bg-white px-4 sm:px-6 lg:px-8 border-t border-gray-100">
-        <div className="max-w-5xl mx-auto space-y-12">
-          <div className="text-center space-y-3">
-            <div className="text-brand-green font-arabic text-2xl">﷽</div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
-              Accepted Payment Methods
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Multiple secure payment channels available for local and international students
-            </p>
-            <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full" />
-          </div>
+      <section className="py-24 bg-white px-4 sm:px-6 lg:px-8 border-t border-gray-100 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-5xl mx-auto space-y-12 relative z-10">
+          <SectionHeader
+            title="Accepted Payment Methods"
+            subtitle="Multiple secure payment channels available for local and international students"
+          />
 
           <div className="grid md:grid-cols-3 gap-8">
-            {paymentMethods.map((pm) => {
+            {paymentMethods.map((pm, idx) => {
               const IconComp = paymentIcons[pm.type] || Building2;
               return (
-                <div
-                  key={pm.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col justify-between"
+                <GlassCard
+                  key={pm.id || idx}
+                  delay={idx * 0.1}
+                  className="p-6 text-center flex flex-col justify-between backdrop-blur-xl bg-white/95"
                 >
                   <div>
                     <div className="w-14 h-14 rounded-2xl bg-brand-green flex items-center justify-center mx-auto mb-4 text-white">
@@ -177,7 +196,7 @@ export default function Pricing() {
                       {pm.type}
                     </span>
 
-                    <div className="space-y-2 text-sm text-slate-700 text-left bg-gray-50 p-4 rounded-xl border border-gray-100 mb-4">
+                    <div className="space-y-2 text-sm text-slate-700 text-left bg-gray-50/80 p-4 rounded-xl border border-gray-100 mb-4">
                       {pm.accountName && (
                         <p><strong className="text-slate-900">Account Title:</strong> {pm.accountName}</p>
                       )}
@@ -199,7 +218,7 @@ export default function Pricing() {
                   <p className="text-xs text-slate-500 italic leading-relaxed">
                     {pm.instructions || 'Upload receipt screenshot during online student registration.'}
                   </p>
-                </div>
+                </GlassCard>
               );
             })}
           </div>
@@ -208,32 +227,55 @@ export default function Pricing() {
 
       {/* CONTACT CTA SECTION */}
       <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1600&q=80')` }}
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-10"
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1600&q=80')` }}
+          />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+        </div>
+
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">Have Questions About Our Pricing?</h2>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold"
+          >
+            Have Questions About Our Pricing?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed"
+          >
             Contact us on WhatsApp for custom schedules, family discounts, or any fee-related inquiries.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <a
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-wrap justify-center gap-4 pt-2"
+          >
+            <AnimatedButton
               href="https://wa.me/923177479286"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-medium px-6 py-3 flex items-center gap-2 shadow-lg transition-colors"
+              variant="primary"
+              icon={MessageCircle}
             >
-              <MessageCircle className="w-5 h-5" />
-              <span>Contact via WhatsApp</span>
-            </a>
-            <Link
+              WhatsApp Now
+            </AnimatedButton>
+            <AnimatedButton
               to="/register"
-              className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-3 flex items-center gap-2 shadow-lg transition-colors"
+              variant="secondary"
             >
-              <span>Register for Free Trial</span>
-            </Link>
-          </div>
+              Register for Free Trial
+            </AnimatedButton>
+          </motion.div>
         </div>
       </section>
 

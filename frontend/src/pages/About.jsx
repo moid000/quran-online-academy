@@ -4,13 +4,17 @@ import {
   BookOpen, Target, Eye, Users, ShieldCheck, Globe, Sparkles, 
   GraduationCap, CheckCircle2, MessageCircle, ArrowRight
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import SectionHeader from '../components/SectionHeader';
+import GlassCard from '../components/GlassCard';
+import AnimatedCounter from '../components/AnimatedCounter';
 
 export default function About() {
   const stats = [
-    { value: '5+', label: 'Years Experience' },
-    { value: '600+', label: 'Active Students' },
-    { value: '3000+', label: 'Students Taught' },
-    { value: 'Certified', label: 'Quran Educator' },
+    { value: '5+', numericValue: 5, suffix: '+', label: 'Years Experience' },
+    { value: '600+', numericValue: 600, suffix: '+', label: 'Active Students' },
+    { value: '3000+', numericValue: 3000, suffix: '+', label: 'Students Taught' },
+    { value: 'Certified', isText: true, label: 'Quran Educator' },
   ];
 
   const features = [
@@ -51,12 +55,22 @@ export default function About() {
       
       {/* 1. HERO SECTION */}
       <section className="bg-slate-900 text-white py-20 lg:py-28 relative overflow-hidden text-center">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
         <img
           src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
           alt="Quran Background"
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        >
           <div className="text-amber-400 font-arabic text-2xl md:text-3xl mb-3">
             بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
           </div>
@@ -66,43 +80,53 @@ export default function About() {
           <p className="text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Dedicated to spreading the light of Quran across the world since 2019
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* 2. MEET OUR FOUNDER SECTION */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
-            ﷽
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
-            Meet Our Founder
-          </h2>
-          <p className="text-lg text-slate-600 text-center mt-2">
-            Dedicated leadership in authentic Quranic education
-          </p>
-          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
+          <SectionHeader
+            title="Meet Our Founder"
+            subtitle="Dedicated leadership in authentic Quranic education"
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Photo on left in rounded frame */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative rounded-3xl overflow-hidden border-4 border-amber-400/30 shadow-2xl bg-slate-900 max-w-md w-full">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="lg:col-span-5 flex justify-center"
+            >
+              <div className="relative rounded-3xl overflow-hidden border-4 border-amber-400/30 shadow-2xl bg-slate-900 max-w-md w-full group">
                 <img
                   src="/images/founder.png"
                   alt="Ustaz Abdul Muhaymin"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-6 text-center">
                   <h3 className="text-2xl font-bold text-white font-serif">Ustaz Abdul Muhaymin</h3>
                   <p className="text-amber-400 text-sm font-medium mt-1">Founder & Lead Instructor • Bahawalpur, Pakistan</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Text card on right with Arabic verse & stats grid */}
-            <div className="lg:col-span-7 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="lg:col-span-7 space-y-6"
+            >
               <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6">
                 
                 {/* Arabic Verse Card */}
@@ -133,10 +157,20 @@ export default function About() {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
                   {stats.map((stat, idx) => (
-                    <div key={idx} className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100">
-                      <span className="text-2xl font-bold text-brand-green block">{stat.value}</span>
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      className="bg-gray-50 p-4 rounded-xl text-center border border-gray-100"
+                    >
+                      <span className="text-2xl font-bold text-brand-green block">
+                        {stat.isText ? stat.value : <AnimatedCounter value={stat.numericValue} suffix={stat.suffix} />}
+                      </span>
                       <span className="text-xs text-slate-600 mt-1 block">{stat.label}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -153,7 +187,7 @@ export default function About() {
                 </div>
 
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
@@ -161,24 +195,29 @@ export default function About() {
       </section>
 
       {/* 3. MISSION / VISION SECTION */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
-            ﷽
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
-            Our Mission & Vision
-          </h2>
-          <p className="text-lg text-slate-600 text-center mt-2">
-            Guiding principles behind Quran Online Academy
-          </p>
-          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
+          <SectionHeader
+            title="Our Mission & Vision"
+            subtitle="Guiding principles behind Quran Online Academy"
+          />
 
           <div className="grid md:grid-cols-2 gap-8">
             
             {/* Card 1: Mission */}
-            <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col justify-between">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between"
+            >
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
                   <Target className="w-7 h-7" />
@@ -202,10 +241,17 @@ export default function About() {
                   <span>Flexible schedules tailored to every timezone</span>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
             {/* Card 2: Vision */}
-            <div className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col justify-between">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between"
+            >
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center">
                   <Eye className="w-7 h-7" />
@@ -229,7 +275,7 @@ export default function About() {
                   <span>Highest standards of tutor qualification & care</span>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
           </div>
 
@@ -237,34 +283,33 @@ export default function About() {
       </section>
 
       {/* 4. WHY CHOOSE US SECTION */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-gray-50 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="text-brand-green font-arabic text-2xl text-center mb-2">
-            ﷽
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center">
-            Why Choose Us
-          </h2>
-          <p className="text-lg text-slate-600 text-center mt-2">
-            What sets Quran Online Academy apart as your trusted learning partner
-          </p>
-          <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full mb-12"></div>
+          <SectionHeader
+            title="Why Choose Us"
+            subtitle="What sets Quran Online Academy apart as your trusted learning partner"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feat, idx) => {
               const IconComp = feat.icon;
               return (
-                <div
+                <GlassCard
                   key={idx}
-                  className="backdrop-blur-xl bg-white border border-gray-200 rounded-3xl p-6 hover:shadow-lg transition-all duration-500 flex flex-col items-start space-y-4"
+                  delay={idx * 0.1}
+                  className="p-6 flex flex-col items-start space-y-4"
                 >
                   <div className="w-12 h-12 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0">
                     <IconComp className="w-6 h-6" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900">{feat.title}</h3>
                   <p className="text-slate-700 leading-relaxed text-sm">{feat.description}</p>
-                </div>
+                </GlassCard>
               );
             })}
           </div>
@@ -274,6 +319,10 @@ export default function About() {
 
       {/* 5. STATS SECTION */}
       <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
         <img
           src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
           alt="Quran Background"
@@ -281,34 +330,72 @@ export default function About() {
         />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">5+</span>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0 }}
+            >
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">
+                <AnimatedCounter value={5} suffix="+" />
+              </span>
               <span className="text-slate-300 font-medium text-sm md:text-base">Years Experience</span>
-            </div>
-            <div>
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">600+</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">
+                <AnimatedCounter value={600} suffix="+" />
+              </span>
               <span className="text-slate-300 font-medium text-sm md:text-base">Active Students</span>
-            </div>
-            <div>
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">3000+</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">
+                <AnimatedCounter value={3000} suffix="+" />
+              </span>
               <span className="text-slate-300 font-medium text-sm md:text-base">Students Taught</span>
-            </div>
-            <div>
-              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">100%</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <span className="text-4xl md:text-5xl font-extrabold text-amber-400 block mb-2">
+                <AnimatedCounter value={100} suffix="%" />
+              </span>
               <span className="text-slate-300 font-medium text-sm md:text-base">Satisfaction Rate</span>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* 6. CTA SECTION */}
       <section className="py-20 bg-slate-950 text-white relative overflow-hidden text-center">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
         <img
           src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
           alt="Quran Background"
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
         />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6"
+        >
           <div className="text-amber-400 font-arabic text-2xl mb-2">
             ﷽
           </div>
@@ -336,7 +423,7 @@ export default function About() {
               <span>Contact via WhatsApp</span>
             </a>
           </div>
-        </div>
+        </motion.div>
       </section>
 
     </div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { getCourses } from '../api/courses';
 import CourseCard from '../components/CourseCard';
+import SectionHeader from '../components/SectionHeader';
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
@@ -29,26 +31,37 @@ export default function Courses() {
       <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
-        <div className="container mx-auto px-4 relative z-10 text-center mt-20">
-          <div className="text-amber-400 font-arabic text-2xl mb-4">عَلِّمُوا الْقُرْآنَ</div>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-brand-green font-arabic text-3xl md:text-4xl mb-4 text-center mt-20"
+          >
+            عَلِّمُوا الْقُرْآنَ
+          </motion.p>
+          <p className="text-slate-300 text-sm md:text-base font-medium mb-4">Teach the Quran</p>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Our Courses</h1>
         </div>
       </section>
 
       {/* COURSES SECTION */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="text-brand-green font-arabic text-2xl mb-2">
-              ﷽
-            </div>
-            <p className="text-lg text-slate-600 mt-2">
-              Comprehensive Islamic education tailored for every learner
-            </p>
-            <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full"></div>
-          </div>
+          <SectionHeader
+            title="Our Courses"
+            subtitle="Comprehensive Islamic education tailored for every learner"
+          />
 
           {/* Level Filter Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
@@ -81,8 +94,16 @@ export default function Courses() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {filteredCourses.map((course) => (
-                <CourseCard key={course.id || course.slug} course={course} />
+              {filteredCourses.map((course, idx) => (
+                <motion.div
+                  key={course.id || course.slug || idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                >
+                  <CourseCard course={course} />
+                </motion.div>
               ))}
             </div>
           )}
@@ -107,7 +128,13 @@ export default function Courses() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col sm:flex-row items-center gap-4 shrink-0"
+              >
                 <a
                   href="https://wa.me/923177479286"
                   target="_blank"
@@ -124,7 +151,7 @@ export default function Courses() {
                   <span>Register Now</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </div>
 

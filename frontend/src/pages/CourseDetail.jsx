@@ -6,6 +6,10 @@ import {
 } from 'lucide-react';
 import { getCourseById, getCourses } from '../api/courses';
 import CourseCard from '../components/CourseCard';
+import { motion } from 'framer-motion';
+import SectionHeader from '../components/SectionHeader';
+import GlassCard from '../components/GlassCard';
+import AnimatedButton from '../components/AnimatedButton';
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -73,18 +77,33 @@ export default function CourseDetail() {
     'Regular Progress Reports'
   ];
 
+  const courseDetailsList = [
+    { icon: Clock, label: 'Duration', value: duration || 'Flexible' },
+    { icon: BookOpen, label: 'Frequency', value: classesPerWeek || '3 Classes/Wk' },
+    { icon: Calendar, label: 'Class Length', value: classDuration || '30 mins' },
+    { icon: UserCheck, label: 'Instructor', value: instructor || 'Ustaz Abdul Muhaymin' }
+  ];
+
   return (
     <div className="pt-20 min-h-screen bg-white">
       
-      {/* COURSE HEADER */}
+      {/* COURSE HEADER / HERO SECTION */}
       <section className="bg-slate-900 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+        </div>
         <img
           src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
           alt="Quran Background"
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-4">
-          
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-4"
+        >
           <Link
             to="/courses"
             className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-medium text-sm transition-colors mb-2"
@@ -111,100 +130,110 @@ export default function CourseDetail() {
           <p className="text-lg text-slate-300 max-w-3xl leading-relaxed">
             {description}
           </p>
-
-        </div>
+        </motion.div>
       </section>
 
       {/* TWO COLUMNS CONTENT */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             
             {/* LEFT COLUMN: COURSE DETAILS & CONTENT */}
             <div className="lg:col-span-2 space-y-10">
               
               {/* Image banner */}
-              <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-200">
-                <img
-                  src={image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80'}
-                  alt={title}
-                  className="w-full h-80 object-cover"
-                />
-              </div>
-
-              {/* Course Overview */}
-              <div className="space-y-4">
-                <div className="text-brand-green font-arabic text-xl">
-                  ﷽
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-200">
+                  <img
+                    src={image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80'}
+                    alt={title}
+                    className="w-full h-80 object-cover"
+                  />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">Course Overview</h2>
-                <p className="text-slate-700 leading-relaxed text-base">
-                  {description}
-                </p>
-                <p className="text-slate-700 leading-relaxed text-base">
-                  Our 1-on-1 private virtual classes ensure you or your child receive undivided attention from qualified Quran scholars. Lessons are paced according to your learning speed, combining traditional tajweed methodology with modern online teaching tools.
-                </p>
-              </div>
+              </motion.div>
 
-              {/* Curriculum / What You'll Learn */}
-              {curriculum.length > 0 && (
+              {/* Course Overview Section */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-10"
+              >
+                <div className="space-y-4">
+                  <div className="text-brand-green font-arabic text-xl">
+                    ﷽
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900">Course Overview</h2>
+                  <p className="text-slate-700 leading-relaxed text-base">
+                    {description}
+                  </p>
+                  <p className="text-slate-700 leading-relaxed text-base">
+                    Our 1-on-1 private virtual classes ensure you or your child receive undivided attention from qualified Quran scholars. Lessons are paced according to your learning speed, combining traditional tajweed methodology with modern online teaching tools.
+                  </p>
+                </div>
+
+                {/* Curriculum / What You'll Learn */}
+                {curriculum.length > 0 && (
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <div className="text-brand-green font-arabic text-xl">
+                      ﷽
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900">What You Will Learn</h2>
+                    <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                      {curriculum.map((item, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: idx * 0.1 }}
+                          className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3"
+                        >
+                          <CheckCircle2 className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                          <span className="text-slate-700 font-medium text-sm">{item}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Course Details & Requirements Grid */}
                 <div className="space-y-4 pt-6 border-t border-gray-100">
                   <div className="text-brand-green font-arabic text-xl">
                     ﷽
                   </div>
-                  <h2 className="text-2xl font-bold text-slate-900">What You Will Learn</h2>
-                  <div className="grid sm:grid-cols-2 gap-4 pt-2">
-                    {curriculum.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3"
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
-                        <span className="text-slate-700 font-medium text-sm">{item}</span>
-                      </div>
-                    ))}
+                  <h2 className="text-2xl font-bold text-slate-900">Course Details & Requirements</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                    {courseDetailsList.map((detail, idx) => {
+                      const IconComp = detail.icon;
+                      return (
+                        <GlassCard key={idx} delay={idx * 0.1} className="p-4 text-center">
+                          <IconComp className="w-6 h-6 text-brand-green mx-auto mb-2" />
+                          <span className="text-xs text-slate-500 block">{detail.label}</span>
+                          <span className="text-sm font-bold text-slate-900">{detail.value}</span>
+                        </GlassCard>
+                      );
+                    })}
                   </div>
                 </div>
-              )}
 
-              {/* Course Requirements & Details Grid */}
-              <div className="space-y-4 pt-6 border-t border-gray-100">
-                <div className="text-brand-green font-arabic text-xl">
-                  ﷽
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">Course Details & Requirements</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                    <Clock className="w-6 h-6 text-brand-green mx-auto mb-2" />
-                    <span className="text-xs text-slate-500 block">Duration</span>
-                    <span className="text-sm font-bold text-slate-900">{duration || 'Flexible'}</span>
-                  </div>
-
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                    <BookOpen className="w-6 h-6 text-brand-green mx-auto mb-2" />
-                    <span className="text-xs text-slate-500 block">Frequency</span>
-                    <span className="text-sm font-bold text-slate-900">{classesPerWeek || '3 Classes/Wk'}</span>
-                  </div>
-
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                    <Calendar className="w-6 h-6 text-brand-green mx-auto mb-2" />
-                    <span className="text-xs text-slate-500 block">Class Length</span>
-                    <span className="text-sm font-bold text-slate-900">{classDuration || '30 mins'}</span>
-                  </div>
-
-                  <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                    <UserCheck className="w-6 h-6 text-brand-green mx-auto mb-2" />
-                    <span className="text-xs text-slate-500 block">Instructor</span>
-                    <span className="text-sm font-bold text-slate-900">{instructor || 'Ustaz Abdul Muhaymin'}</span>
-                  </div>
-                </div>
-              </div>
+              </motion.div>
 
             </div>
 
             {/* RIGHT COLUMN: ENROLLMENT CARD */}
             <div className="lg:col-span-1">
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-28 space-y-6">
+              <GlassCard className="p-6 sticky top-28 space-y-6" hover={false}>
                 
                 <div className="space-y-2 border-b border-gray-100 pb-4">
                   <span className="text-xs font-semibold uppercase tracking-wider text-brand-green bg-brand-green/10 px-3 py-1 rounded-full">
@@ -224,39 +253,46 @@ export default function CourseDetail() {
                     Package Includes:
                   </h4>
                   {featuresList.map((feat, idx) => (
-                    <div key={idx} className="flex items-center gap-2.5 text-sm text-slate-700">
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: idx * 0.05 }}
+                      className="flex items-center gap-2.5 text-sm text-slate-700"
+                    >
                       <Check className="w-4 h-4 text-brand-green shrink-0" />
                       <span>{feat}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
                 {/* Enroll Buttons */}
                 <div className="pt-4 space-y-3">
-                  <a
+                  <AnimatedButton
                     href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-4 w-full inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center"
+                    variant="primary"
+                    icon={MessageCircle}
+                    className="w-full text-center"
                   >
-                    <MessageCircle className="w-5 h-5" />
-                    <span>Enroll via WhatsApp</span>
-                  </a>
+                    Enroll via WhatsApp
+                  </AnimatedButton>
 
-                  <Link
+                  <AnimatedButton
                     to={`/register?course=${course.id}`}
-                    className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-bold px-8 py-4 w-full inline-flex items-center justify-center gap-2 transition-all text-center"
+                    variant="secondary"
+                    icon={ArrowRight}
+                    className="w-full text-center"
                   >
-                    <span>Register Student</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
+                    Register Student
+                  </AnimatedButton>
                 </div>
 
                 <p className="text-center text-xs text-slate-500 italic">
                   No advance payment or credit card required for 3-day trial.
                 </p>
 
-              </div>
+              </GlassCard>
             </div>
 
           </div>
@@ -265,25 +301,29 @@ export default function CourseDetail() {
 
       {/* RELATED COURSES */}
       {relatedCourses.length > 0 && (
-        <section className="py-16 bg-gray-50 border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-16 bg-gray-50 border-t border-gray-100 relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#345B46]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+          </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="text-brand-green font-arabic text-2xl mb-2">
-                ﷽
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
-                Related Courses
-              </h2>
-              <p className="text-lg text-slate-600 mt-2">
-                Explore other specialized programs offered by our academy
-              </p>
-              <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full"></div>
-            </div>
+            <SectionHeader
+              title="Related Courses"
+              subtitle="Explore other specialized programs offered by our academy"
+            />
 
             <div className="grid md:grid-cols-3 gap-6">
-              {relatedCourses.map((relCourse) => (
-                <CourseCard key={relCourse.id || relCourse.slug} course={relCourse} />
+              {relatedCourses.map((relCourse, idx) => (
+                <motion.div
+                  key={relCourse.id || relCourse.slug || idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                >
+                  <CourseCard course={relCourse} />
+                </motion.div>
               ))}
             </div>
 
