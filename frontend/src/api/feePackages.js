@@ -88,14 +88,14 @@ const initialPackages = [
 ];
 
 const getStoredPackages = () => {
-  const data = localStorage.getItem('app_fee_packages');
+  const data = localStorage.getItem('app_fee_packages_v2');
   if (data) return JSON.parse(data);
-  localStorage.setItem('app_fee_packages', JSON.stringify(initialPackages));
+  localStorage.setItem('app_fee_packages_v2', JSON.stringify(initialPackages));
   return initialPackages;
 };
 
 const saveStoredPackages = (pkgs) => {
-  localStorage.setItem('app_fee_packages', JSON.stringify(pkgs));
+  localStorage.setItem('app_fee_packages_v2', JSON.stringify(pkgs));
 };
 
 export const getFeePackages = async () => {

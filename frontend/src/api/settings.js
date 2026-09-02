@@ -15,14 +15,14 @@ const initialSettings = {
 };
 
 const getStoredSettings = () => {
-  const data = localStorage.getItem('app_settings');
+  const data = localStorage.getItem('app_settings_v2');
   if (data) return JSON.parse(data);
-  localStorage.setItem('app_settings', JSON.stringify(initialSettings));
+  localStorage.setItem('app_settings_v2', JSON.stringify(initialSettings));
   return initialSettings;
 };
 
 const saveStoredSettings = (settings) => {
-  localStorage.setItem('app_settings', JSON.stringify(settings));
+  localStorage.setItem('app_settings_v2', JSON.stringify(settings));
 };
 
 export const getSettings = async () => {

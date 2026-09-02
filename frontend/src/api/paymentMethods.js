@@ -31,14 +31,14 @@ const initialMethods = [
 ];
 
 const getStoredMethods = () => {
-  const data = localStorage.getItem('app_payment_methods');
+  const data = localStorage.getItem('app_payment_methods_v2');
   if (data) return JSON.parse(data);
-  localStorage.setItem('app_payment_methods', JSON.stringify(initialMethods));
+  localStorage.setItem('app_payment_methods_v2', JSON.stringify(initialMethods));
   return initialMethods;
 };
 
 const saveStoredMethods = (methods) => {
-  localStorage.setItem('app_payment_methods', JSON.stringify(methods));
+  localStorage.setItem('app_payment_methods_v2', JSON.stringify(methods));
 };
 
 export const getPaymentMethods = async () => {

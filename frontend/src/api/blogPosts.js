@@ -67,14 +67,14 @@ Learning Tajweed is not just recommended - it's an obligation for every Muslim w
 ];
 
 const getStoredPosts = () => {
-  const data = localStorage.getItem('app_blog_posts');
+  const data = localStorage.getItem('app_blog_posts_v2');
   if (data) return JSON.parse(data);
-  localStorage.setItem('app_blog_posts', JSON.stringify(initialPosts));
+  localStorage.setItem('app_blog_posts_v2', JSON.stringify(initialPosts));
   return initialPosts;
 };
 
 const saveStoredPosts = (posts) => {
-  localStorage.setItem('app_blog_posts', JSON.stringify(posts));
+  localStorage.setItem('app_blog_posts_v2', JSON.stringify(posts));
 };
 
 export const getBlogPosts = async () => {

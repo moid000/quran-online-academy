@@ -100,14 +100,14 @@ const initialCourses = [
 ];
 
 const getStoredCourses = () => {
-  const data = localStorage.getItem('app_courses');
+  const data = localStorage.getItem('app_courses_v2');
   if (data) return JSON.parse(data);
-  localStorage.setItem('app_courses', JSON.stringify(initialCourses));
+  localStorage.setItem('app_courses_v2', JSON.stringify(initialCourses));
   return initialCourses;
 };
 
 const saveStoredCourses = (courses) => {
-  localStorage.setItem('app_courses', JSON.stringify(courses));
+  localStorage.setItem('app_courses_v2', JSON.stringify(courses));
 };
 
 export const getCourses = async () => {
