@@ -181,13 +181,13 @@ export default function Settings() {
   const getTypeIcon = (type) => {
     switch (type) {
       case 'number':
-        return <Hash className="w-3.5 h-3.5 text-blue-600" />;
+        return <Hash className="w-3.5 h-3.5 text-blue-400" />;
       case 'boolean':
-        return <ToggleLeft className="w-3.5 h-3.5 text-emerald-600" />;
+        return <ToggleLeft className="w-3.5 h-3.5 text-emerald-400" />;
       case 'json':
-        return <Code className="w-3.5 h-3.5 text-purple-600" />;
+        return <Code className="w-3.5 h-3.5 text-purple-400" />;
       default:
-        return <Type className="w-3.5 h-3.5 text-amber-600" />;
+        return <Type className="w-3.5 h-3.5 text-amber-400" />;
     }
   };
 
@@ -200,14 +200,14 @@ export default function Settings() {
           <div
             className={`px-4 py-3 rounded-xl border text-sm font-medium flex items-center justify-between shadow-sm animate-fadeIn ${
               toast.type === 'error'
-                ? 'bg-red-50 border-red-200 text-red-800'
-                : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
             }`}
           >
             <span>{toast.message}</span>
             <button
               onClick={() => setToast({ message: '', type: '' })}
-              className="text-slate-400 hover:text-slate-600"
+              className="text-slate-400 hover:text-slate-200"
             >
               <X className="w-4 h-4" />
             </button>
@@ -215,12 +215,12 @@ export default function Settings() {
         )}
 
         {/* Header Control Bar */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#1c2536] p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h3 className="font-bold text-slate-900 font-serif text-lg">
+            <h3 className="font-bold text-white font-serif text-lg">
               Academy General Configuration
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Manage global contact email, WhatsApp support number, site titles, and custom key-value pairs
             </p>
           </div>
@@ -228,7 +228,7 @@ export default function Settings() {
           <div className="flex items-center gap-3">
             <button
               onClick={fetchSettingsData}
-              className="p-2.5 text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              className="p-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-xl transition-colors"
               title="Refresh settings"
             >
               <RefreshCw className="w-4 h-4" />
@@ -240,7 +240,7 @@ export default function Settings() {
                 setNewSetting({ key: '', value: '', type: 'text' });
                 setShowAddModal(true);
               }}
-              className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs rounded-xl transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs rounded-xl transition-colors flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" /> Add Setting
             </button>
@@ -259,19 +259,19 @@ export default function Settings() {
         {loading ? (
           <Loader message="Loading site settings..." />
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-[#1c2536] rounded-2xl border border-slate-800 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               {settingsList.length === 0 ? (
                 <div className="p-12 text-center text-slate-500">
-                  <SettingsIcon className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                  <p className="font-semibold text-slate-700">No settings defined</p>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <SettingsIcon className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="font-semibold text-white">No settings defined</p>
+                  <p className="text-xs text-slate-500 mt-1">
                     Click "Add Setting" above to create custom site parameters.
                   </p>
                 </div>
               ) : (
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <thead className="bg-[#1a2436] border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     <tr>
                       <th className="px-5 py-3.5">Setting Key</th>
                       <th className="px-5 py-3.5">Data Type</th>
@@ -279,17 +279,17 @@ export default function Settings() {
                       <th className="px-5 py-3.5 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-slate-800">
                     {settingsList.map((item) => {
                       return (
-                        <tr key={item.key} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={item.key} className="hover:bg-white/5 transition-colors">
                           <td className="px-5 py-4 whitespace-nowrap">
-                            <span className="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                            <span className="font-mono text-xs font-bold text-slate-200 bg-[#1a2436] px-2.5 py-1 rounded-lg border border-slate-800">
                               {item.key}
                             </span>
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 capitalize">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/5 text-slate-300 border border-slate-800 capitalize">
                               {getTypeIcon(item.type)} {item.type || 'text'}
                             </span>
                           </td>
@@ -298,7 +298,7 @@ export default function Settings() {
                               <select
                                 value={String(item.value)}
                                 onChange={(e) => handleInlineChange(item.key, e.target.value)}
-                                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                                className="px-3 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                               >
                                 <option value="true">true</option>
                                 <option value="false">false</option>
@@ -308,7 +308,7 @@ export default function Settings() {
                                 type={item.type === 'number' ? 'number' : 'text'}
                                 value={item.value}
                                 onChange={(e) => handleInlineChange(item.key, e.target.value)}
-                                className="w-full max-w-lg px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                                className="w-full max-w-lg px-3 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                               />
                             )}
                           </td>
@@ -316,14 +316,14 @@ export default function Settings() {
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => handleOpenEdit(item)}
-                                className="p-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                                className="p-1.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg transition-colors"
                                 title="Configure setting"
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => setDeleteId(item.key)}
-                                className="p-1.5 text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors border border-red-100"
+                                className="p-1.5 text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors border border-red-500/20"
                                 title="Delete setting"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -342,24 +342,24 @@ export default function Settings() {
 
         {/* Add / Edit Setting Modal */}
         {showAddModal && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 relative animate-fadeIn">
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-[#1c2536] rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-800 relative animate-fadeIn">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-200 rounded-lg hover:bg-white/5 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 font-bold flex items-center justify-center text-lg">
+              <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center text-lg">
                   <Sliders className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold font-serif text-slate-900">
+                  <h3 className="text-lg font-bold font-serif text-white">
                     {editingItem ? 'Edit Setting Parameter' : 'Add New Setting Key'}
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-400">
                     Define key name, data type, and configuration value
                   </p>
                 </div>
@@ -367,7 +367,7 @@ export default function Settings() {
 
               <form onSubmit={handleAddSetting} className="space-y-4 text-sm">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Setting Key Name *
                   </label>
                   <input
@@ -377,21 +377,21 @@ export default function Settings() {
                     placeholder="e.g. whatsappNumber or supportEmail"
                     value={newSetting.key}
                     onChange={(e) => setNewSetting({ ...newSetting, key: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 disabled:opacity-60"
+                    className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 disabled:opacity-60"
                   />
-                  <p className="text-[11px] text-slate-400 mt-1">
+                  <p className="text-[11px] text-slate-500 mt-1">
                     Use camelCase or snake_case without spaces.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Data Type *
                   </label>
                   <select
                     value={newSetting.type}
                     onChange={(e) => setNewSetting({ ...newSetting, type: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                    className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                   >
                     <option value="text">Text (String)</option>
                     <option value="number">Number</option>
@@ -401,14 +401,14 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Setting Value *
                   </label>
                   {newSetting.type === 'boolean' ? (
                     <select
                       value={newSetting.value}
                       onChange={(e) => setNewSetting({ ...newSetting, value: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     >
                       <option value="true">true</option>
                       <option value="false">false</option>
@@ -420,7 +420,7 @@ export default function Settings() {
                       placeholder='{"key": "value"}'
                       value={newSetting.value}
                       onChange={(e) => setNewSetting({ ...newSetting, value: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
                   ) : (
                     <input
@@ -429,16 +429,16 @@ export default function Settings() {
                       placeholder="Setting value..."
                       value={newSetting.value}
                       onChange={(e) => setNewSetting({ ...newSetting, value: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
                   )}
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 hover:bg-white/10 transition-colors"
                   >
                     Cancel
                   </button>
@@ -456,27 +456,27 @@ export default function Settings() {
 
         {/* Delete Confirmation Modal */}
         {deleteKey && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 animate-fadeIn text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-[#1c2536] rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-800 animate-fadeIn text-center">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 font-serif">
+              <h3 className="text-lg font-bold text-white font-serif">
                 Delete Setting Key?
               </h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                Are you sure you want to remove <span className="font-mono font-bold text-slate-800">{deleteKey}</span> from site settings?
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                Are you sure you want to remove <span className="font-mono font-bold text-slate-200">{deleteKey}</span> from site settings?
               </p>
               <div className="flex items-center justify-center gap-3 mt-6">
                 <button
                   onClick={() => setDeleteId(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 hover:bg-white/10 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-red-500 transition-colors shadow-sm"
                 >
                   Confirm Delete
                 </button>

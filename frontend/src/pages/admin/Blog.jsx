@@ -214,14 +214,14 @@ export default function Blog() {
           <div
             className={`px-4 py-3 rounded-xl border text-sm font-medium flex items-center justify-between shadow-sm animate-fadeIn ${
               toast.type === 'error'
-                ? 'bg-red-50 border-red-200 text-red-800'
-                : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
             }`}
           >
             <span>{toast.message}</span>
             <button
               onClick={() => setToast({ message: '', type: '' })}
-              className="text-slate-400 hover:text-slate-600"
+              className="text-slate-400 hover:text-slate-200"
             >
               <X className="w-4 h-4" />
             </button>
@@ -229,15 +229,15 @@ export default function Blog() {
         )}
 
         {/* Header Controls */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#1c2536] p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
               placeholder="Search articles by title, category, or author..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
             />
             {searchTerm && (
               <button
@@ -252,7 +252,7 @@ export default function Blog() {
           <div className="flex items-center gap-3">
             <button
               onClick={fetchBlogPostsList}
-              className="p-2.5 text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              className="p-2.5 bg-white/5 hover:bg-white/10 text-slate-300 rounded-xl transition-colors"
               title="Refresh blog list"
             >
               <RefreshCw className="w-4 h-4" />
@@ -271,19 +271,19 @@ export default function Blog() {
         {loading ? (
           <Loader message="Loading blog articles..." />
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-[#1c2536] rounded-2xl border border-slate-800 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               {filteredPosts.length === 0 ? (
                 <div className="p-12 text-center text-slate-500">
-                  <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                  <p className="font-semibold text-slate-700">No blog posts found</p>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <FileText className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                  <p className="font-semibold text-white">No blog posts found</p>
+                  <p className="text-xs text-slate-500 mt-1">
                     Click "Write New Post" to publish an article on the blog.
                   </p>
                 </div>
               ) : (
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <thead className="bg-[#1a2436] border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     <tr>
                       <th className="px-5 py-3.5">Post Details</th>
                       <th className="px-5 py-3.5">Category</th>
@@ -293,24 +293,24 @@ export default function Blog() {
                       <th className="px-5 py-3.5 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-slate-800">
                     {filteredPosts.map((post) => {
                       const isPublished = post.published ?? post.is_published ?? true;
                       const imgSrc = post.image || post.image_url;
 
                       return (
-                        <tr key={post.id} className="hover:bg-slate-50/80 transition-colors">
+                        <tr key={post.id} className="hover:bg-white/5 transition-colors">
                           <td className="px-5 py-4 whitespace-nowrap max-w-sm">
                             <div className="flex items-center gap-3">
                               {imgSrc && (
                                 <img
                                   src={imgSrc}
                                   alt=""
-                                  className="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0"
+                                  className="w-10 h-10 rounded-lg object-cover border border-slate-700 shrink-0"
                                 />
                               )}
                               <div className="truncate">
-                                <div className="font-bold text-slate-900 truncate">
+                                <div className="font-bold text-white truncate">
                                   {post.title}
                                 </div>
                                 <div className="text-xs text-slate-400 truncate">
@@ -320,25 +320,25 @@ export default function Blog() {
                             </div>
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap">
-                            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-700 text-slate-300">
                               {post.category || 'General'}
                             </span>
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-xs font-medium text-slate-700">
+                          <td className="px-5 py-4 whitespace-nowrap text-xs font-medium text-slate-300">
                             {post.author || 'Admin'}
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap">
                             {isPublished ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> Published
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> Published
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
                                 Draft
                               </span>
                             )}
                           </td>
-                          <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
+                          <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-400">
                             {post.date || 'N/A'}
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap text-right">
@@ -347,21 +347,21 @@ export default function Blog() {
                                 href={`/blogs/${post.slug || post.id}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="p-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                                className="p-1.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg transition-colors"
                                 title="Preview article"
                               >
                                 <ExternalLink className="w-4 h-4" />
                               </a>
                               <button
                                 onClick={() => openEditModal(post)}
-                                className="p-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                                className="p-1.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg transition-colors"
                                 title="Edit article"
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => setDeleteId(post.id)}
-                                className="p-1.5 text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors border border-red-100"
+                                className="p-1.5 text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors border border-red-500/20"
                                 title="Delete article"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -380,24 +380,24 @@ export default function Blog() {
 
         {/* Add / Edit Blog Post Modal */}
         {showModal && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl border border-slate-200 relative animate-fadeIn my-8 max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-[#1c2536] rounded-2xl max-w-2xl w-full p-6 shadow-xl border border-slate-800 relative animate-fadeIn my-8 max-h-[90vh] overflow-y-auto">
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-200 rounded-lg hover:bg-white/5 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 font-bold flex items-center justify-center text-lg">
+              <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center text-lg">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold font-serif text-slate-900">
+                  <h3 className="text-xl font-bold font-serif text-white">
                     {editingPost ? 'Edit Blog Article' : 'Create Blog Article'}
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-400">
                     Draft, format, and publish articles for academy readers
                   </p>
                 </div>
@@ -405,7 +405,7 @@ export default function Blog() {
 
               <form onSubmit={handleSubmit} className="space-y-4 text-sm">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Post Title *
                   </label>
                   <input
@@ -414,13 +414,13 @@ export default function Blog() {
                     placeholder="e.g. 5 Essential Rules of Tajweed Every Beginner Must Know"
                     value={formData.title}
                     onChange={handleTitleChange}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                    className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">
+                    <label className="block font-semibold text-slate-300 mb-1">
                       URL Slug *
                     </label>
                     <input
@@ -429,18 +429,18 @@ export default function Blog() {
                       placeholder="e.g. 5-essential-rules-of-tajweed"
                       value={formData.slug}
                       onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">
+                    <label className="block font-semibold text-slate-300 mb-1">
                       Category *
                     </label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     >
                       {categories.map((cat) => (
                         <option key={cat} value={cat}>
@@ -453,33 +453,33 @@ export default function Blog() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">
+                    <label className="block font-semibold text-slate-300 mb-1">
                       Author Name
                     </label>
                     <input
                       type="text"
                       value={formData.author}
                       onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-700 mb-1">
+                    <label className="block font-semibold text-slate-300 mb-1">
                       Publish Date
                     </label>
                     <input
                       type="date"
                       value={formData.date}
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
                   </div>
                 </div>
 
                 {/* Featured Image URL or Upload */}
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Featured Image URL or Upload
                   </label>
                   <div className="flex gap-2">
@@ -488,9 +488,9 @@ export default function Blog() {
                       placeholder="https://images.unsplash.com/..."
                       value={formData.image}
                       onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                      className="flex-1 px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                     />
-                    <label className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-semibold text-xs rounded-xl cursor-pointer transition-colors flex items-center gap-1.5 shrink-0">
+                    <label className="px-3.5 py-2 bg-white/5 hover:bg-white/10 border border-slate-700 text-slate-300 font-semibold text-xs rounded-xl cursor-pointer transition-colors flex items-center gap-1.5 shrink-0">
                       <Upload className="w-3.5 h-3.5" />
                       <span>{uploadingImage ? 'Uploading...' : 'Upload File'}</span>
                       <input
@@ -503,13 +503,13 @@ export default function Blog() {
                     </label>
                   </div>
                   {formData.image && (
-                    <div className="mt-2 flex items-center gap-3 bg-slate-50 p-2 rounded-xl border border-slate-200">
+                    <div className="mt-2 flex items-center gap-3 bg-[#1a2436] p-2 rounded-xl border border-slate-800">
                       <img
                         src={formData.image}
                         alt="Preview"
-                        className="w-12 h-12 rounded-lg object-cover border"
+                        className="w-12 h-12 rounded-lg object-cover border border-slate-700"
                       />
-                      <span className="text-xs text-slate-500 truncate">
+                      <span className="text-xs text-slate-400 truncate">
                         Image Preview Attached
                       </span>
                     </div>
@@ -517,7 +517,7 @@ export default function Blog() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Excerpt (Short Summary for card preview) *
                   </label>
                   <textarea
@@ -526,12 +526,12 @@ export default function Blog() {
                     placeholder="Brief summary of the article..."
                     value={formData.excerpt}
                     onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 resize-none"
+                    className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
+                  <label className="block font-semibold text-slate-300 mb-1">
                     Article Full Content (Markdown supported) *
                   </label>
                   <textarea
@@ -540,12 +540,12 @@ export default function Blog() {
                     placeholder="Write your article content here..."
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                    className="w-full px-3.5 py-2 bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
                   />
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
+                <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-300">
                     <input
                       type="checkbox"
                       checked={formData.published}
@@ -556,11 +556,11 @@ export default function Blog() {
                   </label>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 hover:bg-white/10 transition-colors"
                   >
                     Cancel
                   </button>
@@ -579,28 +579,28 @@ export default function Blog() {
 
         {/* Delete Confirmation Modal */}
         {deleteId && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 animate-fadeIn text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+          <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-[#1c2536] rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-800 animate-fadeIn text-center">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 font-serif">
+              <h3 className="text-lg font-bold text-white font-serif">
                 Delete Blog Article?
               </h3>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                 Are you sure you want to permanently delete this blog post?
               </p>
               <div className="flex items-center justify-center gap-3 mt-6">
                 <button
                   onClick={() => setDeleteId(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 hover:bg-white/10 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={actionLoading}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-red-500 transition-colors shadow-sm"
                 >
                   {actionLoading ? 'Deleting...' : 'Confirm Delete'}
                 </button>
