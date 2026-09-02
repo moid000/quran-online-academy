@@ -1,0 +1,411 @@
+import React, { useState, useEffect } from 'react';
+import {
+  MessageSquare,
+  Search,
+  Mail,
+  Trash2,
+  CheckCircle,
+  X,
+  AlertTriangle,
+  RefreshCw,
+  Eye,
+  Clock,
+  User,
+  Inbox
+} from 'lucide-react';
+import AdminLayout from '../../components/AdminLayout';
+import Loader from '../../components/Loader';
+import { useAuth } from '../../context/AuthContext';
+import {
+  getContactMessages,
+  markMessageRead,
+  deleteMessage
+} from '../../api/contact';
+
+export default function Messages() {
+  const { token } = useAuth();
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: '' });
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast({ message: '', type: '' }), 4000);
+  };
+
+  const fetchMessagesList = async () => {
+    setLoading(true);
+    try {
+      const data = await getContactMessages(token);
+      setMessages(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Failed to fetch contact messages:', err);
+      showToast('Failed to load contact messages.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessagesList();
+  }, [token]);
+
+  const handleOpenMessage = async (msg) => {
+    setSelectedMessage(msg);
+    const isUnread = msg.read === false || msg.is_read === false;
+    if (isUnread) {
+      try {
+        await markMessageRead(msg.id, token);
+        // update local state
+        setMessages((prev) =>
+          prev.map((m) => (m.id === msg.id ? { ...m, read: true, is_read: true } : m))
+        );
+      } catch (err) {
+        console.error('Failed to mark message as read:', err);
+      }
+    }
+  };
+
+  const handleMarkRead = async (id, e) => {
+    if (e) e.stopPropagation();
+    setActionLoading(true);
+    try {
+      await markMessageRead(id, token);
+      showToast('Message marked as read.', 'success');
+      setMessages((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, read: true, is_read: true } : m))
+      );
+      if (selectedMessage && selectedMessage.id === id) {
+        setSelectedMessage((prev) => ({ ...prev, read: true, is_read: true }));
+      }
+    } catch (err) {
+      console.error('Failed to mark read:', err);
+      showToast('Failed to update message status.', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    setActionLoading(true);
+    try {
+      await deleteMessage(deleteId, token);
+      showToast('Message deleted successfully.', 'success');
+      setDeleteId(null);
+      if (selectedMessage && selectedMessage.id === deleteId) {
+        setSelectedMessage(null);
+      }
+      fetchMessagesList();
+    } catch (err) {
+      console.error('Delete message error:', err);
+      showToast(err.message || 'Failed to delete message.', 'error');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const filteredMessages = messages.filter((m) => {
+    const query = searchTerm.toLowerCase().trim();
+    if (!query) return true;
+    return (
+      (m.name || '').toLowerCase().includes(query) ||
+      (m.email || '').toLowerCase().includes(query) ||
+      (m.subject || '').toLowerCase().includes(query) ||
+      (m.message || '').toLowerCase().includes(query)
+    );
+  });
+
+  const unreadCount = messages.filter(
+    (m) => m.read === false || m.is_read === false
+  ).length;
+
+  return (
+    <AdminLayout title="Contact Messages Inbox">
+      <div className="space-y-6">
+
+        {/* Toast Alert */}
+        {toast.message && (
+          <div
+            className={`px-4 py-3 rounded-xl border text-sm font-medium flex items-center justify-between shadow-sm animate-fadeIn ${
+              toast.type === 'error'
+                ? 'bg-red-50 border-red-200 text-red-800'
+                : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+            }`}
+          >
+            <span>{toast.message}</span>
+            <button
+              onClick={() => setToast({ message: '', type: '' })}
+              className="text-slate-400 hover:text-slate-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Controls Bar */}
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search by sender name, email, or subject..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200">
+              Unread: {unreadCount}
+            </span>
+
+            <button
+              onClick={fetchMessagesList}
+              className="p-2.5 text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              title="Refresh inbox"
+            >
+              <RefreshCw className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Messages List / Table */}
+        {loading ? (
+          <Loader message="Loading inbox messages..." />
+        ) : (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              {filteredMessages.length === 0 ? (
+                <div className="p-12 text-center text-slate-500">
+                  <Inbox className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                  <p className="font-semibold text-slate-700">Inbox is empty</p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    No contact form messages found matching your search.
+                  </p>
+                </div>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <tr>
+                      <th className="px-5 py-3.5">Status</th>
+                      <th className="px-5 py-3.5">Sender</th>
+                      <th className="px-5 py-3.5">Subject & Message Preview</th>
+                      <th className="px-5 py-3.5">Date Received</th>
+                      <th className="px-5 py-3.5 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {filteredMessages.map((msg) => {
+                      const isUnread = msg.read === false || msg.is_read === false;
+                      return (
+                        <tr
+                          key={msg.id}
+                          onClick={() => handleOpenMessage(msg)}
+                          className={`cursor-pointer transition-colors ${
+                            isUnread
+                              ? 'bg-purple-50/40 font-medium hover:bg-purple-50/70'
+                              : 'hover:bg-slate-50/80'
+                          }`}
+                        >
+                          <td className="px-5 py-4 whitespace-nowrap">
+                            {isUnread ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                                Unread
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-500">
+                                Read
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap">
+                            <div className="font-bold text-slate-900">{msg.name}</div>
+                            <div className="text-xs text-slate-400">{msg.email}</div>
+                          </td>
+                          <td className="px-5 py-4 max-w-xs sm:max-w-md truncate">
+                            <div className="font-semibold text-slate-800 truncate">
+                              {msg.subject || 'General Inquiry'}
+                            </div>
+                            <div className="text-xs text-slate-500 truncate mt-0.5">
+                              {msg.message}
+                            </div>
+                          </td>
+                          <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-500">
+                            {msg.date || 'N/A'}
+                          </td>
+                          <td
+                            className="px-5 py-4 whitespace-nowrap text-right"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => handleOpenMessage(msg)}
+                                className="p-1.5 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                                title="View message"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+
+                              {isUnread && (
+                                <button
+                                  onClick={(e) => handleMarkRead(msg.id, e)}
+                                  className="px-2.5 py-1 text-xs font-semibold bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-lg transition-colors"
+                                  title="Mark as read"
+                                >
+                                  Mark Read
+                                </button>
+                              )}
+
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setDeleteId(msg.id);
+                                }}
+                                className="p-1.5 text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors border border-red-100"
+                                title="Delete message"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* View Message Detail Modal */}
+        {selectedMessage && (
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-200 relative animate-fadeIn">
+              <button
+                onClick={() => setSelectedMessage(null)}
+                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-lg">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold font-serif text-slate-900">
+                    {selectedMessage.subject || 'Contact Inquiry'}
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Received on {selectedMessage.date || 'Unknown date'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2 mb-4 text-xs sm:text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-700">Sender Name:</span>
+                  <span className="text-slate-900 font-medium">{selectedMessage.name}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-700">Email Address:</span>
+                  <a
+                    href={`mailto:${selectedMessage.email}`}
+                    className="text-amber-700 hover:underline font-medium"
+                  >
+                    {selectedMessage.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  Message Body
+                </h4>
+                <p className="text-slate-800 text-sm leading-relaxed whitespace-pre-wrap">
+                  {selectedMessage.message}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                <a
+                  href={`mailto:${selectedMessage.email}?subject=Re: ${encodeURIComponent(
+                    selectedMessage.subject || 'Academy Inquiry'
+                  )}`}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 shadow-md transition-colors flex items-center gap-1.5"
+                >
+                  <Mail className="w-3.5 h-3.5" /> Reply via Email
+                </a>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setDeleteId(selectedMessage.id);
+                    }}
+                    className="px-3 py-2 rounded-xl text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => setSelectedMessage(null)}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteId && (
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 animate-fadeIn text-center">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 font-serif">
+                Delete Message?
+              </h3>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                Are you sure you want to delete this inquiry from your inbox?
+              </p>
+              <div className="flex items-center justify-center gap-3 mt-6">
+                <button
+                  onClick={() => setDeleteId(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={actionLoading}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
+                >
+                  {actionLoading ? 'Deleting...' : 'Confirm Delete'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </AdminLayout>
+  );
+}

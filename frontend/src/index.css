@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased font-sans selection:bg-gold selection:text-emerald-950;
+  }
+}
+
+/* Arabic Font Utilities */
+.font-arabic {
+  font-family: 'Amiri', 'Scheherazade New', serif;
+  direction: rtl;
+}
+
+/* Custom Islamic Patterns & Gradients */
+.bg-islamic-pattern {
+  background-image: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, transparent 60%);
+}
+
+.bg-hero-gradient {
+  background: linear-gradient(135deg, #05100d 0%, #0a1f1a 40%, #0d4f3c 80%, #1a7a5c 100%);
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #f0d77b 0%, #d4af37 50%, #b38f24 100%);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
