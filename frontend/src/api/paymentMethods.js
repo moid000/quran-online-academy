@@ -5,32 +5,27 @@ const initialMethods = [
     id: 'pm1',
     name: 'Bank Alfalah',
     type: 'Bank Transfer',
-    accountName: 'QURAN ONLINE ACADEMIA',
-    accountNumber: '0317747928601',
-    bankName: 'Bank Alfalah Islamic',
-    iban: 'PK36ALFH0317747928601',
-    swiftCode: 'ALFHPKKA',
-    instructions: 'Transfer fee to Bank Alfalah account and upload payment receipt screenshot during registration.',
+    accountName: 'ABDUL MUHAYMIN',
+    accountNumber: 'PK43ALFH5563005002138756',
+    instructions: 'Transfer the amount to the account and upload the receipt screenshot.',
     active: true
   },
   {
     id: 'pm2',
     name: 'JazzCash',
     type: 'Mobile Wallet',
-    accountName: 'Ustaz Abdul Muhaymin',
-    accountNumber: '0317 7479 286',
-    bankName: 'JazzCash Pakistan',
-    instructions: 'Send money via JazzCash app to 0317 7479 286 and upload the transaction screenshot.',
+    accountName: 'ABDUL MUHAYMIN',
+    accountNumber: '03000789238',
+    instructions: 'Send the amount via JazzCash and upload the transaction screenshot.',
     active: true
   },
   {
     id: 'pm3',
     name: 'Western Union',
     type: 'International Remittance',
-    accountName: 'Ustaz Abdul Muhaymin',
-    accountNumber: 'Bahawalpur, Punjab, Pakistan',
-    bankName: 'Western Union / Remitly / Wise',
-    instructions: 'Send international transfer to Ustaz Abdul Muhaymin in Bahawalpur, Pakistan and provide MTCN / Transfer Receipt.',
+    accountName: 'ABDUL MUHAYMIN',
+    accountNumber: 'CNIC: 42101-1586731-9',
+    instructions: 'Send via Western Union and share the MTCN number.',
     active: true
   }
 ];

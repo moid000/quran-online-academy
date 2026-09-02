@@ -1,493 +1,521 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
-  Upload,
-  CheckCircle2,
-  AlertCircle,
-  MessageCircle,
-  FileText,
-  Check,
-  ArrowRight
+  User, BookOpen, CreditCard, Upload, CheckCircle2, AlertCircle,
+  ArrowRight, ArrowLeft, Check, FileUp, Loader2
 } from 'lucide-react';
 import { getCourses } from '../api/courses';
-import { getFeePackages } from '../api/feePackages';
 import { getPaymentMethods } from '../api/paymentMethods';
 import { registerStudent } from '../api/students';
+import GlassCard from '../components/GlassCard';
 
-const countryList = [
-  'United States',
-  'United Kingdom',
-  'Canada',
-  'Australia',
-  'Pakistan',
-  'Saudi Arabia',
-  'United Arab Emirates',
-  'Qatar',
-  'Oman',
-  'Kuwait',
-  'Germany',
-  'France',
-  'Italy',
-  'Spain',
-  'Malaysia',
-  'Singapore',
-  'South Africa',
-  'Norway',
-  'Sweden',
-  'Netherlands',
-  'Other'
+const courseList = [
+  'Basic Qaidah',
+  'Quran Reading (Nazra)',
+  'Quran Memorization (Hifz)',
+  'Tajweed Course',
+  'Quran Translation',
+  'Daily Duas & Kalimas',
+  'Hadith Studies',
+  'Islamic Studies',
 ];
+
+const packageList = [
+  { name: '3 Days / Weekly', price: 20 },
+  { name: '4 Days / Weekly', price: 30 },
+  { name: '5 Days / Weekly', price: 40 },
+  { name: 'Weekend Only', price: 30 },
+];
+
+const steps = ['Personal Info', 'Course Selection', 'Payment Method', 'Upload Receipt'];
 
 export default function Register() {
   const [searchParams] = useSearchParams();
+  const [step, setStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [uploading, setUploading] = useState(false);
 
-  const [courses, setCourses] = useState([]);
-  const [feePackages, setFeePackages] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     student_name: '',
     father_name: '',
     email: '',
     whatsapp: '',
-    country: 'United States',
+    country: '',
     course: '',
-    package: '',
+    package: searchParams.get('package') || '',
     payment_method: '',
+    payment_screenshot: '',
   });
 
-  const [screenshotFile, setScreenshotFile] = useState(null);
-  const [screenshotPreview, setScreenshotPreview] = useState(null);
-
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [submittedData, setSubmittedData] = useState(null);
-
   useEffect(() => {
-    Promise.all([
-      getCourses(),
-      getFeePackages(),
-      getPaymentMethods()
-    ])
-      .then(([cList, pList, mList]) => {
-        setCourses(cList);
-        setFeePackages(pList);
-        setPaymentMethods(mList);
-
-        const urlCourse = searchParams.get('course') || searchParams.get('courseId');
-        const urlPackage = searchParams.get('package') || searchParams.get('packageId');
-
-        setFormData((prev) => ({
-          ...prev,
-          course: urlCourse || (cList.length > 0 ? cList[0].id : ''),
-          package: urlPackage || (pList.length > 0 ? pList[0].id : ''),
-          payment_method: mList.length > 0 ? mList[0].id : ''
-        }));
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching form parameters:', err);
-        setLoading(false);
-      });
+    getPaymentMethods().then(methods => {
+      setPaymentMethods(methods.filter(m => m.active));
+    });
+    getCourses().then(courses => {
+      // If course passed via URL
+      const urlCourse = searchParams.get('course');
+      if (urlCourse) setFormData(prev => ({ ...prev, course: urlCourse }));
+    });
   }, [searchParams]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const updateField = (key, value) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+    setError('');
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setErrorMessage('File size must be under 5MB.');
-        return;
-      }
-      setScreenshotFile(file);
-      setScreenshotPreview(URL.createObjectURL(file));
-      setErrorMessage('');
+      setUploading(true);
+      // Create local preview URL (since we don't have Base44 file upload)
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateField('payment_screenshot', reader.result);
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+  const selectedPayment = paymentMethods.find(m => m.id === formData.payment_method);
+  const selectedPackage = packageList.find(p => p.name === formData.package);
 
-    if (!formData.student_name.trim()) return setErrorMessage('Student Name is required.');
-    if (!formData.father_name.trim()) return setErrorMessage('Father / Guardian Name is required.');
-    if (!formData.email.trim() || !formData.email.includes('@')) return setErrorMessage('A valid email address is required.');
-    if (!formData.whatsapp.trim()) return setErrorMessage('WhatsApp Number is required.');
-    if (!formData.course) return setErrorMessage('Please select a course.');
-    if (!formData.package) return setErrorMessage('Please select a fee package.');
+  const isStepValid = (stepNum) => {
+    if (stepNum === 1) return formData.student_name && formData.father_name && formData.email && formData.whatsapp && formData.country;
+    if (stepNum === 2) return formData.course && formData.package;
+    if (stepNum === 3) return formData.payment_method;
+    return true;
+  };
 
+  const handleSubmit = async () => {
+    if (!formData.payment_screenshot) {
+      setError('Please upload payment screenshot');
+      return;
+    }
     setSubmitting(true);
-
+    setError('');
     try {
-      const selectedCourseObj = courses.find((c) => c.id === formData.course || c.slug === formData.course);
-      const selectedPackageObj = feePackages.find((p) => p.id === formData.package);
-      const selectedPaymentObj = paymentMethods.find((m) => m.id === formData.payment_method);
-
       const fd = new FormData();
-      fd.append('studentName', formData.student_name);
-      fd.append('fatherName', formData.father_name);
-      fd.append('email', formData.email);
-      fd.append('whatsapp', formData.whatsapp);
-      fd.append('country', formData.country);
-      fd.append('courseId', formData.course);
-      fd.append('courseTitle', selectedCourseObj?.title || formData.course);
-      fd.append('packageId', formData.package);
-      fd.append('packageName', selectedPackageObj?.name || formData.package);
-      fd.append('paymentMethodId', formData.payment_method);
-      fd.append('paymentMethodName', selectedPaymentObj?.name || formData.payment_method);
-
-      if (screenshotFile) {
-        fd.append('paymentScreenshot', screenshotFile);
-      }
+      Object.keys(formData).forEach(key => {
+        if (key === 'payment_screenshot' && formData[key].startsWith('data:')) {
+          // Convert base64 to blob for FormData
+          const arr = formData[key].split(',');
+          const mime = arr[0].match(/:(.*?);/)[1];
+          const bstr = atob(arr[1]);
+          const u8arr = new Uint8Array(bstr.length);
+          for (let i = 0; i < bstr.length; i++) u8arr[i] = bstr.charCodeAt(i);
+          fd.append('paymentScreenshot', new Blob([u8arr], { type: mime }), 'screenshot.jpg');
+        } else {
+          fd.append(key, formData[key]);
+        }
+      });
+      fd.append('status', 'pending');
 
       const res = await registerStudent(fd);
-
       if (res.success || res.student) {
-        setSubmittedData({
-          studentName: formData.student_name,
-          courseName: selectedCourseObj?.title || 'Selected Course',
-          packageName: selectedPackageObj?.name || 'Selected Package',
-          paymentMethod: selectedPaymentObj?.name || 'Selected Method',
-          whatsapp: formData.whatsapp
-        });
+        setSuccess(true);
       } else {
-        setErrorMessage(res.message || 'Registration failed. Please try again.');
+        setError(res.message || 'Failed to submit registration. Please try again.');
       }
     } catch (err) {
-      setErrorMessage(err.message || 'An error occurred during registration.');
-    } finally {
-      setSubmitting(false);
+      setError('Failed to submit registration. Please try again.');
     }
+    setSubmitting(false);
   };
 
-  const selectedPaymentMethodObj = paymentMethods.find((m) => m.id === formData.payment_method);
-
-  if (submittedData) {
-    const waMessage = encodeURIComponent(
-      `Assalamu Alaikum! I have just completed registration on Quran Online Academy.\n\n` +
-      `Student Name: ${submittedData.studentName}\n` +
-      `Course: ${submittedData.courseName}\n` +
-      `Package: ${submittedData.packageName}\n` +
-      `Payment Method: ${submittedData.paymentMethod}\n` +
-      `WhatsApp: ${submittedData.whatsapp}\n\n` +
-      `Please confirm my registration and schedule my trial class.`
-    );
-    const waUrl = `https://wa.me/923177479286?text=${waMessage}`;
-
+  // SUCCESS SCREEN
+  if (success) {
     return (
-      <div className="pt-20 min-h-screen bg-white py-24 px-4">
-        <div className="max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm text-center space-y-6">
-          <div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center mx-auto text-white">
-            <CheckCircle2 className="w-10 h-10" />
-          </div>
-
-          <h1 className="text-3xl font-bold text-slate-900">Registration Submitted!</h1>
-          
-          <p className="text-slate-700 leading-relaxed max-w-lg mx-auto">
-            JazakAllah Khair! Your registration for <strong className="text-slate-900">{submittedData.studentName}</strong> has been received successfully.
-          </p>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-left text-sm space-y-3">
-            <div className="flex justify-between border-b border-gray-200 pb-2">
-              <span className="text-slate-500">Student Name:</span>
-              <span className="font-semibold text-slate-900">{submittedData.studentName}</span>
+      <div className="pt-20 min-h-screen bg-white flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full text-center"
+        >
+          <GlassCard className="p-8">
+            <div className="w-20 h-20 rounded-full bg-brand-green flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-10 h-10 text-white" />
             </div>
-            <div className="flex justify-between border-b border-gray-200 pb-2">
-              <span className="text-slate-500">Selected Course:</span>
-              <span className="font-semibold text-slate-900">{submittedData.courseName}</span>
-            </div>
-            <div className="flex justify-between border-b border-gray-200 pb-2">
-              <span className="text-slate-500">Fee Package:</span>
-              <span className="font-semibold text-slate-900">{submittedData.packageName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">WhatsApp Contact:</span>
-              <span className="font-semibold text-slate-900">{submittedData.whatsapp}</span>
-            </div>
-          </div>
-
-          <p className="text-sm text-slate-600">
-            Click below to notify our admission team on WhatsApp and schedule your class timings right away:
-          </p>
-
-          <div className="pt-2 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-brand-green hover:bg-[#2a4a38] text-white rounded-full font-medium px-6 py-3 flex items-center justify-center gap-2 transition-colors shadow-sm"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>Confirm on WhatsApp</span>
-            </a>
-            <Link
-              to="/"
-              className="bg-amber-500 hover:bg-amber-600 text-white rounded-full font-bold px-8 py-3 transition-colors shadow-sm flex items-center justify-center"
-            >
-              Back to Home
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Registration Successful!</h2>
+            <p className="text-slate-600 mb-6">
+              Thank you for registering with QURAN ONLINE ACADEMIA. We will verify your payment and contact you within 24 hours.
+            </p>
+            <Link to="/" onClick={() => window.scrollTo(0, 0)}>
+              <button className="w-full bg-brand-green hover:bg-[#2a4a38] text-white py-3 rounded-xl font-semibold transition-colors">
+                Back to Home
+              </button>
             </Link>
-          </div>
-        </div>
+          </GlassCard>
+        </motion.div>
       </div>
     );
   }
 
   return (
     <div className="pt-20 min-h-screen bg-white">
-      
-      {/* HEADER & FORM CONTAINER */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-            <div className="text-brand-green font-arabic text-2xl">﷽</div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">
-              Student Registration
-            </h1>
-            <p className="text-lg text-slate-600">
-              Begin your Quranic journey today
-            </p>
-            <div className="h-1 w-24 bg-brand-green mx-auto mt-6 rounded-full" />
-          </div>
 
-          {/* Form Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm max-w-2xl mx-auto">
-            {errorMessage && (
-              <div className="p-4 rounded-xl mb-6 bg-red-50 text-red-900 border border-red-200 flex items-center gap-3 text-sm">
-                <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
-                <span>{errorMessage}</span>
+      {/* 1. HERO SECTION */}
+      <section className="relative py-16 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl md:text-5xl font-bold text-white mb-4"
+            >
+              Student Registration
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-white"
+            >
+              Complete your enrollment in 4 simple steps
+            </motion.p>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. STEP INDICATOR */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            {steps.map((label, idx) => (
+              <div key={idx} className="flex items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                  step > idx + 1 || step === idx + 1
+                    ? 'bg-brand-green text-white'
+                    : 'bg-gray-200 text-slate-600'
+                }`}>
+                  {step > idx + 1 ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
+                </div>
+                {idx < 3 && (
+                  <div className={`w-12 md:w-24 h-1 mx-2 rounded ${
+                    step > idx + 1 ? 'bg-brand-green' : 'bg-gray-200'
+                  }`} />
+                )}
               </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 3. FORM CARD */}
+      <div className="container mx-auto px-4 pb-24">
+        <div className="max-w-2xl mx-auto">
+          <GlassCard className="p-6 md:p-8">
+
+            {/* STEP 1: Personal Information */}
+            {step === 1 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-6"
+              >
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <User className="w-5 h-5 text-brand-green" />
+                  Personal Information
+                </h2>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-slate-700">Student Name *</label>
+                    <input
+                      value={formData.student_name}
+                      onChange={(e) => updateField('student_name', e.target.value)}
+                      placeholder="Enter full name"
+                      className="w-full bg-white border border-gray-300 text-slate-900 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-slate-700">Father Name *</label>
+                    <input
+                      value={formData.father_name}
+                      onChange={(e) => updateField('father_name', e.target.value)}
+                      placeholder="Enter father's name"
+                      className="w-full bg-white border border-gray-300 text-slate-900 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-slate-700">Email *</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => updateField('email', e.target.value)}
+                    placeholder="Enter email address"
+                    className="w-full bg-white border border-gray-300 text-slate-900 placeholder:text-slate-500 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-slate-700">WhatsApp Number *</label>
+                  <input
+                    value={formData.whatsapp}
+                    onChange={(e) => updateField('whatsapp', e.target.value)}
+                    placeholder="+1 234 567 890"
+                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-slate-700">Country *</label>
+                  <input
+                    value={formData.country}
+                    onChange={(e) => updateField('country', e.target.value)}
+                    placeholder="Enter your country"
+                    className="w-full bg-white border border-gray-300 text-slate-900 placeholder:text-slate-500 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
+                  />
+                </div>
+              </motion.div>
             )}
 
-            {loading ? (
-              <div className="py-12 text-center text-slate-500">
-                Loading registration details...
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* Student Name */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Student Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="student_name"
-                    value={formData.student_name}
-                    onChange={handleChange}
-                    placeholder="Full name of student"
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                  />
-                </div>
+            {/* STEP 2: Course Selection */}
+            {step === 2 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-6"
+              >
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-brand-green" />
+                  Course Selection
+                </h2>
 
-                {/* Father / Guardian Name */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Father / Guardian Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="father_name"
-                    value={formData.father_name}
-                    onChange={handleChange}
-                    placeholder="Father or guardian full name"
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                  />
-                </div>
-
-                {/* Email & WhatsApp */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="name@example.com"
-                      required
-                      className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      WhatsApp Number *
-                    </label>
-                    <input
-                      type="text"
-                      name="whatsapp"
-                      value={formData.whatsapp}
-                      onChange={handleChange}
-                      placeholder="+1 234 567 890"
-                      required
-                      className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                    />
-                  </div>
-                </div>
-
-                {/* Country */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Country of Residence *
-                  </label>
+                <div className="space-y-2">
+                  <label className="text-slate-700">Select Course *</label>
                   <select
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                  >
-                    {countryList.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Course Selection */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Course *
-                  </label>
-                  <select
-                    name="course"
                     value={formData.course}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
+                    onChange={(e) => updateField('course', e.target.value)}
+                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
                   >
-                    <option value="" disabled>Choose a course...</option>
-                    {courses.map((course) => (
-                      <option key={course.id} value={course.id}>
-                        {course.title} ({course.level || 'All Levels'})
-                      </option>
+                    <option value="" disabled>Choose a course</option>
+                    {courseList.map(course => (
+                      <option key={course} value={course}>{course}</option>
                     ))}
                   </select>
                 </div>
 
-                {/* Fee Package Selection */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Fee Package *
-                  </label>
-                  <select
-                    name="package"
-                    value={formData.package}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                  >
-                    <option value="" disabled>Choose a fee package...</option>
-                    {feePackages.map((pkg) => (
-                      <option key={pkg.id} value={pkg.id}>
-                        {pkg.name} - ${pkg.priceUsd || pkg.price_usd}/month
-                      </option>
+                <div className="space-y-2">
+                  <label className="text-slate-700">Select Package *</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {packageList.map(pkg => (
+                      <button
+                        key={pkg.name}
+                        onClick={() => updateField('package', pkg.name)}
+                        className={`p-4 rounded-xl border text-left transition-all ${
+                          formData.package === pkg.name
+                            ? 'bg-brand-green/10 border-brand-green text-slate-900'
+                            : 'bg-white border-gray-300 text-slate-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        <p className="font-semibold">{pkg.name}</p>
+                        <p className="text-brand-green text-lg font-bold">${pkg.price}/mo</p>
+                      </button>
                     ))}
-                  </select>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* STEP 3: Payment Method */}
+            {step === 3 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-6"
+              >
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <CreditCard className="w-5 h-5 text-brand-green" />
+                  Payment Method
+                </h2>
+
+                <div className="space-y-3">
+                  {paymentMethods.map(pm => (
+                    <button
+                      key={pm.id}
+                      onClick={() => updateField('payment_method', pm.id)}
+                      className={`w-full p-4 rounded-xl border text-left transition-all ${
+                        formData.payment_method === pm.id
+                          ? 'bg-brand-green/10 border-brand-green'
+                          : 'bg-white border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      <p className="font-semibold text-slate-900">{pm.name}</p>
+                    </button>
+                  ))}
                 </div>
 
-                {/* Payment Method Selection */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Payment Method *
-                  </label>
-                  <select
-                    name="payment_method"
-                    value={formData.payment_method}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white border border-gray-300 text-slate-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-green focus:border-transparent"
-                  >
-                    <option value="" disabled>Choose payment method...</option>
-                    {paymentMethods.map((pm) => (
-                      <option key={pm.id} value={pm.id}>
-                        {pm.name} ({pm.type})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Payment Method Info Box */}
-                {selectedPaymentMethodObj && (
-                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs text-slate-700 space-y-2">
-                    <p className="font-semibold text-slate-900 text-sm">{selectedPaymentMethodObj.name}</p>
-                    {selectedPaymentMethodObj.accountName && (
-                      <p><strong>Account Name:</strong> {selectedPaymentMethodObj.accountName}</p>
-                    )}
-                    {selectedPaymentMethodObj.accountNumber && (
-                      <p><strong>Account Number:</strong> {selectedPaymentMethodObj.accountNumber}</p>
-                    )}
-                    {selectedPaymentMethodObj.bankName && (
-                      <p><strong>Bank / Service:</strong> {selectedPaymentMethodObj.bankName}</p>
-                    )}
-                    {selectedPaymentMethodObj.iban && (
-                      <p className="break-all"><strong>IBAN:</strong> {selectedPaymentMethodObj.iban}</p>
-                    )}
-                    <p className="text-slate-500 italic mt-1">{selectedPaymentMethodObj.instructions}</p>
+                {selectedPayment && (
+                  <div className="bg-brand-green/10 border border-brand-green/30 rounded-xl p-4 mt-6">
+                    <h3 className="text-brand-green font-semibold mb-3">Payment Details</h3>
+                    <div className="space-y-2 text-sm">
+                      <p className="text-slate-700">
+                        <span className="text-slate-600">Account Title: </span>
+                        {selectedPayment.accountName || selectedPayment.account_title}
+                      </p>
+                      <p className="text-slate-700">
+                        <span className="text-slate-600">Account/Number: </span>
+                        {selectedPayment.accountNumber || selectedPayment.account_number}
+                      </p>
+                      <p className="text-slate-700">
+                        <span className="text-slate-600">Amount: </span>
+                        <span className="text-brand-green font-bold">${selectedPackage?.price || 0}</span>
+                      </p>
+                      <p className="text-slate-600 mt-3 text-xs">
+                        {selectedPayment.instructions}
+                      </p>
+                    </div>
                   </div>
                 )}
+              </motion.div>
+            )}
 
-                {/* Payment Screenshot File Upload */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Payment Receipt / Screenshot (Optional)
-                  </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer relative">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                    <p className="text-sm font-medium text-slate-700">
-                      {screenshotFile ? screenshotFile.name : 'Click or drag image to upload receipt'}
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">PNG, JPG, JPEG up to 5MB</p>
-                  </div>
+            {/* STEP 4: Upload Receipt */}
+            {step === 4 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-6"
+              >
+                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-brand-green" />
+                  Upload Payment Screenshot
+                </h2>
 
-                  {screenshotPreview && (
-                    <div className="mt-3 relative w-32 h-32 rounded-xl overflow-hidden border border-gray-200">
+                <div className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                  {formData.payment_screenshot ? (
+                    <div className="space-y-4">
+                      <CheckCircle2 className="w-12 h-12 text-brand-green mx-auto" />
+                      <p className="text-brand-green font-semibold">Screenshot Uploaded Successfully</p>
                       <img
-                        src={screenshotPreview}
-                        alt="Screenshot Preview"
-                        className="w-full h-full object-cover"
+                        src={formData.payment_screenshot}
+                        alt="Payment Screenshot"
+                        loading="lazy"
+                        className="max-w-xs mx-auto rounded-lg"
                       />
+                      <label className="cursor-pointer text-brand-green hover:underline">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                        />
+                        Change Image
+                      </label>
                     </div>
+                  ) : (
+                    <label className="cursor-pointer block">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      {uploading ? (
+                        <div className="space-y-4">
+                          <Loader2 className="w-12 h-12 text-brand-green mx-auto animate-spin" />
+                          <p className="text-slate-600">Uploading...</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <FileUp className="w-12 h-12 text-slate-600 mx-auto" />
+                          <p className="text-slate-700">Click to upload payment screenshot</p>
+                          <p className="text-slate-600 text-sm">PNG, JPG up to 10MB</p>
+                        </div>
+                      )}
+                    </label>
                   )}
                 </div>
 
-                {/* Submit Button */}
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-semibold w-full py-4 transition-colors shadow-sm disabled:opacity-50 text-base"
-                  >
-                    {submitting ? 'Submitting Registration...' : 'Complete Student Registration'}
-                  </button>
+                {/* Registration Summary */}
+                <div className="bg-white border border-gray-200 rounded-xl p-4">
+                  <h3 className="text-slate-900 font-semibold mb-3">Registration Summary</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Student:</span>
+                      <span className="text-slate-900">{formData.student_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Course:</span>
+                      <span className="text-slate-900">{formData.course}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Package:</span>
+                      <span className="text-slate-900">{formData.package}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Amount:</span>
+                      <span className="text-brand-green font-bold">${selectedPackage?.price || 0}/month</span>
+                    </div>
+                  </div>
                 </div>
-
-              </form>
+              </motion.div>
             )}
-          </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="flex items-center gap-2 text-red-600 bg-red-50 rounded-lg p-3 mt-4">
+                <AlertCircle className="w-5 h-5" />
+                {error}
+              </div>
+            )}
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
+              {step > 1 ? (
+                <button
+                  onClick={() => setStep(step - 1)}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-slate-900 hover:bg-gray-100 font-medium flex items-center gap-2 transition-all"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {step < 4 ? (
+                <button
+                  onClick={() => isStepValid(step) && setStep(step + 1)}
+                  disabled={!isStepValid(step)}
+                  className="px-6 py-2 rounded-lg bg-brand-green hover:bg-[#2a4a38] text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting || !formData.payment_screenshot}
+                  className="px-6 py-2 rounded-lg bg-brand-green hover:bg-[#2a4a38] text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      Complete Registration
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+
+          </GlassCard>
         </div>
-      </section>
+      </div>
 
     </div>
   );
