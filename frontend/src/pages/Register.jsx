@@ -54,7 +54,7 @@ export default function Register() {
 
   useEffect(() => {
     getPaymentMethods().then(methods => {
-      setPaymentMethods(methods.filter(m => m.active));
+      setPaymentMethods(methods.filter(m => m.is_active !== false));
     });
     getCourses().then(courses => {
       // If course passed via URL
@@ -82,7 +82,7 @@ export default function Register() {
     }
   };
 
-  const selectedPayment = paymentMethods.find(m => m.id === formData.payment_method);
+  const selectedPayment = paymentMethods.find(m => m._id === formData.payment_method);
   const selectedPackage = packageList.find(p => p.name === formData.package);
 
   const isStepValid = (stepNum) => {
@@ -341,10 +341,10 @@ export default function Register() {
                 <div className="space-y-3">
                   {paymentMethods.map(pm => (
                     <button
-                      key={pm.id}
+                      key={pm._id}
                       onClick={() => updateField('payment_method', pm.id)}
                       className={`w-full p-4 rounded-xl border text-left transition-all ${
-                        formData.payment_method === pm.id
+                        formData.payment_method === pm._id
                           ? 'bg-brand-green/10 border-brand-green'
                           : 'bg-white border-gray-300 hover:bg-gray-50'
                       }`}
