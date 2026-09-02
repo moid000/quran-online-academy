@@ -5,14 +5,18 @@ import { motion } from 'framer-motion';
 import GlassCard from './GlassCard';
 
 export default function BlogCard({ post, index = 0 }) {
-  const { id, title, excerpt, category, date, image, readTime } = post;
+  const { _id, id, title, excerpt, category, date, createdAt, image, image_url, readTime } = post;
+  const postId = id || _id;
+  const postImage = image_url || image;
+  const postDate = date || createdAt;
+  const postReadTime = readTime || '5 min';
 
   return (
     <GlassCard delay={index * 0.1} gradient={true} className="group flex flex-col">
       {/* Image */}
       <div className="relative h-48 overflow-hidden rounded-t-3xl">
         <img
-          src={image}
+          src={postImage || "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=600&q=80"}
           alt={title}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -36,14 +40,14 @@ export default function BlogCard({ post, index = 0 }) {
           <div className="flex items-center gap-4 text-slate-600">
             <span className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              {new Date(postDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              {readTime}
+              {postReadTime}
             </span>
           </div>
-          <Link to={`/blogs/${id}`} onClick={() => window.scrollTo(0, 0)}>
+          <Link to={`/blogs/${postId}`} onClick={() => window.scrollTo(0, 0)}>
             <motion.span
               whileHover={{ x: 5 }}
               className="flex items-center gap-1 text-brand-green cursor-pointer font-medium"
