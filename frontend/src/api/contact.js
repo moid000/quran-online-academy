@@ -105,3 +105,16 @@ export const deleteMessage = async (id, token) => {
     return { success: true };
   }
 };
+
+export const getUnreadMessagesCount = async (token) => {
+  try {
+    const res = await fetch(`${API_URL}/contact?is_read=false`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) return 0;
+    const result = await res.json();
+    return result.count || 0;
+  } catch (err) {
+    return 0;
+  }
+};
