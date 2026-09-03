@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Mail, Globe, Clock, Send, CheckCircle2, MessageCircle, Loader2 } from 'lucide-react';
+import { Phone, Mail, Globe, Clock, Send, CheckCircle2, Loader2 } from 'lucide-react';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import GlassCard from '../components/GlassCard';
 import { sendContactMessage } from '../api/contact';
 
@@ -12,7 +13,7 @@ const contactInfo = [
 ];
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', whatsapp: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -22,12 +23,12 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (!formData.name || !formData.whatsapp || !formData.message) return;
     setSubmitting(true);
     try {
       await sendContactMessage(formData);
       setSent(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: '', whatsapp: '', subject: '', message: '' });
     } catch (err) {
       console.error(err);
     }
@@ -142,12 +143,12 @@ export default function Contact() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-slate-700">Email Address *</label>
+                        <label className="text-slate-700">WhatsApp Number *</label>
                         <input
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => handleChange('email', e.target.value)}
-                          placeholder="Enter your email"
+                          type="tel"
+                          value={formData.whatsapp}
+                          onChange={(e) => handleChange('whatsapp', e.target.value)}
+                          placeholder="e.g. +92 300 1234567"
                           className="w-full bg-white border border-gray-300 text-slate-900 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none"
                           required
                         />
@@ -234,7 +235,7 @@ export default function Contact() {
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#2a4a38] transition-all"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Chat on WhatsApp
                 </motion.a>
               </GlassCard>
