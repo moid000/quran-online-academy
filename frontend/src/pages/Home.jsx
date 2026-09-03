@@ -15,25 +15,25 @@ import { getCourses } from '../api/courses';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80',
+    image: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae',
     quote: '"Indeed, this Quran guides to that which is most suitable"',
     reference: 'Surah Al-Isra 17:9',
     title: 'Begin Your Quranic Journey',
   },
   {
-    image: 'https://images.unsplash.com/photo-1585036156171-384164a8c675?w=1920&q=80',
+    image: 'https://images.unsplash.com/photo-1585036156171-384164a8c675',
     quote: '"And We have certainly made the Quran easy for remembrance"',
     reference: 'Surah Al-Qamar 54:17',
     title: 'Learn From Expert Teachers',
   },
   {
-    image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1920&q=80',
+    image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53',
     quote: '"The best among you are those who learn the Quran and teach it"',
     reference: 'Hadith - Sahih Bukhari',
     title: 'Join 3000+ Students Worldwide',
   },
   {
-    image: 'https://images.unsplash.com/photo-1610552050890-fe99536c2615?w=1920&q=80',
+    image: 'https://images.unsplash.com/photo-1610552050890-fe99536c2615',
     quote: '"Read! In the name of your Lord who created"',
     reference: 'Surah Al-Alaq 96:1',
     title: 'Transform Your Life with Quran',
@@ -121,6 +121,12 @@ function FaqItem({ faq, index }) {
 }
 
 export default function Home() {
+  // Responsive hero images: mobile gets a lighter 800px version, desktop 1600px
+  const [heroImgW, setHeroImgW] = useState(1600);
+  useEffect(() => {
+    setHeroImgW(window.innerWidth < 768 ? 800 : 1600);
+  }, []);
+  const heroUrl = (base) => `${base}?w=${heroImgW}&q=70&auto=format`;
   const [courses, setCourses] = useState([]);
   const [slideIdx, setSlideIdx] = useState(0);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
@@ -156,7 +162,7 @@ export default function Home() {
             transition={{ duration: 1.2 }}
             className="absolute inset-0"
           >
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroUrl(slide.image)})` }} />
             <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/60 to-white" />
           </motion.div>
         </AnimatePresence>
@@ -189,7 +195,7 @@ export default function Home() {
                     Explore Courses
                   </AnimatedButton>
                 </div>
-                <p className="mt-6 text-slate-600 text-sm">📞 For Fastest Registration – Contact on WhatsApp: +92 317 7479 286</p>
+                <p className="mt-6 text-slate-300 text-sm">📞 For Fastest Registration – Contact on WhatsApp: +92 317 7479 286</p>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -201,8 +207,11 @@ export default function Home() {
             <button
               key={idx}
               onClick={() => setSlideIdx(idx)}
-              className={`h-2 rounded-full transition-all duration-500 ${idx === slideIdx ? 'w-8 bg-brand-green' : 'w-2 bg-white/60 hover:bg-white/80'}`}
-            />
+              aria-label={`Go to slide ${idx + 1}`}
+              className="p-2.5 -m-1.5 rounded-full"
+            >
+              <span className={`block h-2 rounded-full transition-all duration-500 ${idx === slideIdx ? 'w-8 bg-brand-green' : 'w-2 bg-white/60 hover:bg-white/80'}`} />
+            </button>
           ))}
         </div>
       </section>
@@ -426,7 +435,7 @@ export default function Home() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-brand-green" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
+          <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: `url(${heroUrl('https://images.unsplash.com/photo-1609599006353-e629aaabfeae')})` }} />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
@@ -507,7 +516,8 @@ export default function Home() {
             <div className="flex items-center justify-center gap-4 mt-8">
               <button
                 onClick={() => setTestimonialIdx((i) => (i - 1 + testimonials.length) % testimonials.length)}
-                className="p-2 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green hover:bg-brand-green/20 transition-all"
+                aria-label="Previous testimonial"
+                className="p-3 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green hover:bg-brand-green/20 transition-all"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -516,13 +526,17 @@ export default function Home() {
                   <button
                     key={idx}
                     onClick={() => setTestimonialIdx(idx)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === testimonialIdx ? 'w-6 bg-brand-green' : 'bg-gray-300'}`}
-                  />
+                    aria-label={`Show testimonial ${idx + 1}`}
+                    className="p-2.5 -m-1.5 rounded-full"
+                  >
+                    <span className={`block w-2 h-2 rounded-full transition-all duration-300 ${idx === testimonialIdx ? 'w-6 bg-brand-green' : 'bg-gray-300'}`} />
+                  </button>
                 ))}
               </div>
               <button
                 onClick={() => setTestimonialIdx((i) => (i + 1) % testimonials.length)}
-                className="p-2 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green hover:bg-brand-green/20 transition-all"
+                aria-label="Next testimonial"
+                className="p-3 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green hover:bg-brand-green/20 transition-all"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -547,7 +561,7 @@ export default function Home() {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585036156171-384164a8c675?w=1920&q=80')] bg-cover bg-center opacity-5" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585036156171-384164a8c675')] bg-cover bg-center opacity-5" />
         </div>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
