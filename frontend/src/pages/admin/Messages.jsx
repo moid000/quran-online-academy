@@ -61,6 +61,7 @@ export default function Messages() {
     if (isUnread) {
       try {
         await markMessageRead(msgId, token);
+        window.dispatchEvent(new Event('qoa:refresh-notifications'));
         // update local state
         setMessages((prev) =>
           prev.map((m) => ((m._id || m.id) === msgId ? { ...m, read: true, is_read: true } : m))
@@ -76,6 +77,7 @@ export default function Messages() {
     setActionLoading(true);
     try {
       await markMessageRead(id, token);
+      window.dispatchEvent(new Event('qoa:refresh-notifications'));
       showToast('Message marked as read.', 'success');
       setMessages((prev) =>
         prev.map((m) => ((m._id || m.id) === id ? { ...m, read: true, is_read: true } : m))
