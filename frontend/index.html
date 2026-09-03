@@ -10,9 +10,16 @@
     <meta name="theme-color" content="#345B46" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quran Online Academia | Premium Online Quran Education</title>
+    <meta name="description" content="Learn Quran online with expert teachers. Noorani Qaida, Tajweed, Hifz and Arabic courses with male & female tutors. 3 days free trial. Register today!" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Non-blocking font load: fonts no longer block first paint -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <!-- Preload hero image so LCP paints immediately -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1600&q=70&auto=format" media="(min-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=70&auto=format" media="(max-width: 767px)" fetchpriority="high">
   </head>
   <body class="bg-white text-slate-800 antialiased font-sans">
     <div id="root"></div>
