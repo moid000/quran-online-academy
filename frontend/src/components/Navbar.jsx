@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import WhatsAppIcon from './WhatsAppIcon';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -95,7 +96,7 @@ export default function Navbar() {
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green text-white font-medium text-sm shadow-lg shadow-[#345B46]/30 hover:bg-[#2a4a38] transition-all"
               >
-                <MessageCircle className="w-4 h-4" />
+                <WhatsAppIcon className="w-4 h-4" />
                 <span>WhatsApp</span>
               </motion.a>
             </div>
@@ -142,7 +143,7 @@ export default function Navbar() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-green text-white font-medium text-sm hover:bg-[#2a4a38]"
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <WhatsAppIcon className="w-4 h-4" />
                     Contact on WhatsApp
                   </a>
                 </div>
