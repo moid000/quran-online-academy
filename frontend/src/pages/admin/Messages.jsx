@@ -265,7 +265,7 @@ export default function Messages() {
 
                               {isUnread && (
                                 <button
-                                  onClick={(e) => handleMarkRead(msg.id, e)}
+                                  onClick={(e) => handleMarkRead(msg._id || msg.id, e)}
                                   className="px-2.5 py-1 text-xs font-semibold bg-purple-500/15 hover:bg-purple-500/25 text-purple-400 border border-purple-500/30 rounded-lg transition-colors"
                                   title="Mark as read"
                                 >
@@ -276,7 +276,7 @@ export default function Messages() {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setDeleteId(msg.id);
+                                  setDeleteId(msg._id || msg.id);
                                 }}
                                 className="p-1.5 text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors border border-red-500/20"
                                 title="Delete message"
