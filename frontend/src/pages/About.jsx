@@ -86,7 +86,7 @@ export default function About() {
                     alt="Quran Learning - Students studying the Holy Quran online"
                     loading="lazy"
                     className="w-full h-full object-cover"
-                  />
+                  width="800" height="600" />
                 </div>
               </div>
             </motion.div>
@@ -184,7 +184,7 @@ export default function About() {
                         alt="Ustaz Abdul Muhaymin - Founder of Quran Online Academia"
                         loading="lazy"
                         className="w-full h-full object-cover"
-                      />
+                      width="800" height="600" />
                     </div>
                     <div className="absolute -bottom-3 -right-3 px-4 py-2 rounded-xl bg-brand-green shadow-lg">
                       <p className="text-white text-xs font-semibold">Founder</p>
