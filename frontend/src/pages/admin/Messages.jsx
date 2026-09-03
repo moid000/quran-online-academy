@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   MessageSquare,
   Search,
-  Mail,
   Trash2,
   CheckCircle,
   X,
@@ -13,6 +12,7 @@ import {
   User,
   Inbox
 } from 'lucide-react';
+import WhatsAppIcon from '../../components/WhatsAppIcon';
 import AdminLayout from '../../components/AdminLayout';
 import Loader from '../../components/Loader';
 import { useAuth } from '../../context/AuthContext';
@@ -56,13 +56,14 @@ export default function Messages() {
 
   const handleOpenMessage = async (msg) => {
     setSelectedMessage(msg);
+    const msgId = msg._id || msg.id;
     const isUnread = msg.read === false || msg.is_read === false;
     if (isUnread) {
       try {
-        await markMessageRead(msg.id, token);
+        await markMessageRead(msgId, token);
         // update local state
         setMessages((prev) =>
-          prev.map((m) => (m.id === msg.id ? { ...m, read: true, is_read: true } : m))
+          prev.map((m) => ((m._id || m.id) === msgId ? { ...m, read: true, is_read: true } : m))
         );
       } catch (err) {
         console.error('Failed to mark message as read:', err);
@@ -77,9 +78,9 @@ export default function Messages() {
       await markMessageRead(id, token);
       showToast('Message marked as read.', 'success');
       setMessages((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, read: true, is_read: true } : m))
+        prev.map((m) => ((m._id || m.id) === id ? { ...m, read: true, is_read: true } : m))
       );
-      if (selectedMessage && selectedMessage.id === id) {
+      if (selectedMessage && (selectedMessage._id || selectedMessage.id) === id) {
         setSelectedMessage((prev) => ({ ...prev, read: true, is_read: true }));
       }
     } catch (err) {
@@ -97,7 +98,7 @@ export default function Messages() {
       await deleteMessage(deleteId, token);
       showToast('Message deleted successfully.', 'success');
       setDeleteId(null);
-      if (selectedMessage && selectedMessage.id === deleteId) {
+      if (selectedMessage && (selectedMessage._id || selectedMessage.id) === deleteId) {
         setSelectedMessage(null);
       }
       fetchMessagesList();
@@ -114,7 +115,7 @@ export default function Messages() {
     if (!query) return true;
     return (
       (m.name || '').toLowerCase().includes(query) ||
-      (m.email || '').toLowerCase().includes(query) ||
+      (m.whatsapp || '').toLowerCase().includes(query) ||
       (m.subject || '').toLowerCase().includes(query) ||
       (m.message || '').toLowerCase().includes(query)
     );
@@ -153,7 +154,7 @@ export default function Messages() {
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
-              placeholder="Search by sender name, email, or subject..."
+              placeholder="Search by sender name, WhatsApp number, or subject..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-slate-100 border border-slate-700 rounded-xl text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
@@ -213,7 +214,7 @@ export default function Messages() {
                       const isUnread = msg.read === false || msg.is_read === false;
                       return (
                         <tr
-                          key={msg.id}
+                          key={msg._id || msg.id}
                           onClick={() => handleOpenMessage(msg)}
                           className={`cursor-pointer transition-colors ${
                             isUnread
@@ -234,7 +235,7 @@ export default function Messages() {
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap">
                             <div className="font-bold text-white">{msg.name}</div>
-                            <div className="text-xs text-slate-400">{msg.email}</div>
+                            <div className="text-xs text-slate-400">{msg.whatsapp}</div>
                           </td>
                           <td className="px-5 py-4 max-w-xs sm:max-w-md truncate">
                             <div className="font-semibold text-slate-200 truncate">
@@ -245,7 +246,7 @@ export default function Messages() {
                             </div>
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-400">
-                            {msg.date || 'N/A'}
+                            {msg.date || (msg.createdAt ? new Date(msg.createdAt).toLocaleString() : 'N/A')}
                           </td>
                           <td
                             className="px-5 py-4 whitespace-nowrap text-right"
@@ -305,14 +306,14 @@ export default function Messages() {
 
               <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center text-lg">
-                  <Mail className="w-5 h-5" />
+                  <WhatsAppIcon className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold font-serif text-white">
                     {selectedMessage.subject || 'Contact Inquiry'}
                   </h3>
                   <p className="text-xs text-slate-400">
-                    Received on {selectedMessage.date || 'Unknown date'}
+                    Received on {selectedMessage.date || (selectedMessage.createdAt ? new Date(selectedMessage.createdAt).toLocaleString() : 'Unknown date')}
                   </p>
                 </div>
               </div>
@@ -323,12 +324,14 @@ export default function Messages() {
                   <span className="text-white font-medium">{selectedMessage.name}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-400">Email Address:</span>
+                  <span className="font-semibold text-slate-400">WhatsApp Number:</span>
                   <a
-                    href={`mailto:${selectedMessage.email}`}
+                    href={`https://wa.me/${(selectedMessage.whatsapp || '').replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-amber-400 hover:underline font-medium"
                   >
-                    {selectedMessage.email}
+                    {selectedMessage.whatsapp}
                   </a>
                 </div>
               </div>
@@ -344,18 +347,18 @@ export default function Messages() {
 
               <div className="flex items-center justify-between pt-4 border-t border-slate-800">
                 <a
-                  href={`mailto:${selectedMessage.email}?subject=Re: ${encodeURIComponent(
-                    selectedMessage.subject || 'Academy Inquiry'
-                  )}`}
+                  href={`https://wa.me/${(selectedMessage.whatsapp || '').replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 shadow-md transition-colors flex items-center gap-1.5"
                 >
-                  <Mail className="w-3.5 h-3.5" /> Reply via Email
+                  <WhatsAppIcon className="w-3.5 h-3.5" /> Reply on WhatsApp
                 </a>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => {
-                      setDeleteId(selectedMessage.id);
+                      setDeleteId(selectedMessage._id || selectedMessage.id);
                     }}
                     className="px-3 py-2 rounded-xl text-xs font-semibold text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 transition-colors"
                   >
