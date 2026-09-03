@@ -20,7 +20,7 @@ export default function BlogCard({ post, index = 0 }) {
           alt={title}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+        width="800" height="450" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
         <div className="absolute top-4 left-4">
           <span className="px-3 py-1 rounded-full text-xs font-medium bg-brand-green text-white">
