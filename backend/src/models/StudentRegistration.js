@@ -48,6 +48,10 @@ const StudentRegistrationSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending',
   },
+  is_read: {
+    type: Boolean,
+    default: false,
+  },
   notes: {
     type: String,
   },
