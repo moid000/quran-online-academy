@@ -94,3 +94,23 @@ export const deleteStudent = async (id, token) => {
   }
   return result;
 };
+
+export const getUnreadRegistrationsCount = async (token) => {
+  const res = await fetch(`${API_URL}/students/unread-count`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok) return 0;
+  return result.count || 0;
+};
+
+export const markAllRegistrationsRead = async (token) => {
+  try {
+    await fetch(`${API_URL}/students/mark-all-read`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  } catch (err) {
+    console.error('Failed to mark registrations read:', err);
+  }
+};
