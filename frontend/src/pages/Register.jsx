@@ -342,7 +342,7 @@ export default function Register() {
                   {paymentMethods.map(pm => (
                     <button
                       key={pm._id}
-                      onClick={() => updateField('payment_method', pm.id)}
+                      onClick={() => updateField('payment_method', pm._id)}
                       className={`w-full p-4 rounded-xl border text-left transition-all ${
                         formData.payment_method === pm._id
                           ? 'bg-brand-green/10 border-brand-green'
