@@ -78,6 +78,30 @@ router.get('/', protect, async (req, res, next) => {
   }
 });
 
+// @route   GET /api/students/unread-count
+// @desc    Count unread registrations (for admin notification badge)
+// @access  Private
+router.get('/unread-count', protect, async (req, res, next) => {
+  try {
+    const count = await StudentRegistration.countDocuments({ is_read: false });
+    res.json({ success: true, count });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// @route   PATCH /api/students/mark-all-read
+// @desc    Mark all registrations as read (clears the notification badge)
+// @access  Private
+router.patch('/mark-all-read', protect, async (req, res, next) => {
+  try {
+    await StudentRegistration.updateMany({ is_read: false }, { is_read: true });
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // @route   GET /api/students/:id
 // @desc    Get single student registration
 // @access  Private
@@ -115,7 +139,13 @@ router.put('/:id', protect, async (req, res, next) => {
       });
     }
 
-    student = await StudentRegistration.findByIdAndUpdate(req.params.id, req.body, {
+    // Normalize status to lowercase (frontend sends 'Approved'/'Rejected')
+    const updateData = { ...req.body };
+    if (updateData.status) {
+      updateData.status = String(updateData.status).toLowerCase();
+    }
+
+    student = await StudentRegistration.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true,
     });
