@@ -8,18 +8,18 @@ const { protect } = require('../middleware/auth');
 // @access  Public
 router.post('/', async (req, res, next) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, whatsapp, subject, message } = req.body;
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !whatsapp || !subject || !message) {
       return res.status(400).json({
         success: false,
-        message: 'Name, email, subject, and message are required',
+        message: 'Name, WhatsApp number, subject, and message are required',
       });
     }
 
     const contactMsg = await ContactMessage.create({
       name,
-      email,
+      whatsapp,
       subject,
       message,
     });
@@ -64,6 +64,33 @@ router.get('/', protect, async (req, res, next) => {
 router.get('/:id', protect, async (req, res, next) => {
   try {
     const message = await ContactMessage.findById(req.params.id);
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: 'Contact message not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      data: message,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// @route   PATCH /api/contact/:id/read
+// @desc    Mark a contact message as read
+// @access  Private
+router.patch('/:id/read', protect, async (req, res, next) => {
+  try {
+    const message = await ContactMessage.findByIdAndUpdate(
+      req.params.id,
+      { is_read: true },
+      { new: true }
+    );
 
     if (!message) {
       return res.status(404).json({
