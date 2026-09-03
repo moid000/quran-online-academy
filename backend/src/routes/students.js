@@ -17,6 +17,7 @@ router.post('/register', async (req, res, next) => {
       course,
       package: pkg,
       payment_method,
+      payment_method_name,
       payment_screenshot,
       notes,
     } = req.body;
@@ -37,6 +38,7 @@ router.post('/register', async (req, res, next) => {
       course,
       package: pkg,
       payment_method,
+      payment_method_name,
       payment_screenshot,
       status: 'pending',
       notes,
