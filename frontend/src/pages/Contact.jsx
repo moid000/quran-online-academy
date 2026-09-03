@@ -205,22 +205,6 @@ export default function Contact() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              {/* Google Map */}
-              <GlassCard className="p-2 overflow-hidden">
-                <div className="aspect-video rounded-2xl overflow-hidden">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110502.60392989846!2d71.59508669999999!3d29.39463995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b90c040000001%3A0x28e0e8c9eeb9fc9d!2sBahawalpur%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1699999999999!5m2!1sen!2s"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Location Map"
-                  />
-                </div>
-              </GlassCard>
-
               {/* WhatsApp Quick Response */}
               <GlassCard className="p-6">
                 <h3 className="text-xl font-bold text-slate-900 mb-4">Quick Response via WhatsApp</h3>
@@ -238,6 +222,22 @@ export default function Contact() {
                   <WhatsAppIcon className="w-5 h-5" />
                   Chat on WhatsApp
                 </motion.a>
+              </GlassCard>
+
+              {/* Google Map */}
+              <GlassCard className="p-2 overflow-hidden">
+                <div className="aspect-video rounded-2xl overflow-hidden">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110502.60392989846!2d71.59508669999999!3d29.39463995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b90c040000001%3A0x28e0e8c9eeb9fc9d!2sBahawalpur%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1699999999999!5m2!1sen!2s"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Location Map"
+                  />
+                </div>
               </GlassCard>
             </motion.div>
 
