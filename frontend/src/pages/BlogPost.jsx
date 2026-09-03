@@ -124,7 +124,7 @@ export default function BlogPost() {
 
               {/* Share */}
               <div className="mt-12 pt-8 border-t border-gray-200">
-                <h3 className="text-brand-green font-semibold mb-4">Share this article</h3>
+                <h2 className="text-brand-green font-semibold mb-4">Share this article</h2>
                 <div className="flex gap-3">
                   <a
                     href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - ' + window.location.href)}`}
@@ -141,7 +141,7 @@ export default function BlogPost() {
             {/* More Articles */}
             {relatedPosts.length > 0 && (
               <div className="mt-12">
-                <h3 className="text-brand-green font-bold text-xl mb-6">More Articles</h3>
+                <h2 className="text-brand-green font-bold text-xl mb-6">More Articles</h2>
                 <div className="grid md:grid-cols-3 gap-4">
                   {relatedPosts.map(rel => (
                     <Link key={rel.id} to={`/blogs/${rel.id}`} onClick={() => window.scrollTo(0, 0)}>
@@ -152,7 +152,7 @@ export default function BlogPost() {
                           loading="lazy"
                           className="w-full h-32 object-cover rounded-xl mb-3"
                         />
-                        <h4 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{rel.title}</h4>
+                        <h3 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{rel.title}</h3>
                         <p className="text-slate-600 text-xs">{rel.readTime || "5 min"}</p>
                       </GlassCard>
                     </Link>
