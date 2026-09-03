@@ -100,30 +100,21 @@ export default function Register() {
     setSubmitting(true);
     setError('');
     try {
-      const fd = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key === 'payment_screenshot' && formData[key].startsWith('data:')) {
-          // Convert base64 to blob for FormData
-          const arr = formData[key].split(',');
-          const mime = arr[0].match(/:(.*?);/)[1];
-          const bstr = atob(arr[1]);
-          const u8arr = new Uint8Array(bstr.length);
-          for (let i = 0; i < bstr.length; i++) u8arr[i] = bstr.charCodeAt(i);
-          fd.append('paymentScreenshot', new Blob([u8arr], { type: mime }), 'screenshot.jpg');
-        } else {
-          fd.append(key, formData[key]);
-        }
-      });
-      fd.append('status', 'pending');
-
-      const res = await registerStudent(fd);
-      if (res.success || res.student) {
+      // Send a plain object - api layer uploads the screenshot to Cloudinary,
+      // then POSTs JSON to the backend which expects JSON (not multipart FormData)
+      const payload = {
+        ...formData,
+        payment_method_name: selectedPayment ? selectedPayment.name : '',
+        status: 'pending',
+      };
+      const res = await registerStudent(payload);
+      if (res.success) {
         setSuccess(true);
       } else {
         setError(res.message || 'Failed to submit registration. Please try again.');
       }
     } catch (err) {
-      setError('Failed to submit registration. Please try again.');
+      setError(err.message || 'Failed to submit registration. Please try again.');
     }
     setSubmitting(false);
   };
