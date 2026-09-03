@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
@@ -7,25 +7,26 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Public Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Courses from './pages/Courses';
-import Pricing from './pages/Pricing';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
-import Contact from './pages/Contact';
-import Register from './pages/Register';
+// Route-based code splitting: each page loads only when visited
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Courses = lazy(() => import('./pages/Courses'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Register = lazy(() => import('./pages/Register'));
 
 // Admin Pages
-import AdminLogin from './pages/admin/Login';
-import AdminDashboard from './pages/admin/Dashboard';
-import AdminStudents from './pages/admin/Students';
-import AdminCourses from './pages/admin/Courses';
-import AdminFeePackages from './pages/admin/FeePackages';
-import AdminBlog from './pages/admin/Blog';
-import AdminMessages from './pages/admin/Messages';
-import AdminPaymentMethods from './pages/admin/PaymentMethods';
-import AdminSettings from './pages/admin/Settings';
+const AdminLogin = lazy(() => import('./pages/admin/Login'));
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
+const AdminStudents = lazy(() => import('./pages/admin/Students'));
+const AdminCourses = lazy(() => import('./pages/admin/Courses'));
+const AdminFeePackages = lazy(() => import('./pages/admin/FeePackages'));
+const AdminBlog = lazy(() => import('./pages/admin/Blog'));
+const AdminMessages = lazy(() => import('./pages/admin/Messages'));
+const AdminPaymentMethods = lazy(() => import('./pages/admin/PaymentMethods'));
+const AdminSettings = lazy(() => import('./pages/admin/Settings'));
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -50,7 +51,8 @@ export default function App() {
     <>
       <ScrollToTop />
       <LayoutWrapper>
-        <Routes>
+        <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
+          <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -141,7 +143,8 @@ export default function App() {
 
           {/* Catch-all redirect to Home */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </Suspense>
       </LayoutWrapper>
     </>
   );
