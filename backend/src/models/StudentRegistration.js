@@ -36,6 +36,10 @@ const StudentRegistrationSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  payment_method_name: {
+    type: String,
+    trim: true,
+  },
   payment_screenshot: {
     type: String,
   },
