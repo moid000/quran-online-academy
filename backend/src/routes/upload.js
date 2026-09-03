@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { uploadToCloudinary } = require('../config/cloudinary');
+const { uploadToCloudinary, isCloudinaryConfigured } = require('../config/cloudinary');
+const Upload = require('../models/Upload');
 
 // Configure Multer Memory Storage
 const storage = multer.memoryStorage();
@@ -20,8 +21,12 @@ const upload = multer({
   },
 });
 
+// Base URL used for image links stored in the DB
+const getBaseUrl = () =>
+  process.env.APP_URL || 'https://quran-online-academy-production.up.railway.app';
+
 // @route   POST /api/upload
-// @desc    Upload file to Cloudinary
+// @desc    Upload file to Cloudinary (or MongoDB if Cloudinary not configured)
 // @access  Public
 router.post('/', (req, res, next) => {
   upload.single('file')(req, res, async (err) => {
@@ -40,24 +45,65 @@ router.post('/', (req, res, next) => {
     }
 
     try {
-      const folder = req.body.folder || 'quran_academy';
-      const result = await uploadToCloudinary(req.file.buffer, folder);
+      // If Cloudinary is configured, use it
+      if (isCloudinaryConfigured()) {
+        const folder = req.body.folder || 'quran_academy';
+        const result = await uploadToCloudinary(req.file.buffer, folder);
 
-      res.status(200).json({
+        return res.status(200).json({
+          success: true,
+          url: result.secure_url || result.url,
+          public_id: result.public_id,
+          format: result.format,
+          bytes: result.bytes,
+        });
+      }
+
+      // Fallback: store the image in MongoDB and serve it via /api/upload/:id
+      const saved = await Upload.create({
+        filename: req.file.originalname || 'upload',
+        mimeType: req.file.mimetype,
+        data: req.file.buffer.toString('base64'),
+      });
+
+      return res.status(200).json({
         success: true,
-        url: result.secure_url || result.url,
-        public_id: result.public_id,
-        format: result.format,
-        bytes: result.bytes,
+        url: `${getBaseUrl()}/api/upload/${saved._id}`,
+        storage: 'mongodb',
+        bytes: req.file.size,
       });
     } catch (uploadError) {
-      console.error('[Upload Route] Cloudinary error:', uploadError);
+      console.error('[Upload Route] Error:', uploadError);
       res.status(500).json({
         success: false,
-        message: uploadError.message || 'Error uploading image to Cloudinary',
+        message: uploadError.message || 'Error uploading image',
       });
     }
   });
+});
+
+// @route   GET /api/upload/:id
+// @desc    Serve an image stored in MongoDB
+// @access  Public
+router.get('/:id', async (req, res, next) => {
+  try {
+    const upload = await Upload.findById(req.params.id);
+
+    if (!upload) {
+      return res.status(404).json({
+        success: false,
+        message: 'File not found',
+      });
+    }
+
+    const buffer = Buffer.from(upload.data, 'base64');
+    res.set('Content-Type', upload.mimeType);
+    res.set('Content-Length', buffer.length);
+    res.set('Cache-Control', 'public, max-age=86400');
+    return res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
