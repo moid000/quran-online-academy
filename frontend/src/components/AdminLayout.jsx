@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -12,11 +12,47 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { getUnreadRegistrationsCount, markAllRegistrationsRead } from '../api/students';
+import { getUnreadMessagesCount } from '../api/contact';
 
 export default function AdminLayout({ children, title, subtitle }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, token } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [unread, setUnread] = useState({ registrations: 0, messages: 0 });
+
+  const refreshUnread = useCallback(async () => {
+    if (!token) return;
+    try {
+      const [regCount, msgCount] = await Promise.all([
+        getUnreadRegistrationsCount(token),
+        getUnreadMessagesCount(token),
+      ]);
+      setUnread({ registrations: regCount, messages: msgCount });
+    } catch (err) {
+      console.error('Failed to fetch unread counts:', err);
+    }
+  }, [token]);
+
+  // Poll for new registrations/messages every 30s + refresh on demand
+  useEffect(() => {
+    refreshUnread();
+    const interval = setInterval(refreshUnread, 30000);
+    const onRefresh = () => refreshUnread();
+    window.addEventListener('qoa:refresh-notifications', onRefresh);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('qoa:refresh-notifications', onRefresh);
+    };
+  }, [refreshUnread]);
+
+  // Opening the Registrations page marks all registrations as read
+  useEffect(() => {
+    if (token && location.pathname.startsWith('/admin/students')) {
+      markAllRegistrationsRead(token).then(() => refreshUnread());
+    }
+  }, [token, location.pathname, refreshUnread]);
 
   const handleLogout = () => {
     logout();
@@ -96,6 +132,12 @@ export default function AdminLayout({ children, title, subtitle }) {
                 >
                   <Icon className="w-4.5 h-4.5 shrink-0" />
                   <span>{item.name}</span>
+                  {(item.name === 'Registrations' && unread.registrations > 0) ||
+                  (item.name === 'Messages' && unread.messages > 0) ? (
+                    <span className="ml-auto flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-amber-400 text-[11px] font-bold text-slate-900 animate-pulse">
+                      {item.name === 'Registrations' ? unread.registrations : unread.messages}
+                    </span>
+                  ) : null}
                 </NavLink>
               );
             })}
