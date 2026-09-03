@@ -4,8 +4,8 @@ import { BookOpen, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -36,7 +36,7 @@ export default function AdminLogin() {
       await login({ username, password });
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Try admin / admin123');
+      setError(err.message || 'Invalid credentials. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -70,19 +70,23 @@ export default function AdminLogin() {
           <form onSubmit={handleSubmit} className="space-y-4 mt-8">
             <input
               type="text"
+              name="admin_username_field"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Email or Username"
               required
+              autoComplete="off"
               className="w-full px-5 py-4 bg-slate-100 border-none rounded-xl text-slate-900 placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
             />
 
             <input
               type="password"
+              name="admin_password_field"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
+              autoComplete="new-password"
               className="w-full px-5 py-4 bg-slate-100 border-none rounded-xl text-slate-900 placeholder-slate-500 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
             />
 
