@@ -173,4 +173,33 @@ router.get('/me', protect, async (req, res) => {
   });
 });
 
+
+// @route   PUT /api/auth/update-credentials
+// @desc    Update logged-in admin's username/email/password
+// @access  Private
+router.put('/update-credentials', protect, async (req, res, next) => {
+  try {
+    const { username, email, password } = req.body;
+    const admin = await Admin.findById(req.admin.id).select('+password');
+
+    if (!admin) {
+      return res.status(404).json({ success: false, message: 'Admin not found' });
+    }
+
+    if (username) admin.username = username.toLowerCase();
+    if (email) admin.email = email.toLowerCase();
+    if (password) admin.password = password; // pre-save hook hashes it
+
+    await admin.save();
+
+    res.json({
+      success: true,
+      message: 'Credentials updated successfully',
+      admin: { id: admin._id, username: admin.username, email: admin.email },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
