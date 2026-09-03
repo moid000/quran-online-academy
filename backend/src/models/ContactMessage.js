@@ -6,11 +6,10 @@ const ContactMessageSchema = new mongoose.Schema({
     required: [true, 'Name is required'],
     trim: true,
   },
-  email: {
+  whatsapp: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, 'WhatsApp number is required'],
     trim: true,
-    lowercase: true,
   },
   subject: {
     type: String,
