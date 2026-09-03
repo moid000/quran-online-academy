@@ -4,7 +4,7 @@ const initialMessages = [
   {
     id: 'm1',
     name: 'Zayd Merchant',
-    email: 'zayd.m@gmail.com',
+    whatsapp: '+92 300 1234567',
     subject: 'Inquiry about weekend trial classes',
     message: 'Assalamu Alaikum, I would like to register my two daughters (ages 7 and 10) for weekend Noorani Qaida and Tajweed classes. What time slots are available in EST time zone?',
     date: '2026-08-30 14:20',
@@ -13,7 +13,7 @@ const initialMessages = [
   {
     id: 'm2',
     name: 'Aisha Abdullah',
-    email: 'aisha.a@yahoo.com',
+    whatsapp: '+92 321 9876543',
     subject: 'Adult Female Quran Teacher Request',
     message: 'Salam, do you have female scholars for adult sisters living in London for Tajweed correction? JazakAllah Khair.',
     date: '2026-09-01 09:15',
@@ -40,7 +40,8 @@ export const sendContactMessage = async (messageData) => {
       body: JSON.stringify(messageData)
     });
     if (!res.ok) throw new Error('Failed to send contact message');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const msgs = getStoredMessages();
     const newMsg = {
@@ -61,7 +62,8 @@ export const getContactMessages = async (token) => {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Failed to fetch contact messages');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     return getStoredMessages();
   }
@@ -74,7 +76,8 @@ export const markMessageRead = async (id, token) => {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Failed to mark message as read');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     const msgs = getStoredMessages();
     const idx = msgs.findIndex(m => m.id === id);
@@ -93,7 +96,8 @@ export const deleteMessage = async (id, token) => {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Failed to delete message');
-    return await res.json();
+    const result = await res.json();
+    return result.data || result;
   } catch (err) {
     let msgs = getStoredMessages();
     msgs = msgs.filter(m => m.id !== id);
