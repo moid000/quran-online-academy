@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  User, BookOpen, CreditCard, CheckCircle2, AlertCircle,
+  User, BookOpen, CheckCircle2, AlertCircle,
   ArrowRight, ArrowLeft, Check, Loader2
 } from 'lucide-react';
 import { getCourses } from '../api/courses';
-import { getPaymentMethods } from '../api/paymentMethods';
 import { registerStudent } from '../api/students';
 import GlassCard from '../components/GlassCard';
 
@@ -28,7 +27,7 @@ const packageList = [
   { name: 'Weekend Only', price: 30 },
 ];
 
-const steps = ['Personal Info', 'Course Selection', 'Payment Method'];
+const steps = ['Personal Info', 'Course Selection'];
 
 export default function Register() {
   const [searchParams] = useSearchParams();
@@ -36,8 +35,6 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-
-  const [paymentMethods, setPaymentMethods] = useState([]);
 
   const [formData, setFormData] = useState({
     student_name: '',
@@ -47,13 +44,9 @@ export default function Register() {
     country: '',
     course: '',
     package: searchParams.get('package') || '',
-    payment_method: '',
   });
 
   useEffect(() => {
-    getPaymentMethods().then(methods => {
-      setPaymentMethods(methods.filter(m => m.is_active !== false));
-    });
     getCourses().then(courses => {
       // If course passed via URL
       const urlCourse = searchParams.get('course');
@@ -66,13 +59,11 @@ export default function Register() {
     setError('');
   };
 
-  const selectedPayment = paymentMethods.find(m => m._id === formData.payment_method);
   const selectedPackage = packageList.find(p => p.name === formData.package);
 
   const isStepValid = (stepNum) => {
     if (stepNum === 1) return formData.student_name && formData.father_name && formData.email && formData.whatsapp && formData.country;
     if (stepNum === 2) return formData.course && formData.package;
-    if (stepNum === 3) return formData.payment_method;
     return true;
   };
 
@@ -82,7 +73,6 @@ export default function Register() {
     try {
       const payload = {
         ...formData,
-        payment_method_name: selectedPayment ? selectedPayment.name : '',
         status: 'pending',
       };
       const res = await registerStudent(payload);
@@ -112,7 +102,7 @@ export default function Register() {
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Registration Successful!</h2>
             <p className="text-slate-600 mb-6">
-              Thank you for registering with QURAN ONLINE ACADEMIA. We will verify your payment and contact you within 24 hours.
+              Thank you for registering with Quran Online Academia. We have received your details, and our team will contact you within 24 hours to confirm your enrollment.
             </p>
             <Link to="/" onClick={() => window.scrollTo(0, 0)}>
               <button className="w-full bg-brand-green hover:bg-[#2a4a38] text-white py-3 rounded-xl font-semibold transition-colors">
@@ -146,7 +136,7 @@ export default function Register() {
               transition={{ delay: 0.1 }}
               className="text-white"
             >
-              Complete your enrollment in 3 simple steps
+              Complete your enrollment in 2 simple steps
             </motion.p>
           </div>
         </div>
@@ -165,7 +155,7 @@ export default function Register() {
                 }`}>
                   {step > idx + 1 ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                 </div>
-                {idx < 2 && (
+                {idx < 1 && (
                   <div className={`w-12 md:w-24 h-1 mx-2 rounded ${
                     step > idx + 1 ? 'bg-brand-green' : 'bg-gray-200'
                   }`} />
@@ -292,59 +282,6 @@ export default function Register() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
-            )}
-
-            {/* STEP 3: Payment Method */}
-            {step === 3 && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-6"
-              >
-                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-brand-green" />
-                  Payment Method
-                </h2>
-
-                <div className="space-y-3">
-                  {paymentMethods.map(pm => (
-                    <button
-                      key={pm._id}
-                      onClick={() => updateField('payment_method', pm._id)}
-                      className={`w-full p-4 rounded-xl border text-left transition-all ${
-                        formData.payment_method === pm._id
-                          ? 'bg-brand-green/10 border-brand-green'
-                          : 'bg-white border-gray-300 hover:bg-gray-50'
-                      }`}
-                    >
-                      <p className="font-semibold text-slate-900">{pm.name}</p>
-                    </button>
-                  ))}
-                </div>
-
-                {selectedPayment && (
-                  <div className="bg-brand-green/10 border border-brand-green/30 rounded-xl p-4 mt-6">
-                    <h3 className="text-brand-green font-semibold mb-3">Payment Details</h3>
-                    <div className="space-y-2 text-sm">
-                      <p className="text-slate-700">
-                        <span className="text-slate-600">Account Title: </span>
-                        {selectedPayment.accountName || selectedPayment.account_title}
-                      </p>
-                      <p className="text-slate-700">
-                        <span className="text-slate-600">Account/Number: </span>
-                        {selectedPayment.accountNumber || selectedPayment.account_number}
-                      </p>
-                      <p className="text-slate-700">
-                        <span className="text-slate-600">Amount: </span>
-                        <span className="text-brand-green font-bold">${selectedPackage?.price || 0}</span>
-                      </p>
-                      <p className="text-slate-600 mt-3 text-xs">
-                        {selectedPayment.instructions}
-                      </p>
-                    </div>
-                  </div>
-                )}
 
                 {/* Registration Summary */}
                 <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -393,7 +330,7 @@ export default function Register() {
                 <div />
               )}
 
-              {step < 3 ? (
+              {step < 2 ? (
                 <button
                   onClick={() => isStepValid(step) && setStep(step + 1)}
                   disabled={!isStepValid(step)}
@@ -405,7 +342,7 @@ export default function Register() {
               ) : (
                 <button
                   onClick={handleSubmit}
-                  disabled={submitting || !isStepValid(3)}
+                  disabled={submitting || !isStepValid(2)}
                   className="px-6 py-2 rounded-lg bg-brand-green hover:bg-[#2a4a38] text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
