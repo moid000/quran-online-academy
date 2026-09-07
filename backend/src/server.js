@@ -43,6 +43,31 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+
+// Dynamic sitemap for blog posts (auto-updates when new posts are published)
+app.get('/api/sitemap-blog.xml', async (req, res) => {
+  try {
+    const BlogPost = mongoose.model('BlogPost');
+    const posts = await BlogPost.find({ is_published: true }).sort({ createdAt: -1 });
+    const base = 'https://quran-online-academy-two.vercel.app/blogs/';
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    posts.forEach(p => {
+      xml += '  <url>\n';
+      xml += `    <loc>${base}${p.slug}</loc>\n`;
+      xml += `    <lastmod>${p.updatedAt ? p.updatedAt.toISOString() : new Date().toISOString()}</lastmod>\n`;
+      xml += '    <changefreq>monthly</changefreq>\n';
+      xml += '    <priority>0.6</priority>\n';
+      xml += '  </url>\n';
+    });
+    xml += '</urlset>';
+    res.set('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (err) {
+    res.status(500).send('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+  }
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/blog-posts', blogPostsRoutes);
