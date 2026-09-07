@@ -8,6 +8,7 @@ import {
 import { getCourses } from '../api/courses';
 import { registerStudent } from '../api/students';
 import GlassCard from '../components/GlassCard';
+import useSeo from '../hooks/useSeo';
 
 const courseList = [
   'Basic Qaidah',
@@ -30,6 +31,7 @@ const packageList = [
 const steps = ['Personal Info', 'Course Selection'];
 
 export default function Register() {
+  useSeo('Student Registration | Quran Online Academia', 'Register for online Quran classes in 2 easy steps. Fill your details, choose your course and package - our team will contact you within 24 hours.');
   const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
