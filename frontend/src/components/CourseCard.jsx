@@ -61,9 +61,9 @@ export default function CourseCard({ course, index = 0 }) {
             <Link to="/fees" onClick={() => window.scrollTo(0, 0)}>
               <motion.span
                 whileHover={{ x: 5 }}
-                className="flex items-center gap-1 text-brand-green text-sm cursor-pointer font-medium"
+                className="flex items-center gap-1.5 text-brand-green text-base cursor-pointer font-bold"
               >
-                Enroll <ArrowRight className="w-4 h-4" />
+                Enroll <ArrowRight className="w-5 h-5" />
               </motion.span>
             </Link>
           </div>
