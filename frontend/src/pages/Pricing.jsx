@@ -5,6 +5,7 @@ import { Star, Check, CreditCard, MessageCircle } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import GlassCard from '../components/GlassCard';
 import AnimatedButton from '../components/AnimatedButton';
+import useSeo from '../hooks/useSeo';
 
 const feePackages = [
   {
@@ -54,6 +55,7 @@ const faqs = [
 ];
 
 export default function Pricing() {
+  useSeo('Fee Packages | Quran Online Academia', 'Affordable online Quran classes fee packages. 3, 4 or 5 days weekly and weekend options. 3 days free trial available.');
   const [currency, setCurrency] = useState('USD');
 
   return (
