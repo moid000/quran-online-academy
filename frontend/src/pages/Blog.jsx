@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { getBlogPosts } from '../api/blogPosts';
 import BlogCard from '../components/BlogCard';
 import GlassCard from '../components/GlassCard';
+import useSeo from '../hooks/useSeo';
 
 const categories = ['All', 'Quran Learning', 'Spiritual Growth', 'Islamic Knowledge', 'Academy News'];
 
 export default function Blog() {
+  useSeo('Blog | Quran Online Academia', 'Articles about learning Quran online, Tajweed importance, Quran memorization tips and benefits of online Quran education.');
   const [activeCategory, setActiveCategory] = useState('All');
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
