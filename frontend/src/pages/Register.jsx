@@ -78,6 +78,8 @@ export default function Register() {
       const res = await registerStudent(payload);
       if (res.success) {
         setSuccess(true);
+        // Jump to the top so the success message is immediately visible
+        window.scrollTo({ top: 0, behavior: 'auto' });
       } else {
         setError(res.message || 'Failed to submit registration. Please try again.');
       }
