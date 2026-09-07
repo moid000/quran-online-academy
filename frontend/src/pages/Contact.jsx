@@ -4,6 +4,7 @@ import { Phone, Mail, Globe, Clock, Send, CheckCircle2, Loader2 } from 'lucide-r
 import WhatsAppIcon from '../components/WhatsAppIcon';
 import GlassCard from '../components/GlassCard';
 import { sendContactMessage } from '../api/contact';
+import useSeo from '../hooks/useSeo';
 
 const contactInfo = [
   { icon: Phone, title: 'Phone / WhatsApp', value: '+92 317 7479 286', link: 'https://wa.me/923177479286' },
@@ -13,6 +14,7 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  useSeo('Contact Us | Quran Online Academia', 'Contact Quran Online Academia for online Quran classes. Send us a message and our team will respond within 24 hours.');
   const [formData, setFormData] = useState({ name: '', whatsapp: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
