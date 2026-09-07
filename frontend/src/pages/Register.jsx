@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  User, BookOpen, CreditCard, Upload, CheckCircle2, AlertCircle,
-  ArrowRight, ArrowLeft, Check, FileUp, Loader2
+  User, BookOpen, CreditCard, CheckCircle2, AlertCircle,
+  ArrowRight, ArrowLeft, Check, Loader2
 } from 'lucide-react';
 import { getCourses } from '../api/courses';
 import { getPaymentMethods } from '../api/paymentMethods';
@@ -28,7 +28,7 @@ const packageList = [
   { name: 'Weekend Only', price: 30 },
 ];
 
-const steps = ['Personal Info', 'Course Selection', 'Payment Method', 'Upload Receipt'];
+const steps = ['Personal Info', 'Course Selection', 'Payment Method'];
 
 export default function Register() {
   const [searchParams] = useSearchParams();
@@ -36,7 +36,6 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [uploading, setUploading] = useState(false);
 
   const [paymentMethods, setPaymentMethods] = useState([]);
 
@@ -49,7 +48,6 @@ export default function Register() {
     course: '',
     package: searchParams.get('package') || '',
     payment_method: '',
-    payment_screenshot: '',
   });
 
   useEffect(() => {
@@ -68,20 +66,6 @@ export default function Register() {
     setError('');
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setUploading(true);
-      // Create local preview URL (since we don't have Base44 file upload)
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        updateField('payment_screenshot', reader.result);
-        setUploading(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const selectedPayment = paymentMethods.find(m => m._id === formData.payment_method);
   const selectedPackage = packageList.find(p => p.name === formData.package);
 
@@ -93,15 +77,9 @@ export default function Register() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.payment_screenshot) {
-      setError('Please upload payment screenshot');
-      return;
-    }
     setSubmitting(true);
     setError('');
     try {
-      // Send a plain object - api layer uploads the screenshot to Cloudinary,
-      // then POSTs JSON to the backend which expects JSON (not multipart FormData)
       const payload = {
         ...formData,
         payment_method_name: selectedPayment ? selectedPayment.name : '',
@@ -168,7 +146,7 @@ export default function Register() {
               transition={{ delay: 0.1 }}
               className="text-white"
             >
-              Complete your enrollment in 4 simple steps
+              Complete your enrollment in 3 simple steps
             </motion.p>
           </div>
         </div>
@@ -187,7 +165,7 @@ export default function Register() {
                 }`}>
                   {step > idx + 1 ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                 </div>
-                {idx < 3 && (
+                {idx < 2 && (
                   <div className={`w-12 md:w-24 h-1 mx-2 rounded ${
                     step > idx + 1 ? 'bg-brand-green' : 'bg-gray-200'
                   }`} />
@@ -367,65 +345,6 @@ export default function Register() {
                     </div>
                   </div>
                 )}
-              </motion.div>
-            )}
-
-            {/* STEP 4: Upload Receipt */}
-            {step === 4 && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="space-y-6"
-              >
-                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <Upload className="w-5 h-5 text-brand-green" />
-                  Upload Payment Screenshot
-                </h2>
-
-                <div className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
-                  {formData.payment_screenshot ? (
-                    <div className="space-y-4">
-                      <CheckCircle2 className="w-12 h-12 text-brand-green mx-auto" />
-                      <p className="text-brand-green font-semibold">Screenshot Uploaded Successfully</p>
-                      <img
-                        src={formData.payment_screenshot}
-                        alt="Payment Screenshot"
-                        loading="lazy"
-                        className="max-w-xs mx-auto rounded-lg"
-                      />
-                      <label className="cursor-pointer text-brand-green hover:underline">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileChange}
-                          className="hidden"
-                        />
-                        Change Image
-                      </label>
-                    </div>
-                  ) : (
-                    <label className="cursor-pointer block">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                      {uploading ? (
-                        <div className="space-y-4">
-                          <Loader2 className="w-12 h-12 text-brand-green mx-auto animate-spin" />
-                          <p className="text-slate-600">Uploading...</p>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <FileUp className="w-12 h-12 text-slate-600 mx-auto" />
-                          <p className="text-slate-700">Click to upload payment screenshot</p>
-                          <p className="text-slate-600 text-sm">PNG, JPG up to 10MB</p>
-                        </div>
-                      )}
-                    </label>
-                  )}
-                </div>
 
                 {/* Registration Summary */}
                 <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -474,19 +393,19 @@ export default function Register() {
                 <div />
               )}
 
-              {step < 4 ? (
+              {step < 3 ? (
                 <button
                   onClick={() => isStepValid(step) && setStep(step + 1)}
                   disabled={!isStepValid(step)}
                   className="px-6 py-2 rounded-lg bg-brand-green hover:bg-[#2a4a38] text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Continue
+                  Submit
                   <ArrowRight className="w-4 h-4" />
                 </button>
               ) : (
                 <button
                   onClick={handleSubmit}
-                  disabled={submitting || !formData.payment_screenshot}
+                  disabled={submitting || !isStepValid(3)}
                   className="px-6 py-2 rounded-lg bg-brand-green hover:bg-[#2a4a38] text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
@@ -497,7 +416,7 @@ export default function Register() {
                   ) : (
                     <>
                       <CheckCircle2 className="w-4 h-4" />
-                      Complete Registration
+                      Submit
                     </>
                   )}
                 </button>
