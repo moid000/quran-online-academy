@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, User, ArrowLeft } from 'lucide-react';
 import { getBlogPosts } from '../api/blogPosts';
 import GlassCard from '../components/GlassCard';
+import useSeo from '../hooks/useSeo';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -28,6 +29,7 @@ export default function BlogPost() {
         setPost(found);
         const related = posts.filter(p => p.id !== found.id).slice(0, 3);
         setRelatedPosts(related);
+        document.title = `${found.title} | Quran Online Academia`;
       }
       setLoading(false);
     }).catch(() => setLoading(false));
