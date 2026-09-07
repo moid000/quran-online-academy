@@ -183,7 +183,7 @@ export default function Pricing() {
                             : 'bg-gray-100 text-slate-900 hover:bg-gray-200'
                         }`}
                       >
-                        Enroll Now
+                        Select
                       </motion.button>
                     </Link>
                   </div>
