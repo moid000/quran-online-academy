@@ -12,6 +12,7 @@ import SectionHeader from '../components/SectionHeader';
 import AnimatedButton from '../components/AnimatedButton';
 import AnimatedCounter from '../components/AnimatedCounter';
 import { getCourses } from '../api/courses';
+import useSeo from '../hooks/useSeo';
 
 const heroSlides = [
   {
@@ -121,6 +122,7 @@ function FaqItem({ faq, index }) {
 }
 
 export default function Home() {
+  useSeo('Online Quran Classes with Expert Teachers | Quran Online Academia', 'Learn Quran online with expert male & female teachers. Noorani Qaida, Tajweed, Hifz and Translation courses. 3 days free trial - register today!');
   // Responsive hero images: mobile gets a lighter 800px version, desktop 1600px
   const [heroImgW, setHeroImgW] = useState(1600);
   useEffect(() => {
