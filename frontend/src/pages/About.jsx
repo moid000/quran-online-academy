@@ -4,6 +4,7 @@ import { BookOpen, Heart, Users, Target, Clock, Globe, CheckCircle2, MessageCirc
 import SectionHeader from '../components/SectionHeader';
 import GlassCard from '../components/GlassCard';
 import AnimatedButton from '../components/AnimatedButton';
+import useSeo from '../hooks/useSeo';
 
 const ourValues = [
   { icon: BookOpen, title: 'Authentic Teaching', desc: 'Quran education based on authentic sources with proper Tajweed' },
@@ -28,6 +29,7 @@ const whyChooseUs = [
 ];
 
 export default function About() {
+  useSeo('About Us | Quran Online Academia', 'Meet Quran Online Academia - dedicated to providing premium online Quran education with experienced male and female tutors worldwide.');
   return (
     <div className="pt-20">
 
