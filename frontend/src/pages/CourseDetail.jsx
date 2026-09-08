@@ -94,7 +94,7 @@ export default function CourseDetail() {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
         </div>
         <img
-          src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80"
+          src="/images/local/1609599006353-e629aaabfeae-800.webp?w=1920&q=80"
           alt="Quran Background"
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
         />
@@ -154,7 +154,7 @@ export default function CourseDetail() {
               >
                 <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-200">
                   <img
-                    src={image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80'}
+                    src={image || '/images/local/1609599006353-e629aaabfeae-800.webp?w=800&q=80'}
                     alt={title}
                     className="w-full h-80 object-cover"
                   />
