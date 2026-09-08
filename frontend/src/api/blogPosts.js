@@ -14,7 +14,7 @@ Every letter of the Quran that you recite brings ten good deeds. Imagine the ble
 In another Hadith, the Prophet (PBUH) said: "Whoever reads a letter from the Book of Allah will receive a hasanah (good deed), and every hasanah will be multiplied by ten."
 
 Learning the Quran also brings barakah (blessings) into your life, protects you from trials, and on the Day of Judgment, the Quran will intercede for those who recited and followed it.`,
-    image: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1200&q=80',
+    image: '/images/local/1609599006353-e629aaabfeae-1200.webp',
     category: 'Spiritual Growth',
     author: 'Abdul Muhaymin',
     date: '2024-01-15',
@@ -37,7 +37,7 @@ Benefits include:
 - Progress tracking and regular assessments
 
 The digital age has truly revolutionized how we approach Islamic education, making it possible for anyone, anywhere, to connect with the divine words of Allah.`,
-    image: 'https://images.unsplash.com/photo-1585036156171-384164a8c675?w=1200&q=80',
+    image: '/images/local/1585036156171-384164a8c675-1200.webp',
     category: 'Academy News',
     author: 'Abdul Muhaymin',
     date: '2024-01-10',
@@ -58,7 +58,7 @@ Why is Tajweed Important?
 4. Following the Sunnah - The Prophet (PBUH) recited with Tajweed
 
 Learning Tajweed is not just recommended - it's an obligation for every Muslim who recites the Quran.`,
-    image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1200&q=80',
+    image: '/images/local/1542816417-0983c9c9ad53-1200.webp',
     category: 'Quran Learning',
     author: 'Abdul Muhaymin',
     date: '2024-01-05',
