@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin
 
 Sitemap: https://www.quranonlineacademia.com/sitemap.xml
-Sitemap: https://quran-online-academy-production.up.railway.app/api/sitemap-blog.xml
+Sitemap: https://www.quranonlineacademia.com/sitemap-blog.xml
