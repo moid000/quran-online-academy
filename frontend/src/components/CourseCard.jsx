@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 export default function CourseCard({ course, index = 0 }) {
   const { _id, id, slug, title, description, level, duration, image_url, image, features } = course;
   const courseId = id || _id;
-  const imageUrl = image_url || image || 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=600&q=80';
+  const imageUrl = image_url || image || '/images/local/1609599006353-e629aaabfeae-800.webp?w=600&q=80';
 
   return (
     <motion.div
