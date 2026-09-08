@@ -16,7 +16,7 @@ export default function BlogCard({ post, index = 0 }) {
       {/* Image */}
       <div className="relative h-48 overflow-hidden rounded-t-3xl">
         <img
-          src={postImage || "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=600&q=80"}
+          src={postImage || "/images/local/1609599006353-e629aaabfeae-800.webp?w=600&q=80"}
           alt={title}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
