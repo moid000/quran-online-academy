@@ -16,25 +16,25 @@ import useSeo from '../hooks/useSeo';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae',
+    image: '/images/local/1609599006353-e629aaabfeae-1920.webp',
     quote: '"Indeed, this Quran guides to that which is most suitable"',
     reference: 'Surah Al-Isra 17:9',
     title: 'Begin Your Quranic Journey',
   },
   {
-    image: 'https://images.unsplash.com/photo-1585036156171-384164a8c675',
+    image: '/images/local/1585036156171-384164a8c675-1920.webp',
     quote: '"And We have certainly made the Quran easy for remembrance"',
     reference: 'Surah Al-Qamar 54:17',
     title: 'Learn From Expert Teachers',
   },
   {
-    image: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53',
+    image: '/images/local/1542816417-0983c9c9ad53-1920.webp',
     quote: '"The best among you are those who learn the Quran and teach it"',
     reference: 'Hadith - Sahih Bukhari',
     title: 'Join 3000+ Students Worldwide',
   },
   {
-    image: 'https://images.unsplash.com/photo-1610552050890-fe99536c2615',
+    image: '/images/local/1610552050890-fe99536c2615-1920.webp',
     quote: '"Read! In the name of your Lord who created"',
     reference: 'Surah Al-Alaq 96:1',
     title: 'Transform Your Life with Quran',
@@ -67,19 +67,19 @@ const impactNumbers = [
 ];
 
 const testimonials = [
-  { name: 'Abdullah Rahman', location: 'United Kingdom', image: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?w=150&q=80', rating: 5, text: "My children have learned so much in just a few months. The teachers are patient and understanding. Best decision we made for our family's Islamic education." },
-  { name: 'Muhammad Ali', location: 'United States', image: 'https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=150&q=80', rating: 5, text: "As a busy professional, the flexible scheduling has been a blessing. I've finally been able to complete my Quran memorization journey. JazakAllah khair!" },
-  { name: 'Ibrahim Hassan', location: 'Canada', image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&q=80', rating: 5, text: "The Tajweed course transformed my recitation. Teacher Abdul Muhaymin's method of teaching is exceptional. I recommend this academy to everyone." },
-  { name: 'Ahmed Khan', location: 'Australia', image: 'https://images.unsplash.com/photo-1600486913747-55e5470d6f40?w=150&q=80', rating: 5, text: "Started with basic Qaidah and now learning Tafseer. The journey has been incredible. The academy truly cares about each student's progress." },
-  { name: 'Sana Khan', location: 'Pakistan', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&q=80', rating: 5, text: 'Absolutely fantastic the teacher is very good, reliable and honest, I started with no knowledge of reciting the Quran within weeks I was reciting the Quran, felt amazing. Would highly recommend with no doubt.' },
-  { name: 'Fahad Hashmi', location: 'United Kingdom', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80', rating: 5, text: "It's a best Online Quran Academy for kids and adults, they have very experienced and qualified tutors, male and female teachers, I recommend this." },
-  { name: 'Mohammed Abdullah', location: 'United Arab Emirates', image: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=150&q=80', rating: 5, text: 'This Quran Academy truly stands out for its quality teaching and sincere dedication. The instructors are knowledgeable, patient, and focused on real student progress.' },
-  { name: 'Azaan Azaan', location: 'United States', image: 'https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?w=150&q=80', rating: 5, text: 'This is very good Online Quran Academy, best for all ages, it has qualified and expert tutors, MashAllah, I recommend this 100%.' },
-  { name: 'Javed Ahmed', location: 'Pakistan', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&q=80', rating: 5, text: 'Very good and experienced teacher, my kids learn a lot of things about Din o Islam. 100% recommended academy.' },
-  { name: 'SaeedMd Mawati', location: 'India', image: 'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=150&q=80', rating: 5, text: 'Best institution for online classes, the video lectures have made it so easy to study at home. Each and every teacher is good.' },
-  { name: 'Yasir Khan', location: 'Pakistan', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&q=80', rating: 5, text: "I'm absolutely impressed with the exceptional quality of education and dedication of this institute." },
-  { name: 'Huzaifa Furqan', location: 'Pakistan', image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&q=80', rating: 5, text: 'Best online institute & has a global mission to build Muslim thoughts & identity. Keep it up!' },
-  { name: 'Kifal', location: 'United Kingdom', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&q=80', rating: 5, text: 'I am truly grateful for Sir Muhaymin, my son\'s Quran teacher. He is very dedicated, been teaching for a long time and the progress has been amazing. Highly recommend to anyone looking for a knowledgeable and trustworthy teacher.' },
+  { name: 'Abdullah Rahman', location: 'United Kingdom', image: '/images/local/1603415526960-f7e0328c63b1-150.webp', rating: 5, text: "My children have learned so much in just a few months. The teachers are patient and understanding. Best decision we made for our family's Islamic education." },
+  { name: 'Muhammad Ali', location: 'United States', image: '/images/local/1582672060674-bc2bd808a8b5-150.webp', rating: 5, text: "As a busy professional, the flexible scheduling has been a blessing. I've finally been able to complete my Quran memorization journey. JazakAllah khair!" },
+  { name: 'Ibrahim Hassan', location: 'Canada', image: '/images/local/1566492031773-4f4e44671857-150.webp', rating: 5, text: "The Tajweed course transformed my recitation. Teacher Abdul Muhaymin's method of teaching is exceptional. I recommend this academy to everyone." },
+  { name: 'Ahmed Khan', location: 'Australia', image: '/images/local/1600486913747-55e5470d6f40-150.webp', rating: 5, text: "Started with basic Qaidah and now learning Tafseer. The journey has been incredible. The academy truly cares about each student's progress." },
+  { name: 'Sana Khan', location: 'Pakistan', image: '/images/local/1544005313-94ddf0286df2-150.webp', rating: 5, text: 'Absolutely fantastic the teacher is very good, reliable and honest, I started with no knowledge of reciting the Quran within weeks I was reciting the Quran, felt amazing. Would highly recommend with no doubt.' },
+  { name: 'Fahad Hashmi', location: 'United Kingdom', image: '/images/local/1500648767791-00dcc994a43e-150.webp', rating: 5, text: "It's a best Online Quran Academy for kids and adults, they have very experienced and qualified tutors, male and female teachers, I recommend this." },
+  { name: 'Mohammed Abdullah', location: 'United Arab Emirates', image: '/images/local/1552058544-f2b08422138a-150.webp', rating: 5, text: 'This Quran Academy truly stands out for its quality teaching and sincere dedication. The instructors are knowledgeable, patient, and focused on real student progress.' },
+  { name: 'Azaan Azaan', location: 'United States', image: '/images/local/1531891437562-4301cf35b7e4-150.webp', rating: 5, text: 'This is very good Online Quran Academy, best for all ages, it has qualified and expert tutors, MashAllah, I recommend this 100%.' },
+  { name: 'Javed Ahmed', location: 'Pakistan', image: '/images/local/1560250097-0b93528c311a-150.webp', rating: 5, text: 'Very good and experienced teacher, my kids learn a lot of things about Din o Islam. 100% recommended academy.' },
+  { name: 'SaeedMd Mawati', location: 'India', image: '/images/local/1607990281513-2c110a25bd8c-150.webp', rating: 5, text: 'Best institution for online classes, the video lectures have made it so easy to study at home. Each and every teacher is good.' },
+  { name: 'Yasir Khan', location: 'Pakistan', image: '/images/local/1519085360753-af0119f7cbe7-150.webp', rating: 5, text: "I'm absolutely impressed with the exceptional quality of education and dedication of this institute." },
+  { name: 'Huzaifa Furqan', location: 'Pakistan', image: '/images/local/1522075469751-3a6694fb2f61-150.webp', rating: 5, text: 'Best online institute & has a global mission to build Muslim thoughts & identity. Keep it up!' },
+  { name: 'Kifal', location: 'United Kingdom', image: '/images/local/1560250097-0b93528c311a-150.webp', rating: 5, text: 'I am truly grateful for Sir Muhaymin, my son\'s Quran teacher. He is very dedicated, been teaching for a long time and the progress has been amazing. Highly recommend to anyone looking for a knowledgeable and trustworthy teacher.' },
 ];
 
 const faqs = [
@@ -437,7 +437,7 @@ export default function Home() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-brand-green" />
-          <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: `url(${heroUrl('https://images.unsplash.com/photo-1609599006353-e629aaabfeae')})` }} />
+          <div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: `url(${heroUrl('/images/local/1609599006353-e629aaabfeae-1920.webp')})` }} />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
@@ -563,7 +563,7 @@ export default function Home() {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585036156171-384164a8c675')] bg-cover bg-center opacity-5" />
+          <div className="absolute inset-0 bg-[url('/images/local/1585036156171-384164a8c675-1920.webp')] bg-cover bg-center opacity-5" />
         </div>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#345B46]/10 rounded-full blur-3xl" />
