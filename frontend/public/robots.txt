@@ -4,5 +4,5 @@ Allow: /
 # Admin panel - no need to be indexed
 Disallow: /admin
 
-Sitemap: https://quran-online-academy-two.vercel.app/sitemap.xml
+Sitemap: https://www.quranonlineacademia.com/sitemap.xml
 Sitemap: https://quran-online-academy-production.up.railway.app/api/sitemap-blog.xml
