@@ -44,7 +44,7 @@ export default function Contact() {
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900" />
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1920&q=80')] bg-cover bg-center opacity-10" />
+          <div className="absolute inset-0 bg-[url('/images/local/1609599006353-e629aaabfeae-800.webp?w=1920&q=80')] bg-cover bg-center opacity-10" />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
