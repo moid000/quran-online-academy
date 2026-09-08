@@ -49,7 +49,7 @@ app.get('/api/sitemap-blog.xml', async (req, res) => {
   try {
     const BlogPost = mongoose.model('BlogPost');
     const posts = await BlogPost.find({ is_published: true }).sort({ createdAt: -1 });
-    const base = 'https://quran-online-academy-two.vercel.app/blogs/';
+    const base = 'https://www.quranonlineacademia.com/blogs/';
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
     posts.forEach(p => {
