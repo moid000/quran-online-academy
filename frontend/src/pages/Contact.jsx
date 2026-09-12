@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Phone, Mail, Globe, Clock, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
@@ -14,6 +15,7 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const navigate = useNavigate();
   useSeo('Contact Us | Quran Online Academia', 'Contact Quran Online Academia for online Quran classes. Send us a message and our team will respond within 24 hours.');
   const [formData, setFormData] = useState({ name: '', whatsapp: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -30,6 +32,7 @@ export default function Contact() {
     try {
       await sendContactMessage(formData);
       setSent(true);
+      navigate('/contact-thank-you');
       setFormData({ name: '', whatsapp: '', subject: '', message: '' });
     } catch (err) {
       console.error(err);
