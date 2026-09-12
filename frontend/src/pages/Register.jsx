@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   User, BookOpen, CheckCircle2, AlertCircle,
@@ -31,6 +31,7 @@ const packageList = [
 const steps = ['Personal Info', 'Course Selection'];
 
 export default function Register() {
+  const navigate = useNavigate();
   useSeo('Student Registration | Quran Online Academia', 'Register for online Quran classes in 2 easy steps. Fill your details, choose your course and package - our team will contact you within 24 hours.');
   const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
@@ -80,6 +81,7 @@ export default function Register() {
       const res = await registerStudent(payload);
       if (res.success) {
         setSuccess(true);
+        navigate('/register-thank-you');
         // Jump to the top so the success message is immediately visible
         window.scrollTo({ top: 0, behavior: 'auto' });
       } else {
