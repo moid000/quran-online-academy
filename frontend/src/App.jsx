@@ -16,6 +16,8 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Register = lazy(() => import('./pages/Register'));
+const RegisterThankYou = lazy(() => import('./pages/RegisterThankYou'));
+const ContactThankYou = lazy(() => import('./pages/ContactThankYou'));
 
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/admin/Login'));
@@ -71,6 +73,8 @@ export default function App() {
 
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/register-thank-you" element={<RegisterThankYou />} />
+          <Route path="/contact-thank-you" element={<ContactThankYou />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
