@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import GlassCard from './GlassCard';
 
 export default function BlogCard({ post, index = 0 }) {
-  const { _id, id, title, excerpt, category, date, createdAt, image, image_url, readTime } = post;
-  const postId = id || _id;
+  const { _id, id, slug, title, excerpt, category, date, createdAt, image, image_url, readTime } = post;
+  const postId = slug || id || _id;
   const postImage = image_url || image;
   const postDate = date || createdAt;
   const postReadTime = readTime || '5 min';
