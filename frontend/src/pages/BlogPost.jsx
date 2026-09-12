@@ -20,14 +20,15 @@ export default function BlogPost() {
       const id = searchParams.get('id');
       const found = posts.find(p =>
         p.slug === slug ||
+        p._id === slug ||
         p.id === slug ||
         p.id === parseInt(slug) ||
-        (id && p.id === parseInt(id))
-      ) || posts[0];
+        (id && (p.id === parseInt(id) || p._id === id))
+      );
 
       if (found) {
         setPost(found);
-        const related = posts.filter(p => p.id !== found.id).slice(0, 3);
+        const related = posts.filter(p => (p._id || p.id) !== (found._id || found.id)).slice(0, 3);
         setRelatedPosts(related);
         document.title = `${found.title} | Quran Online Academia`;
       }
