@@ -147,7 +147,7 @@ export default function BlogPost() {
                 <h2 className="text-brand-green font-bold text-xl mb-6">More Articles</h2>
                 <div className="grid md:grid-cols-3 gap-4">
                   {relatedPosts.map(rel => (
-                    <Link key={rel.id} to={`/blogs/${rel.id}`} onClick={() => window.scrollTo(0, 0)}>
+                    <Link key={rel._id || rel.id} to={`/blogs/${rel.slug || rel._id}`} onClick={() => window.scrollTo(0, 0)}>
                       <GlassCard className="p-4 hover:scale-105 transition-transform">
                         <img
                           src={rel.image_url || rel.image}
