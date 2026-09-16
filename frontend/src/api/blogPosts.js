@@ -79,7 +79,7 @@ const saveStoredPosts = (posts) => {
 
 export const getBlogPosts = async () => {
   try {
-    const res = await fetch(`${API_URL}/blog-posts`);
+    const res = await fetch(`${API_URL}/blog-posts?limit=200`);
     if (!res.ok) throw new Error('Failed to fetch blog posts');
     const result = await res.json();
     return result.data || result;
