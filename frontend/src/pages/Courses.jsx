@@ -8,7 +8,7 @@ import AnimatedButton from '../components/AnimatedButton';
 import useSeo from '../hooks/useSeo';
 
 export default function Courses() {
-  useSeo('Quran Courses | Quran Online Academia', 'Explore our courses: Noorani Qaida, Quran Reading (Nazra), Quran Memorization (Hifz), Tajweed, Translation, Duas, Hadith and Islamic Studies.');
+  useSeo('Quran Courses | Quran Online Academia', 'Explore our courses: Noorani Qaida, Quran Reading (Nazra), Quran Memorization (Hifz), Tajweed, Translation, Duas, Hadith and Islamic Studies.', '/courses');
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
