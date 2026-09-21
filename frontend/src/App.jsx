@@ -17,6 +17,9 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Register = lazy(() => import('./pages/Register'));
 const RegisterThankYou = lazy(() => import('./pages/RegisterThankYou'));
+const FAQ = lazy(() => import('./pages/FAQ'));
+const Terms = lazy(() => import('./pages/Terms'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const ContactThankYou = lazy(() => import('./pages/ContactThankYou'));
 
 // Admin Pages
@@ -75,6 +78,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/register-thank-you" element={<RegisterThankYou />} />
           <Route path="/contact-thank-you" element={<ContactThankYou />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
