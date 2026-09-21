@@ -16,7 +16,7 @@ const contactInfo = [
 
 export default function Contact() {
   const navigate = useNavigate();
-  useSeo('Contact Us | Quran Online Academia', 'Contact Quran Online Academia for online Quran classes. Send us a message and our team will respond within 24 hours.');
+  useSeo('Contact Us | Quran Online Academia', 'Contact Quran Online Academia for online Quran classes. Send us a message and our team will respond within 24 hours.', '/contact');
   const [formData, setFormData] = useState({ name: '', whatsapp: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
