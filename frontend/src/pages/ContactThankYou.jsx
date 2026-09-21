@@ -8,7 +8,8 @@ import useSeo from '../hooks/useSeo';
 export default function ContactThankYou() {
   useSeo(
     'Message Sent Successfully',
-    'Thank you for contacting Quran Online Academia. Our team will respond to your message within 24 hours.'
+    'Thank you for contacting Quran Online Academia. Our team will respond to your message within 24 hours.',
+    '/contact-thank-you'
   );
 
   return (
