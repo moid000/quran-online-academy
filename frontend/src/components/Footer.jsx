@@ -9,6 +9,7 @@ const quickLinks = [
   { name: 'Courses', path: '/courses' },
   { name: 'Fees', path: '/fees' },
   { name: 'Blogs', path: '/blogs' },
+  { name: 'FAQ', path: '/faq' },
   { name: 'Contact', path: '/contact' },
 ];
 
