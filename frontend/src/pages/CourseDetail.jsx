@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Clock, BookOpen, CheckCircle2, UserCheck, ArrowLeft, ArrowRight, 
-  MessageCircle, Calendar, Check
+  MessageCircle, Calendar, Check, ChevronDown
 } from 'lucide-react';
 import { getCourseById, getCourses } from '../api/courses';
 import CourseCard from '../components/CourseCard';
@@ -10,6 +10,8 @@ import { motion } from 'framer-motion';
 import SectionHeader from '../components/SectionHeader';
 import GlassCard from '../components/GlassCard';
 import AnimatedButton from '../components/AnimatedButton';
+import useSeo from '../hooks/useSeo';
+import { courseSeoContent } from '../data/courseSeoContent';
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -37,6 +39,48 @@ export default function CourseDetail() {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  const seo = course ? courseSeoContent[course.slug || id] : undefined;
+
+  // Per-course SEO title, description and canonical URL
+  useSeo(
+    course ? (seo?.metaTitle || `${course.title} Online | Quran Online Academia`) : undefined,
+    course ? (seo?.metaDesc || course.description) : undefined,
+    course ? `/courses/${course.slug || id}` : undefined
+  );
+
+  // Course JSON-LD schema for Google rich results
+  useEffect(() => {
+    if (!course) return;
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'Course',
+      name: course.title,
+      description: seo?.metaDesc || course.description,
+      provider: {
+        '@type': 'EducationalOrganization',
+        name: 'Quran Online Academia',
+        sameAs: 'https://www.quranonlineacademia.com'
+      },
+      offers: {
+        '@type': 'Offer',
+        category: 'Paid',
+        availability: 'https://schema.org/InStock'
+      },
+      ...(seo?.faqs ? {
+        hasCourseInstance: {
+          '@type': 'CourseInstance',
+          courseMode: 'online',
+          courseWorkload: 'PT30M'
+        }
+      } : {})
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
+    return () => { if (script.parentNode) document.head.removeChild(script); };
+  }, [course, id]);
 
   if (loading) {
     return (
@@ -226,6 +270,62 @@ export default function CourseDetail() {
                     })}
                   </div>
                 </div>
+
+                {/* SEO: About This Course (per-course content) */}
+                {seo && (
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <div className="text-brand-green font-arabic text-xl">﷽</div>
+                    <h2 className="text-2xl font-bold text-slate-900">About This Course</h2>
+                    {seo.overview.map((p, i) => (
+                      <p key={i} className="text-slate-700 leading-relaxed text-base">{p}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* SEO: Outcomes */}
+                {seo && (
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <div className="text-brand-green font-arabic text-xl">﷽</div>
+                    <h2 className="text-2xl font-bold text-slate-900">What You Will Achieve</h2>
+                    <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                      {seo.outcomes.map((item, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: idx * 0.1 }}
+                          className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-start gap-3"
+                        >
+                          <CheckCircle2 className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                          <span className="text-slate-700 font-medium text-sm">{item}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-slate-600 pt-2">
+                      <strong className="text-slate-800">Who is this course for:</strong> {seo.whoFor}
+                    </p>
+                  </div>
+                )}
+
+                {/* SEO: FAQs */}
+                {seo && seo.faqs && (
+                  <div className="space-y-4 pt-6 border-t border-gray-100">
+                    <div className="text-brand-green font-arabic text-xl">﷽</div>
+                    <h2 className="text-2xl font-bold text-slate-900">Frequently Asked Questions</h2>
+                    <div className="space-y-3 pt-2">
+                      {seo.faqs.map((f, idx) => (
+                        <details key={idx} className="bg-gray-50 border border-gray-200 rounded-xl p-4 group">
+                          <summary className="font-semibold text-slate-800 cursor-pointer text-sm flex items-center justify-between">
+                            {f.q}
+                            <ChevronDown className="w-4 h-4 text-brand-gold shrink-0 transition-transform group-open:rotate-180" />
+                          </summary>
+                          <p className="text-slate-600 text-sm leading-relaxed pt-3">{f.a}</p>
+                        </details>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
               </motion.div>
 
