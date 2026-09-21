@@ -55,7 +55,7 @@ const faqs = [
 ];
 
 export default function Pricing() {
-  useSeo('Fee Packages | Quran Online Academia', 'Affordable online Quran classes fee packages. 3, 4 or 5 days weekly and weekend options. 3 days free trial available.');
+  useSeo('Fee Packages | Quran Online Academia', 'Affordable online Quran classes fee packages. 3, 4 or 5 days weekly and weekend options. 3 days free trial available.', '/fees');
   const [currency, setCurrency] = useState('USD');
 
   return (
