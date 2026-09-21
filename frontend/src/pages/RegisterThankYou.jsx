@@ -8,7 +8,8 @@ import useSeo from '../hooks/useSeo';
 export default function RegisterThankYou() {
   useSeo(
     'Registration Successful',
-    'Thank you for registering with Quran Online Academia. Our team will contact you within 24 hours to confirm your free trial class.'
+    'Thank you for registering with Quran Online Academia. Our team will contact you within 24 hours to confirm your free trial class.',
+    '/register-thank-you'
   );
 
   return (
