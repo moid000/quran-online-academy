@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Courses = lazy(() => import('./pages/Courses'));
+const CourseDetail = lazy(() => import('./pages/CourseDetail'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
@@ -62,7 +63,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/:id" element={<Navigate to="/courses" replace />} />
+          <Route path="/courses/:id" element={<CourseDetail />} />
           
           {/* Fees / Pricing */}
           <Route path="/fees" element={<Pricing />} />
