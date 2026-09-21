@@ -30,11 +30,18 @@ export default function BlogPost() {
         setPost(found);
         const related = posts.filter(p => (p._id || p.id) !== (found._id || found.id)).slice(0, 3);
         setRelatedPosts(related);
-        document.title = `${found.title} | Quran Online Academia`;
       }
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [slug, searchParams]);
+
+  // Sets title, meta description, and canonical URL to the correct slug-based path
+  // (fixes duplicate-content signal when a post is reached via its raw database id)
+  useSeo(
+    post ? post.title : undefined,
+    post ? (post.excerpt || post.title) : undefined,
+    post ? `/blogs/${post.slug || post._id || post.id}` : undefined
+  );
 
   if (loading) {
     return (
