@@ -29,7 +29,7 @@ const whyChooseUs = [
 ];
 
 export default function About() {
-  useSeo('About Us | Quran Online Academia', 'Meet Quran Online Academia - dedicated to providing premium online Quran education with experienced male and female tutors worldwide.');
+  useSeo('About Us | Quran Online Academia', 'Meet Quran Online Academia - dedicated to providing premium online Quran education with experienced male and female tutors worldwide.', '/about');
   return (
     <div className="pt-20">
 
