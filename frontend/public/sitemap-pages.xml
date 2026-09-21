@@ -36,12 +36,17 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.quranonlineacademia.com/Terms</loc>
+    <loc>https://www.quranonlineacademia.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.quranonlineacademia.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.quranonlineacademia.com/PrivacyPolicy</loc>
+    <loc>https://www.quranonlineacademia.com/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
