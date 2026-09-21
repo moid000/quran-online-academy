@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, MessageCircle } from 'lucide-react';
 import useSeo from '../hooks/useSeo';
@@ -72,6 +72,15 @@ export default function FAQ() {
     '/faq'
   );
   const [open, setOpen] = useState(0);
+
+  // Inject FAQPage JSON-LD schema (Google rich results)
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(faqSchema);
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   return (
     <div className="pt-20">
@@ -161,8 +170,6 @@ export default function FAQ() {
         </div>
       </section>
 
-      {/* FAQ Schema for Google rich results */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </div>
   );
 }
